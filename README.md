@@ -13,7 +13,7 @@ The main file is p_g.py. A little testsetup is included. The testsetup consists 
   - 3-30 'member' edges to person nodes
   - 3-8 'topic' edges to topics
 
-Ok, lets setup the server side:
+Lets setup the server side:
 
     cd p_g
 
@@ -46,6 +46,8 @@ The real query. Given a random chosen topic, calculate for a person:
 - 10 points for being directly connected to the topic
 -  5 points for being author of an article connected to the topic
 -  3 points for being a member of a project connected to the topic
+
+Lets do it:
 
     #Query the database 201 times using zeo, as client1
     python query_km.py 201 z 1
