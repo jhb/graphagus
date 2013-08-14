@@ -50,12 +50,14 @@ The real query. Given a random chosen topic, calculate for a person:
 Lets do it:
 
     #Query the database 201 times using zeo, as client1
+    
     python query_km.py 201 z 1
     
     #on my machine - average:  0.0951218937167
     #this can be improved by doing it again:
 
     python query_km.py 201 z 1
+    
     #on my machine - average:  0.0291442408491
     
 
