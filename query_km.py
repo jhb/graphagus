@@ -58,11 +58,11 @@ def doqueries():
             
             elif label == 'article':
                 for nodeid2 in g.outgoing[g.typeids['author']][nodeid1].values():
-                    addpoints(found,nodeid2,10)
+                    addpoints(found,nodeid2,5)
  
             elif label == 'project':
                 for nodeid2 in g.outgoing[g.typeids['member']][nodeid1].values():
-                    addpoints(found,nodeid2,10)
+                    addpoints(found,nodeid2,3)
     
         
         t = time.time()-start
