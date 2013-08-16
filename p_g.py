@@ -2,6 +2,7 @@ from BTrees.IOBTree import IOBTree
 from BTrees.OIBTree import OIBTree
 from BTrees.IIBTree import IIBTree
 from persistent import Persistent
+from persistent.mapping import PersistentMapping
 
 class GraphDB(Persistent):
 
@@ -15,27 +16,28 @@ class GraphDB(Persistent):
 
         self._name2node=OIBTree()
 
-        self.typeids = {}
+        self.typeids = PersistentMapping()
 
-        self._nodeid = 0
-        self._edgeid = 0
-        self._typeid = 0
+        self.counters=PersistentMapping(dict(nodeid=0,
+                                             edgeid=0,
+                                             typeid=0))
 
     def nodeid(self):
-        self._nodeid+=1
-        return self._nodeid
+        self.counters['nodeid']+=1
+        return self.counters['nodeid']
 
     def edgeid(self):
-        self._edgeid+=1
-        return self._edgeid
+        self.counters['edgeid']+=1
+        return self.counters['edgeid']
 
     def typeid(self,name):
-        if self.typeids.has_key(name):            
-            return self.typeids[name]
-        else:            
-            self._typeid+=1
-            self.typeids[name]=self._typeid
-            return self._typeid
+        if not self.typeids.has_key(name):            
+            self.counters['typeid']+=1
+            typeids = self.typeids
+            typeids[name]=self.counters['typeid']
+            self.typeids=typeids
+
+        return self.typeids[name]
 
     def name2node(self,name):
         return self.lightNode(self._name2node[name])
@@ -53,22 +55,24 @@ class GraphDB(Persistent):
         out['id'] = id
         return out
 
-    def addEdge(self,start,end,type,**kwargs):
+    def addEdge(self,start,end,edgetype,**kwargs):
         id = self.edgeid()
-        typeid = self.typeid(type)
-        startid = start['id']
-        endid = end['id']
+        typeid = self.typeid(edgetype)
+        if type(start) == dict:
+            start = start['id']
+        if type(end) == dict:
+            end = end['id']
 
-        edge = [start['id'],end['id'],typeid,kwargs]
+        edge = [start,end,typeid,kwargs]
         self.edges[id]=edge
         
-        data = self.outgoing.setdefault(typeid,IOBTree()).setdefault(startid,{})
-        data[id]=endid
-        self.outgoing[typeid][startid]=data
+        data = self.outgoing.setdefault(typeid,IOBTree()).setdefault(start,{})
+        data[id]=end
+        self.outgoing[typeid][start]=data
 
-        data = self.incoming.setdefault(typeid,IOBTree()).setdefault(endid,{})
-        data[id]=startid
-        self.incoming[typeid][endid]=data
+        data = self.incoming.setdefault(typeid,IOBTree()).setdefault(end,{})
+        data[id]=start
+        self.incoming[typeid][end]=data
 
         return self.lightEdge(id,edge)
 
