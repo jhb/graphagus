@@ -71,13 +71,14 @@ class GraphDB(Persistent):
 
         edge = [start,end,edgetype,kwargs]
         self.edges[id]=edge
-        
+       
+        # edgeid:nodeid or nodeid:[edgeid,edgeid]?
         data = self.outgoing.setdefault(edgetype,IOBTree()).setdefault(start,{})
-        data.setdefault(end,[]).append(id)
+        data[id]=end
         self.outgoing[edgetype][start]=data
 
         data = self.incoming.setdefault(edgetype,IOBTree()).setdefault(end,{})
-        data.setdefault(start,[]).append(id)
+        data[id]=start
         self.incoming[edgetype][end]=data
 
         return self.lightEdge(id,edge)
@@ -95,17 +96,11 @@ class GraphDB(Persistent):
         start,end,edgetype,props,edgeid = edge
 
         data = self.outgoing[edgetype][start]
-        edgelist = data[end]
-        edgelist.remove(edgeid)
-        if edgelist == []:
-            del(data[end])
+        del(data[edgeid])                
         self.outgoing[edgetype][start]=data
         
         data = self.incoming[edgetype][end]
-        edgelist = data[start]
-        edgelist.remove(edgeid)
-        if edgelist == []:
-            del(data[start])
+        del(data[edgeid])                
         self.incoming[edgetype][end]=data
 
         del(self.edges[edgeid])
@@ -114,7 +109,7 @@ class GraphDB(Persistent):
         if type(node)==int:
             node=self.nodes[node]
         nodeid = node['id']
-
+       
         for edgetype in self.outgoing.keys():
             if len(self.outgoing[edgetype].get(nodeid,{}))>0:
                 raise StillConnected('outgoing',self.outgoing[edgetype][nodeid])
