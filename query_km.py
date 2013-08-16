@@ -32,7 +32,7 @@ maxnum = 1000
 # article on it (3 points) or have worked on a project on it (5 points)
 def addpoints(found,name,points):
     found[name] = found.setdefault(name,0) + points
-
+queried = {}
 def doqueries():
 
     print 'go'
@@ -44,11 +44,17 @@ def doqueries():
             tn = 'topic%s' % tid
         else:
             tn = fixedtarget
-        print tn, 
+        print tn,
+
+        queried[tn] = queried.setdefault(tn,0)+1
         
         start = time.time()
-        connection.sync()
-        #query code
+        
+        #deprecated!
+        #connection.sync()
+
+        transaction.begin()
+        
         topic = g.name2node(tn)
         found = dict()
         #import ipdb; ipdb.set_trace()
@@ -75,8 +81,8 @@ def doqueries():
         print t
 
     print 'average: ', sum(times)/r
-    return found
-doqueries()
+    return found,queried
+f,q=doqueries()
 runs = 1
 #conn.close()
 #db.close()
