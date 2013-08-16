@@ -59,7 +59,7 @@ def doqueries():
         found = dict()
         #import ipdb; ipdb.set_trace()
 
-        for nodeid1 in g.incoming[g.typeids['topic']][topic['id']].values():
+        for nodeid1 in g.incoming[g.typeids['topic']][topic['id']].keys():
             node1 = g.nodes[nodeid1]
             label = node1['label']
 
@@ -67,11 +67,11 @@ def doqueries():
                 addpoints(found,nodeid1,10)
             
             elif label == 'article':
-                for nodeid2 in g.outgoing[g.typeids['author']][nodeid1].values():
+                for nodeid2 in g.outgoing[g.typeids['author']][nodeid1].keys():
                     addpoints(found,nodeid2,5)
  
             elif label == 'project':
-                for nodeid2 in g.outgoing[g.typeids['member']][nodeid1].values():
+                for nodeid2 in g.outgoing[g.typeids['member']][nodeid1].keys():
                     addpoints(found,nodeid2,3)
     
         

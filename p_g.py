@@ -4,6 +4,9 @@ from BTrees.IIBTree import IIBTree
 from persistent import Persistent
 from persistent.mapping import PersistentMapping
 
+class StillConnected(Exception):
+    pass
+
 class GraphDB(Persistent):
 
     def __init__(self):
@@ -57,45 +60,87 @@ class GraphDB(Persistent):
 
     def addEdge(self,start,end,edgetype,**kwargs):
         id = self.edgeid()
-        typeid = self.typeid(edgetype)
+    
+        if type(edgetype) != int:
+            edgetype = self.typeid(edgetype)
+
         if type(start) == dict:
             start = start['id']
         if type(end) == dict:
             end = end['id']
 
-        edge = [start,end,typeid,kwargs]
+        edge = [start,end,edgetype,kwargs]
         self.edges[id]=edge
         
-        data = self.outgoing.setdefault(typeid,IOBTree()).setdefault(start,{})
-        data[id]=end
-        self.outgoing[typeid][start]=data
+        data = self.outgoing.setdefault(edgetype,IOBTree()).setdefault(start,{})
+        data.setdefault(end,[]).append(id)
+        self.outgoing[edgetype][start]=data
 
-        data = self.incoming.setdefault(typeid,IOBTree()).setdefault(end,{})
-        data[id]=start
-        self.incoming[typeid][end]=data
+        data = self.incoming.setdefault(edgetype,IOBTree()).setdefault(end,{})
+        data.setdefault(start,[]).append(id)
+        self.incoming[edgetype][end]=data
 
         return self.lightEdge(id,edge)
 
     def lightEdge(self,id,edge=None):
         if edge==None:
             edge = self.edges[id]
-        out = [id]
-        out.extend(edge)
-        return out
+        edge.append(id)
+        return edge
 
-####### not used yet ############
+    def delEdge(self,edge):
+        if type(edge)==int:
+            edge=self.edges[edge]
 
-    def getOutgoing(self,typeid,nodeid):
-        data = self.outgoing[typeid].setdefault(nodeid,{})
-        out = []
-        for eid,nid in data.keys():
-            out.append(self.lightEdge(eid),self.lightNode(nid))
-        return out
-    
-    def getIncoming(self,typeid,nodeid):
-        data = self.outgoing[typeid].setdefault(nodeid,{})
-        out = []
-        for eid,nid in data.keys():
-            out.append(self.lightEdge(eid),self.lightNode(nid))
-        return out
+        start,end,edgetype,props,edgeid = edge
+
+        data = self.outgoing[edgetype][start]
+        edgelist = data[end]
+        edgelist.remove(edgeid)
+        if edgelist == []:
+            del(data[end])
+        self.outgoing[edgetype][start]=data
+        
+        data = self.incoming[edgetype][end]
+        edgelist = data[start]
+        edgelist.remove(edgeid)
+        if edgelist == []:
+            del(data[start])
+        self.incoming[edgetype][end]=data
+
+        del(self.edges[edgeid])
+
+    def delNode(self,node):
+        if type(node)==int:
+            node=self.nodes[node]
+        nodeid = node['id']
+
+        for edgetype in self.outgoing.keys():
+            if len(self.outgoing[edgetype].get(nodeid,{}))>0:
+                raise StillConnected('outgoing',self.outgoing[edgetype][nodeid])
+
+        for edgetype in self.incoming.keys():
+            if len(self.incoming[edgetype].get(nodeid,{}))>0:
+                raise StillConnected('incoming',self.incoming[edgetype][nodeid])
+
+        #all good, lets delete
+        for edgetype in self.outgoing.keys():
+            if self.outgoing[edgetype].has_key(nodeid):
+                del(self.outgoing[edgetype][nodeid])
+        
+        for edgetype in self.incoming.keys():
+            if self.incoming[edgetype].has_key(nodeid):
+                del(self.incoming[edgetype][nodeid])
+        del(self._name2node[node['name']])
+        del(self.nodes[nodeid])
+
+    def updateNode(self,node):
+        nodeid = node['id']
+        data = dict(node)
+        self.nodes[nodeid]=data
+
+    def updateEdge(self,edge):
+        edgeid = edge[4]
+        data = list(edge[:4])
+        self.edges[edgeid]=data
 

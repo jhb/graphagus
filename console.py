@@ -10,7 +10,7 @@ if dbtype.startswith('f'):
         filename=sys.argv[2]
     else:
         filename='Data.fs'
-    storage = FileStorage('Data.fs')
+    storage = FileStorage(filename)
 else:
     if len(sys.argv)>2:
         clientid=sys.argv[2]
