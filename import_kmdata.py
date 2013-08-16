@@ -40,8 +40,8 @@ for name,data in kmdata['people'].items():
         g.addEdge(person,topic,'topic')
     if not i % 1000:
         print 'person: ',i
-        transaction.savepoint()
-    if not i %50000:
+        #transaction.savepoint()
+    if not i %10000:
         transaction.commit()
 
 print 'projects'
@@ -57,8 +57,8 @@ for name,data in kmdata['projects'].items():
         g.addEdge(project,member,'member')
     if not i % 1000:
         print 'project: ',i
-        transaction.savepoint()
-    if not i %50000:
+        #transaction.savepoint()
+    if not i %10000:
         transaction.commit()
 
 print 'articles'
@@ -73,8 +73,8 @@ for name,data in kmdata['articles'].items():
     g.addEdge(article,author,'author')
     if not i % 1000:
         print 'article: ',i
-        transaction.savepoint()
-    if not i %50000:
+        #transaction.savepoint()
+    if not i %10000:
         transaction.commit()
 
 transaction.commit()

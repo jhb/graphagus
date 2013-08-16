@@ -13,14 +13,14 @@ else:
     clientid = sys.argv[3]
     addr = ('localhost',1234)
     #storage = ClientStorage.ClientStorage(addr,cache_size=2048*1024*1024,client='shm/p_gclient' +clientid)
-    storage = ClientStorage.ClientStorage(addr,cache_size=512*1024*1024,client='querykmcache' +clientid)
+    storage = ClientStorage.ClientStorage(addr,cache_size=2048*1024*1024,client='querykmcache' +clientid)
     #storage = ClientStorage.ClientStorage(addr,cache_size=0)
     #storage = ClientStorage.ClientStorage(addr)
 
 
-#db = DB(storage,cache_size=1000000,cache_size_bytes=1024*1024*124)
+db = DB(storage,cache_size=1000000,cache_size_bytes=1024*1024*124)
 #db = DB(storage,cache_size=200000,cache_size_bytes=1024*1024*124) #this uses 0.03 secs
-db = DB(storage)
+#db = DB(storage)
 connection = db.open()
 root = connection.root()
 g=root['graphdb']
