@@ -54,6 +54,7 @@ def doqueries():
         #connection.sync()
 
         transaction.begin()
+        g = root['graphdb']
         
         topic = g.name2node(tn)
         found = dict()
