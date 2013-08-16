@@ -1,4 +1,4 @@
-import p_g, sys, random, time
+import p_g, sys, random, time, transaction
 from ZODB import DB
 
 from ZEO import ClientStorage
@@ -13,21 +13,23 @@ else:
     clientid = sys.argv[3]
     addr = ('localhost',1234)
     #storage = ClientStorage.ClientStorage(addr,cache_size=2048*1024*1024,client='shm/p_gclient' +clientid)
-    storage = ClientStorage.ClientStorage(addr,cache_size=512*1024*1024,client='p_gclient' +clientid)
+    storage = ClientStorage.ClientStorage(addr,cache_size=3000*1024*1024,client='p_gclient' +clientid)
     #storage = ClientStorage.ClientStorage(addr,cache_size=0)
     #storage = ClientStorage.ClientStorage(addr)
 
 
-db = DB(storage)
+#db = DB(storage,cache_size=1000000,cache_size_bytes=1024*1024*124)
+db = DB(storage,cache_size=100000000,cache_size_bytes=2024*1024*124)
+#db = DB(storage)
 connection = db.open()
 root = connection.root()
 g=root['graphdb']
 
-#maxnum = int(sys.argv[1])
+fixedtarget = None
 maxnum = 1000
+
 # given a topic, query all authors that like that topic (10 points) or have written an
 # article on it (3 points) or have worked on a project on it (5 points)
-
 def addpoints(found,name,points):
     found[name] = found.setdefault(name,0) + points
 
@@ -37,13 +39,15 @@ def doqueries():
     times = []
     for r in range(1,runs+1):
         print 'run', r,
-
-        tid = random.randint(1,maxnum)
-        tn = 'topic%s' % tid
+        if not fixedtarget:
+            tid = random.randint(1,maxnum)
+            tn = 'topic%s' % tid
+        else:
+            tn = fixedtarget
         print tn, 
         
         start = time.time()
-
+        connection.sync()
         #query code
         topic = g.name2node(tn)
         found = dict()
@@ -67,11 +71,13 @@ def doqueries():
         
         t = time.time()-start
         times.append(t)
-        print 'found', len(found),'in',         
+        print 'found', len(found),'in',  
         print t
 
     print 'average: ', sum(times)/r
+    return found
 doqueries()
+runs = 1
 #conn.close()
 #db.close()
 
