@@ -19,28 +19,49 @@ class GraphDB(Persistent):
 
         self._name2node=OIBTree()
 
-        self.typeids = PersistentMapping()
+#        self.typeids = PersistentMapping()
+#
+#        self.counters=PersistentMapping(dict(nodeid=0,
+#                                             edgeid=0,
+#                                             typeid=0))
+#
+#    def nodeid(self):
+#        self.counters['nodeid']+=1
+#        return self.counters['nodeid']
+#
+#    def edgeid(self):
+#        self.counters['edgeid']+=1
+#        return self.counters['edgeid']
+#
+#    def typeid(self,name):
+#        if not self.typeids.has_key(name):            
+#            self.counters['typeid']+=1
+#            typeids = self.typeids
+#            typeids[name]=self.counters['typeid']
+#            self.typeids=typeids
+#
+#        return self.typeids[name]
+        self.typeids = {}
 
-        self.counters=PersistentMapping(dict(nodeid=0,
-                                             edgeid=0,
-                                             typeid=0))
+        self._nodeid = 0
+        self._edgeid = 0
+        self._typeid = 0
 
     def nodeid(self):
-        self.counters['nodeid']+=1
-        return self.counters['nodeid']
+        self._nodeid+=1
+        return self._nodeid
 
     def edgeid(self):
-        self.counters['edgeid']+=1
-        return self.counters['edgeid']
+        self._edgeid+=1
+        return self._edgeid
 
     def typeid(self,name):
-        if not self.typeids.has_key(name):            
-            self.counters['typeid']+=1
-            typeids = self.typeids
-            typeids[name]=self.counters['typeid']
-            self.typeids=typeids
-
-        return self.typeids[name]
+        if self.typeids.has_key(name):
+            return self.typeids[name]
+        else:
+            self._typeid+=1
+            self.typeids[name]=self._typeid
+            return self._typeid
 
     def name2node(self,name):
         return self.lightNode(self._name2node[name])
