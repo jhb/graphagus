@@ -107,8 +107,9 @@ class GraphDB(Persistent):
     def lightEdge(self,id,edge=None):
         if edge==None:
             edge = self.edges[id]
-        edge.append(id)
-        return edge
+        out = list(edge)
+        out.append(id)
+        return out
 
     def delEdge(self,edge):
         if type(edge)==int:
