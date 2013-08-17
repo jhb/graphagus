@@ -3,6 +3,7 @@ from BTrees.OIBTree import OIBTree
 from BTrees.IIBTree import IIBTree
 from persistent import Persistent
 from persistent.mapping import PersistentMapping
+from BTrees.Length import Length
 
 class StillConnected(Exception):
     pass
@@ -41,27 +42,28 @@ class GraphDB(Persistent):
 #            self.typeids=typeids
 #
 #        return self.typeids[name]
+
         self.typeids = {}
 
-        self._nodeid = 0
-        self._edgeid = 0
-        self._typeid = 0
+        self._nodeid = Length(0)
+        self._edgeid = Length(0)
+        self._typeid = Length(0)
 
     def nodeid(self):
-        self._nodeid+=1
-        return self._nodeid
+        self._nodeid.change(1)
+        return self._nodeid.value
 
     def edgeid(self):
-        self._edgeid+=1
-        return self._edgeid
+        self._edgeid.change(1)
+        return self._edgeid.value
 
     def typeid(self,name):
-        if self.typeids.has_key(name):
-            return self.typeids[name]
-        else:
-            self._typeid+=1
-            self.typeids[name]=self._typeid
-            return self._typeid
+        if not self.typeids.has_key(name):            
+            self._typeid.change(1)
+            typeids = self.typeids
+            typeids[name]=self._typeid.value
+            self.typeids=typeids
+        return self.typeids[name]
 
     def name2node(self,name):
         return self.lightNode(self._name2node[name])
