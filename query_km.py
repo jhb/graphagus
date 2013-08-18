@@ -47,7 +47,7 @@ def doqueries():
             tn = 'topic%s' % tid
         else:
             tn = fixedtarget
-        print tn,
+        print '%-9s' %tn,
 
         queried[tn] = queried.setdefault(tn,0)+1
         
@@ -63,7 +63,11 @@ def doqueries():
         found = dict()
         #import ipdb; ipdb.set_trace()
 
-        for nodeid1 in g.incoming[g.typeids.topic][topic['id']].values():
+        etopic = g.typeids.topic
+        eauthor = g.typeids.author
+        emember = g.typeids.member
+
+        for nodeid1 in g.incoming[etopic][topic['id']].values():
             node1 = g.nodes[nodeid1]
             label = node1['label']
 
@@ -71,11 +75,11 @@ def doqueries():
                 addpoints(found,nodeid1,10)
             
             elif label == 'article':
-                for nodeid2 in g.outgoing[g.typeids.author][nodeid1].values():
+                for nodeid2 in g.outgoing[eauthor][nodeid1].values():
                     addpoints(found,nodeid2,5)
  
             elif label == 'project':
-                for nodeid2 in g.outgoing[g.typeids.member][nodeid1].values():
+                for nodeid2 in g.outgoing[emember][nodeid1].values():
                     addpoints(found,nodeid2,3)
     
         
