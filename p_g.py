@@ -8,6 +8,10 @@ from BTrees.Length import Length
 class StillConnected(Exception):
     pass
 
+class PObject(Persistent):
+    pass
+
+
 class GraphDB(Persistent):
 
     def __init__(self):
@@ -20,30 +24,7 @@ class GraphDB(Persistent):
 
         self._name2node=OIBTree()
 
-#        self.typeids = PersistentMapping()
-#
-#        self.counters=PersistentMapping(dict(nodeid=0,
-#                                             edgeid=0,
-#                                             typeid=0))
-#
-#    def nodeid(self):
-#        self.counters['nodeid']+=1
-#        return self.counters['nodeid']
-#
-#    def edgeid(self):
-#        self.counters['edgeid']+=1
-#        return self.counters['edgeid']
-#
-#    def typeid(self,name):
-#        if not self.typeids.has_key(name):            
-#            self.counters['typeid']+=1
-#            typeids = self.typeids
-#            typeids[name]=self.counters['typeid']
-#            self.typeids=typeids
-#
-#        return self.typeids[name]
-
-        self.typeids = {}
+        self.typeids = PObject()
 
         self._nodeid = Length(0)
         self._edgeid = Length(0)
@@ -58,12 +39,10 @@ class GraphDB(Persistent):
         return self._edgeid.value
 
     def typeid(self,name):
-        if not self.typeids.has_key(name):            
+        if not hasattr(self.typeids,name):            
             self._typeid.change(1)
-            typeids = self.typeids
-            typeids[name]=self._typeid.value
-            self.typeids=typeids
-        return self.typeids[name]
+            setattr(self.typeids,name,self._typeid.value)
+        return getattr(self.typeids,name)
 
     def name2node(self,name):
         return self.lightNode(self._name2node[name])
@@ -115,7 +94,7 @@ class GraphDB(Persistent):
 
     def delEdge(self,edge):
         if type(edge)==int:
-            edge=self.edges[edge]
+            edge=self.lightEdge(edge)
 
         start,end,edgetype,props,edgeid = edge
 

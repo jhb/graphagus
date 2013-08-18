@@ -48,7 +48,7 @@ g.delNode(bob)
 g.addEdge(alice,charlie,likes)
 
 edges = g.incoming[likes][charlie['id']].keys() 
-edge = g.edges[edges[0]]#cheated
+edge = g.lightEdge(edges[0])#cheated
 edge[3]['intention']='serious4'
 g.updateEdge(edge)
 

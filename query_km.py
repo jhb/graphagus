@@ -33,6 +33,9 @@ maxnum = 1000
 def addpoints(found,name,points):
     found[name] = found.setdefault(name,0) + points
 queried = {}
+
+
+
 def doqueries():
 
     print 'go'
@@ -60,7 +63,7 @@ def doqueries():
         found = dict()
         #import ipdb; ipdb.set_trace()
 
-        for nodeid1 in g.incoming[g.typeids['topic']][topic['id']].values():
+        for nodeid1 in g.incoming[g.typeids.topic][topic['id']].values():
             node1 = g.nodes[nodeid1]
             label = node1['label']
 
@@ -68,11 +71,11 @@ def doqueries():
                 addpoints(found,nodeid1,10)
             
             elif label == 'article':
-                for nodeid2 in g.outgoing[g.typeids['author']][nodeid1].values():
+                for nodeid2 in g.outgoing[g.typeids.author][nodeid1].values():
                     addpoints(found,nodeid2,5)
  
             elif label == 'project':
-                for nodeid2 in g.outgoing[g.typeids['member']][nodeid1].values():
+                for nodeid2 in g.outgoing[g.typeids.member][nodeid1].values():
                     addpoints(found,nodeid2,3)
     
         
