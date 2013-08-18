@@ -9,7 +9,7 @@ if dbtype.startswith('f'):
     if len(sys.argv)>2:
         filename=sys.argv[2]
     else:
-        filename='Data.fs'
+        filename='Test.fs'
     storage = FileStorage(filename)
 else:
     if len(sys.argv)>2:

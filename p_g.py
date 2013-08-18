@@ -18,6 +18,7 @@ class GraphDB(Persistent):
         
         self.nodes = IOBTree()
         self.edges = IOBTree()
+        self.edgedata = IOBTree()
 
         self.outgoing = IOBTree()
         self.incoming = IOBTree()
@@ -50,7 +51,7 @@ class GraphDB(Persistent):
     def addNode(self,**kwargs):
         id = self.nodeid()
         self.nodes[id]=kwargs
-        self._name2node[kwargs['name']]=id
+        self._name2node[kwargs['name']]=id #XXX
         return self.lightNode(id,kwargs)
     
     def lightNode(self,id,node=None):
@@ -71,10 +72,12 @@ class GraphDB(Persistent):
         if type(end) == dict:
             end = end['id']
 
-        edge = [start,end,edgetype,kwargs]
+        edge = [start,end,edgetype]
         self.edges[id]=edge
+        if kwargs:
+            self.edgedata[i]=kwargs
        
-        # edgeid:nodeid or nodeid:[edgeid,edgeid]?
+        # edgeid:nodeid
         data = self.outgoing.setdefault(edgetype,IOBTree()).setdefault(start,{})
         data[id]=end
         self.outgoing[edgetype][start]=data
@@ -89,6 +92,7 @@ class GraphDB(Persistent):
         if edge==None:
             edge = self.edges[id]
         out = list(edge)
+        out.append(self.edgedata.get(id,{}))
         out.append(id)
         return out
 
@@ -107,6 +111,8 @@ class GraphDB(Persistent):
         self.incoming[edgetype][end]=data
 
         del(self.edges[edgeid])
+        if self.edgedata.has_key(edgeid):
+            del(self.edges[edgeid])
 
     def delNode(self,node):
         if type(node)==int:
@@ -132,13 +138,18 @@ class GraphDB(Persistent):
         del(self._name2node[node['name']])
         del(self.nodes[nodeid])
 
-    def updateNode(self,node):
-        nodeid = node['id']
-        data = dict(node)
+    def updateNode(self,lightnode):
+        nodeid = lightnode['id']
+        data = dict(lightnode)
         self.nodes[nodeid]=data
 
-    def updateEdge(self,edge):
-        edgeid = edge[4]
-        data = list(edge[:4])
-        self.edges[edgeid]=data
+    def updateEdge(self,lightedge):
+        edgeid = lightedge[4]
+        edge = list(lightedge[:4])
+        data = lightedge[3]
+        self.edges[edgeid]=edge
+        if data:
+            self.edgedata[edgeid]=data
+        elif self.edgedata.has_key(edgeid):
+            del(self.edgedata[edgeid])
 
