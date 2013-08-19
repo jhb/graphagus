@@ -15,7 +15,10 @@ else:
 
 print 'deleting'
 root['graphdb']=p_g.GraphDB()
+
+print 'creating db'
 g=root['graphdb']
+g.node_catalog['name']=p_g.CatalogFieldIndex(p_g.get_key('name'))
 
 print 'reading'
 f = open(filename)
@@ -36,7 +39,7 @@ for name,data in kmdata['people'].items():
     i+=1
     person = g.addNode(name=name,label='person')
     for topicname in data:
-        topic = g.name2node(topicname)
+        topic = g.queryNode(name=topicname)[0]
         g.addEdge(person,topic,'topic')
     if not i % 1000:
         print 'person: ',i
@@ -50,10 +53,10 @@ for name,data in kmdata['projects'].items():
     i+=1
     project = g.addNode(name=name,label='project')
     for topicname in data['topics']:
-        topic = g.name2node(topicname)
+        topic = g.queryNode(name=topicname)[0]
         g.addEdge(project,topic,'topic')
     for membername in data['members']:
-        member = g.name2node(membername)
+        member = g.queryNode(name=membername)[0]
         g.addEdge(project,member,'member')
     if not i % 1000:
         print 'project: ',i
@@ -67,9 +70,9 @@ for name,data in kmdata['articles'].items():
     i+=1
     article = g.addNode(name=name,label='article')
     for topicname in data['topics']:
-        topic = g.name2node(topicname)
+        topic = g.queryNode(name=topicname)[0]
         g.addEdge(article,topic,'topic')
-    author = g.name2node(data['author'])
+    author = g.queryNode(name=data['author'])[0]
     g.addEdge(article,author,'author')
     if not i % 1000:
         print 'article: ',i

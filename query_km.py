@@ -59,7 +59,8 @@ def doqueries():
         transaction.begin()
         g = root['graphdb']
         
-        topic = g.name2node(tn)
+        #topic = g.name2node(tn)
+        topic = g.queryNode(name=tn)[0]
         found = dict()
         #import ipdb; ipdb.set_trace()
 
