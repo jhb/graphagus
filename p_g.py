@@ -10,7 +10,7 @@ from repoze.catalog.indexes.text import CatalogTextIndex
 from repoze.catalog.indexes.keyword import CatalogKeywordIndex
 from repoze.catalog.indexes.path import CatalogPathIndex
 from repoze.catalog import query as rc_query
-
+from UserList import UserList
 
 class StillConnected(Exception):
     pass
@@ -195,19 +195,39 @@ class GraphDB(Persistent):
     def pq(self,**kwargs):
         return PathQuery(self,**kwargs)
 
-           
+class Path(UserList):
+    
+    def __init__(self,pathquery,initlist):
+        super(Path,self).__init__(initlist)
+        self.pathquery = pathquery
+
+    def expand(self):
+        return self.pathquery.expand(self)
+
+    def nodes(self):
+        return [self.pathquery.graph.lightNode(nid) for nid in self[::2]]
+
+    def edges(self):
+        return [self.pathquery.graph.lightEdge(eid) for eid in self[1::2]]
+
 
 class PathQuery(object):
 
-    def __init__(self,graph,**kwargs):
+    def __init__(self,graph,*args,**kwargs):
 
         self.graph=graph
         self.paths=[]
         self.pathtypes=[] #0:node, 1:edge
-        if kwargs:
+        
+        if args:
+            for id in args[0]:
+                self.paths.append(Path(self,[id]))
+            self.pathtypes=[0]                
+        
+        elif kwargs:
             nodeids = self.graph.node_catalog.query(self.graph.kwQuery(**kwargs))[1]
             for id in nodeids:
-                self.paths.append([id])
+                self.paths.append(Path(self,[id]))
             self.pathtypes=[0]                
 
         self.outkeys = list()
@@ -219,10 +239,10 @@ class PathQuery(object):
     def __getitem__(self,i):
         return self.paths[i]
 
-    def getLast(self):
+    def lastNodes(self):
         return [p[-1] for p in self.paths]
 
-    last = property(getLast)
+    tails = property(lastNodes)
 
     def nextHop(self,direction,*args):
         #import ipdb; ipdb.set_trace()
@@ -230,6 +250,10 @@ class PathQuery(object):
 
         out = []
         main = getattr(self.graph,direction)
+        
+        new = PathQuery(self.graph)
+        new.pathtypes = list(self.pathtypes)
+        
         for key in main.keys():
             if not edgetypes or key in edgetypes:                    
                 idx = main[key]
@@ -242,11 +266,10 @@ class PathQuery(object):
                                 tmp = list(path)
                                 tmp.append(k)
                                 tmp.append(v)
-                                out.append(tmp)
-        new = PathQuery(self.graph)
+                                out.append(Path(new,tmp))
         new.paths = out
-        new.pathtypes = list(self.pathtypes)
         new.pathtypes.extend([1,0])
+
         return new
 
     def o(self,*args):
@@ -271,6 +294,10 @@ class PathQuery(object):
             out.append(node)
         return out           
 
+    @property
+    def P(self):
+        return [p.expand() for p in self.paths]
+
     def expand(self,path):
         if type(path)==int:
             path = self.paths[path]
@@ -283,9 +310,7 @@ class PathQuery(object):
                 out.append(self.graph.lightEdge(path[i]))
             i+=1
         return out
-
-    @property
-    def P(self):
-        return [self.expand(p) for p in self.paths]
-
+    
+    def distinct(self):
+        return PathQuery(self.graph,set(self.tails))
         
