@@ -9,7 +9,7 @@ from repoze.catalog.indexes.field import CatalogFieldIndex
 from repoze.catalog.indexes.text import CatalogTextIndex
 from repoze.catalog.indexes.keyword import CatalogKeywordIndex
 from repoze.catalog.indexes.path import CatalogPathIndex
-from repoze.catalog import query
+from repoze.catalog import query as rc_query
 
 
 class StillConnected(Exception):
@@ -175,3 +175,9 @@ class GraphDB(Persistent):
             del(self.edgedata[edgeid])
         self.edge_catalog.reindex_doc(edgeid,lightedge)            
 
+
+    def queryNode(self,**kwargs):
+        #only one at the moment
+        key,value = kwargs.items()[0]
+        result = self.node_catalog.query(rc_query.Eq(key,value))
+        return [self.lightNode(i) for i in result[1]]

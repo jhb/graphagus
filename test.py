@@ -57,7 +57,7 @@ g.updateEdge(edge)
 alice['status']='engaged'
 g.updateNode(alice)
 
-print 'Alice got found:',g.node_catalog.query("name=='alice'")[1][0]==alice['id']
+print 'Alice got found:',g.queryNode(name='alice')[0]==alice
 print 'ok, all good'
 transaction.commit()
 
