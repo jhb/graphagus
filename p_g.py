@@ -91,6 +91,7 @@ class GraphDB(Persistent):
         self.edges[id]=edge
         if kwargs:
             self.edgedata[i]=kwargs
+            self.edge_catalog.index_doc(id,le)
        
         # edgeid:nodeid
         data = self.outgoing.setdefault(edgetype,IOBTree()).setdefault(start,{})
@@ -102,7 +103,6 @@ class GraphDB(Persistent):
         self.incoming[edgetype][end]=data
 
         le =  self.lightEdge(id,edge)
-        self.edge_catalog.index_doc(id,le)
         return le
 
     def lightEdge(self,id,edge=None):
@@ -127,9 +127,9 @@ class GraphDB(Persistent):
         del(data[edgeid])                
         self.incoming[edgetype][end]=data
 
-        self.edge_catalog.unindex_doc(edgeid)
         del(self.edges[edgeid])
         if self.edgedata.has_key(edgeid):
+            self.edge_catalog.unindex_doc(edgeid)
             del(self.edges[edgeid])
 
 
@@ -171,11 +171,11 @@ class GraphDB(Persistent):
         self.edges[edgeid]=edge
         if data:
             self.edgedata[edgeid]=data
+            self.edge_catalog.reindex_doc(edgeid,lightedge)            
         elif self.edgedata.has_key(edgeid):
             del(self.edgedata[edgeid])
-        self.edge_catalog.reindex_doc(edgeid,lightedge)            
-
-
+            self.edge_catalog.unindex_doc(edgeid)
+            
     def queryNode(self,**kwargs):
         #only one at the moment
         key,value = kwargs.items()[0]
