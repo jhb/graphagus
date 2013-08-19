@@ -191,3 +191,101 @@ class GraphDB(Persistent):
     def queryEdge(self,**kwargs):
         result = self.edge_catalog.query(self.kwQuery(**kwargs))
         return [self.lightEdge(i) for i in result[1]]
+
+    def pq(self,**kwargs):
+        return PathQuery(self,**kwargs)
+
+           
+
+class PathQuery(object):
+
+    def __init__(self,graph,**kwargs):
+
+        self.graph=graph
+        self.paths=[]
+        self.pathtypes=[] #0:node, 1:edge
+        if kwargs:
+            nodeids = self.graph.node_catalog.query(self.graph.kwQuery(**kwargs))[1]
+            for id in nodeids:
+                self.paths.append([id])
+            self.pathtypes=[0]                
+
+        self.outkeys = list()
+        self.inkeys = list(self.graph.incoming.keys())
+
+    def __len__(self):
+        return len(self.paths)
+
+    def __getitem__(self,i):
+        return self.paths[i]
+
+    def getLast(self):
+        return [p[-1] for p in self.paths]
+
+    last = property(getLast)
+
+    def nextHop(self,direction,*args):
+        #import ipdb; ipdb.set_trace()
+        edgetypes = [getattr(self.graph.typeids,et) for et in args]
+
+        out = []
+        main = getattr(self.graph,direction)
+        for key in main.keys():
+            if not edgetypes or key in edgetypes:                    
+                idx = main[key]
+                for path in self.paths:
+                    last = path[-1]
+                    others = idx.get(last,None)
+                    if others:
+                        for k,v in others.items():
+                            if k not in path[1::2]:
+                                tmp = list(path)
+                                tmp.append(k)
+                                tmp.append(v)
+                                out.append(tmp)
+        new = PathQuery(self.graph)
+        new.paths = out
+        new.pathtypes = list(self.pathtypes)
+        new.pathtypes.extend([1,0])
+        return new
+
+    def o(self,*args):
+        return self.nextHop('outgoing',*args)
+
+    def i(self,*args):
+        return self.nextHop('incoming',*args)
+
+    @property
+    def N(self):
+        out = []
+        for p in self.paths:
+            node = self.graph.lightNode(p[-1])
+            out.append(node)
+        return out           
+
+    @property
+    def E(self):
+        out = []
+        for p in self.paths:
+            node = self.graph.lightEdge(p[-2])
+            out.append(node)
+        return out           
+
+    def expand(self,path):
+        if type(path)==int:
+            path = self.paths[path]
+        out = []
+        i = 0
+        for t in self.pathtypes:
+            if t==0:
+                out.append(self.graph.lightNode(path[i]))
+            elif t==1:
+                out.append(self.graph.lightEdge(path[i]))
+            i+=1
+        return out
+
+    @property
+    def P(self):
+        return [self.expand(p) for p in self.paths]
+
+        
