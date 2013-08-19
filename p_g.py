@@ -175,9 +175,19 @@ class GraphDB(Persistent):
         elif self.edgedata.has_key(edgeid):
             del(self.edgedata[edgeid])
             self.edge_catalog.unindex_doc(edgeid)
-            
+
+    def kwQuery(self,**kwargs):
+        kwitems = kwargs.items()
+        key,value = kwitems[0]
+        query = rc_query.Eq(key,value) 
+        for k,v in kwitems[1:]:
+            query = query & rc_query.Eq(k,v)
+        return query 
+
     def queryNode(self,**kwargs):
-        #only one at the moment
-        key,value = kwargs.items()[0]
-        result = self.node_catalog.query(rc_query.Eq(key,value))
+        result = self.node_catalog.query(self.kwQuery(**kwargs))
         return [self.lightNode(i) for i in result[1]]
+        
+    def queryEdge(self,**kwargs):
+        result = self.edge_catalog.query(self.kwQuery(**kwargs))
+        return [self.lightEdge(i) for i in result[1]]

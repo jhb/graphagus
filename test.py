@@ -27,6 +27,7 @@ if 1 or not root.has_key('graphdb'):
 g=root['graphdb']
 
 g.node_catalog['name']=p_g.CatalogFieldIndex(p_g.get_key('name'))
+g.node_catalog['lastname']=p_g.CatalogFieldIndex(p_g.get_key('lastname'))
 
 likes = g.typeid('likes')
 
@@ -35,7 +36,7 @@ bob = g.addNode(name='bob')
 
 g.addEdge(alice,bob,likes)
 
-charlie = g.addNode(name='charlie')
+charlie = g.addNode(name='charlie',lastname='charlson')
 
 try:
     g.delNode(bob)
@@ -57,8 +58,15 @@ g.updateEdge(edge)
 alice['status']='engaged'
 g.updateNode(alice)
 
-print 'Alice got found:',g.queryNode(name='alice')[0]==alice
-print 'ok, all good'
+assert(g.queryNode(name='alice')[0]==alice)
+print 'Alice got found'
+
+assert(g.queryNode(name='charlie',lastname='charlson')[0]==charlie)
+print 'Charlie got found'
+
+
+
+print 'all good'
 transaction.commit()
 
 
