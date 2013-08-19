@@ -4,6 +4,13 @@ from BTrees.IIBTree import IIBTree
 from persistent import Persistent
 from persistent.mapping import PersistentMapping
 from BTrees.Length import Length
+from repoze.catalog.catalog import Catalog
+from repoze.catalog.indexes.field import CatalogFieldIndex
+from repoze.catalog.indexes.text import CatalogTextIndex
+from repoze.catalog.indexes.keyword import CatalogKeywordIndex
+from repoze.catalog.indexes.path import CatalogPathIndex
+from repoze.catalog import query
+
 
 class StillConnected(Exception):
     pass
@@ -11,10 +18,18 @@ class StillConnected(Exception):
 class PObject(Persistent):
     pass
 
+class get_key():
+
+    def __init__(self,key):
+        self.key=key
+
+    def __call__(self,object,default):
+        return object.get(self.key,default)
+
 
 class GraphDB(Persistent):
 
-    def __init__(self):
+    def __init__(self,nodeindexes=(),edgeindexes=()):
         
         self.nodes = IOBTree()
         self.edges = IOBTree()
@@ -23,13 +38,15 @@ class GraphDB(Persistent):
         self.outgoing = IOBTree()
         self.incoming = IOBTree()
 
-        self._name2node=OIBTree()
-
         self.typeids = PObject()
 
         self._nodeid = Length(0)
         self._edgeid = Length(0)
         self._typeid = Length(0)
+
+        self.node_catalog= Catalog()
+        self.edge_catalog = Catalog()
+
 
     def nodeid(self):
         self._nodeid.change(1)
@@ -45,14 +62,12 @@ class GraphDB(Persistent):
             setattr(self.typeids,name,self._typeid.value)
         return getattr(self.typeids,name)
 
-    def name2node(self,name):
-        return self.lightNode(self._name2node[name])
-
     def addNode(self,**kwargs):
         id = self.nodeid()
         self.nodes[id]=kwargs
-        self._name2node[kwargs['name']]=id #XXX
-        return self.lightNode(id,kwargs)
+        ln =  self.lightNode(id,kwargs)
+        self.node_catalog.index_doc(id,ln)
+        return ln
     
     def lightNode(self,id,node=None):
         if node==None:
@@ -86,7 +101,9 @@ class GraphDB(Persistent):
         data[id]=start
         self.incoming[edgetype][end]=data
 
-        return self.lightEdge(id,edge)
+        le =  self.lightEdge(id,edge)
+        self.edge_catalog.index_doc(id,le)
+        return le
 
     def lightEdge(self,id,edge=None):
         if edge==None:
@@ -110,9 +127,11 @@ class GraphDB(Persistent):
         del(data[edgeid])                
         self.incoming[edgetype][end]=data
 
+        self.edge_catalog.unindex_doc(edgeid)
         del(self.edges[edgeid])
         if self.edgedata.has_key(edgeid):
             del(self.edges[edgeid])
+
 
     def delNode(self,node):
         if type(node)==int:
@@ -135,13 +154,15 @@ class GraphDB(Persistent):
         for edgetype in self.incoming.keys():
             if self.incoming[edgetype].has_key(nodeid):
                 del(self.incoming[edgetype][nodeid])
-        del(self._name2node[node['name']])
+
+        self.node_catalog.unindex_doc(nodeid)                
         del(self.nodes[nodeid])
 
     def updateNode(self,lightnode):
         nodeid = lightnode['id']
         data = dict(lightnode)
         self.nodes[nodeid]=data
+        self.node_catalog.reindex_doc(nodeid,lightnode)
 
     def updateEdge(self,lightedge):
         edgeid = lightedge[4]
@@ -152,4 +173,5 @@ class GraphDB(Persistent):
             self.edgedata[edgeid]=data
         elif self.edgedata.has_key(edgeid):
             del(self.edgedata[edgeid])
+        self.edge_catalog.reindex_doc(edgeid,lightedge)            
 

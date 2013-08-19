@@ -26,6 +26,8 @@ if 1 or not root.has_key('graphdb'):
     root['graphdb']=p_g.GraphDB()
 g=root['graphdb']
 
+g.node_catalog['name']=p_g.CatalogFieldIndex(p_g.get_key('name'))
+
 likes = g.typeid('likes')
 
 alice = g.addNode(name='alice')
@@ -55,6 +57,7 @@ g.updateEdge(edge)
 alice['status']='engaged'
 g.updateNode(alice)
 
+print 'Alice got found:',g.node_catalog.query("name=='alice'")[1][0]==alice['id']
 print 'ok, all good'
 transaction.commit()
 
