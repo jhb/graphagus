@@ -10,6 +10,7 @@ from repoze.catalog.indexes.text import CatalogTextIndex
 from repoze.catalog.indexes.keyword import CatalogKeywordIndex
 from repoze.catalog.indexes.path import CatalogPathIndex
 from repoze.catalog import query as rc_query
+import wrappers
 
 class StillConnected(Exception):
     pass
@@ -59,7 +60,16 @@ class GraphDB(Persistent):
         if not hasattr(self.typeids,name):            
             self._typeid.change(1)
             setattr(self.typeids,name,self._typeid.value)
+            self.revtypes()[self._typeid.value]=name
         return getattr(self.typeids,name)
+
+    @property
+    def revtypes(self):
+        if not hasattr(self,'_v_revtypes'):
+            dir(self.typeids)
+            dir(self.typeids)
+            self._v_revtypes = dict([(v,k) for k,v in self.typeids.__dict__.items()])
+        return self._v_revtypes
 
     def addNode(self,**kwargs):
         id = self.nodeid()
@@ -190,6 +200,21 @@ class GraphDB(Persistent):
     def queryEdge(self,**kwargs):
         result = self.edge_catalog.query(self.kwQuery(**kwargs))
         return [self.lightEdge(i) for i in result[1]]
+
+    def getFullNode(self,id=None,**kwargs):
+        if not hasattr(self,'_v_nodecache'):
+            self._v_nodecache = {}
+        nodecache = self._v_nodecache
+
+        if id:
+            return nodecache.setdefault(id,wrappers.Node(self,id))
+        else:
+            out = []
+            for ln in  self.queryNode(**kwargs):
+                out.append(nodecache.setdefault(ln['id'],wrappers.Node(self,ln)))
+            return out
+
+
 
 
 
