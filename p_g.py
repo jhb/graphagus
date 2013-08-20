@@ -192,8 +192,8 @@ class GraphDB(Persistent):
         result = self.edge_catalog.query(self.kwQuery(**kwargs))
         return [self.lightEdge(i) for i in result[1]]
 
-    def pq(self,**kwargs):
-        return PathQuery(self,**kwargs)
+    def pq(self,*args,**kwargs):
+        return PathQuery(self,*args,**kwargs)
 
 class Path(UserList):
     
@@ -220,8 +220,11 @@ class PathQuery(object):
         self.pathtypes=[] #0:node, 1:edge
         
         if args:
-            for id in args[0]:
-                self.paths.append(Path(self,[id]))
+            if type(args[0]) == int:
+                self.paths.append(Path(self,args))
+            else:
+                for id in args[0]:
+                    self.paths.append(Path(self,[id]))
             self.pathtypes=[0]                
         
         elif kwargs:
@@ -239,10 +242,10 @@ class PathQuery(object):
     def __getitem__(self,i):
         return self.paths[i]
 
-    def lastNodes(self):
+    def lastNodeIds(self):
         return [p[-1] for p in self.paths]
 
-    tails = property(lastNodes)
+    nodeids = property(lastNodeIds)
 
     def nextHop(self,direction,*args):
         #import ipdb; ipdb.set_trace()
@@ -278,16 +281,14 @@ class PathQuery(object):
     def i(self,*args):
         return self.nextHop('incoming',*args)
 
-    @property
-    def N(self):
+    def nodes(self):
         out = []
         for p in self.paths:
             node = self.graph.lightNode(p[-1])
             out.append(node)
         return out           
 
-    @property
-    def E(self):
+    def edges(self):
         out = []
         for p in self.paths:
             node = self.graph.lightEdge(p[-2])
@@ -312,5 +313,5 @@ class PathQuery(object):
         return out
     
     def distinct(self):
-        return PathQuery(self.graph,set(self.tails))
+        return PathQuery(self.graph,set(self.nodeids))
         
