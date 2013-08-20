@@ -195,7 +195,9 @@ class GraphDB(Persistent):
     def pq(self,**kwargs):
         return PathQuery(self,**kwargs)
 
-           
+
+    def manage_fixupOwnershipAfterAdd(self,*args,**kwargs):
+        return
 
 class PathQuery(object):
 
