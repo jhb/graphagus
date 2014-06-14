@@ -60,7 +60,7 @@ class GraphDB(Persistent):
         if not hasattr(self.typeids,name):            
             self._typeid.change(1)
             setattr(self.typeids,name,self._typeid.value)
-            self.revtypes()[self._typeid.value]=name
+            self.revtypes[self._typeid.value]=name
         return getattr(self.typeids,name)
 
     @property
@@ -213,7 +213,6 @@ class GraphDB(Persistent):
             for ln in  self.queryNode(**kwargs):
                 out.append(nodecache.setdefault(ln['id'],wrappers.Node(self,ln)))
             return out
-
 
 
 
