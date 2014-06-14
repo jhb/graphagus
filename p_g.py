@@ -69,6 +69,7 @@ class GraphDB(Persistent):
         return ln
     
     def lightNode(self,id,node=None):
+        "{'id':nodeid, ...other attributes...}"
         if node==None:
             node = self.nodes[id]
         out = dict(node)
@@ -105,6 +106,7 @@ class GraphDB(Persistent):
         return le
 
     def lightEdge(self,id,edge=None):
+        '[sourceid targetid typeid kwargs edgeid]'
         if edge==None:
             edge = self.edges[id]
         out = list(edge)
