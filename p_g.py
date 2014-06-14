@@ -202,5 +202,32 @@ class GraphDB(Persistent):
         result = self.edge_catalog.query(self.kwQuery(**kwargs))
         return [self.lightEdge(i) for i in result[1]]
 
+    def getAllEdges(self,direction,nodeid):
+        out = []
+        container = getattr(self,direction)
+        for edgetype in container.keys():
+            d = container[edgetype].get(nodeid,{})
+            for key in d.keys():
+                out.append(self.lightEdge(key))
+        return out
 
+    def getEdges(self,start,end,edgetype,**kwargs):
 
+        if type(edgetype) != int:
+            edgetype = self.typeid(edgetype)
+
+        if type(start) == dict:
+            start = start['id']
+        if type(end) == dict:
+            end = end['id']
+
+        out = []
+        targets = self.outgoing.get(edgetype,{}).get(start,{})
+        for edgeid,nodeid in targets.items():
+            if nodeid==end:
+                out.append(self.lightEdge(edgeid))
+        return out
+
+    def addUniqueEdge(self,start,end,edgetype,**kwargs):
+        if not self.getEdges(start,end,edgetype):
+            return self.addEdge(start,end,edgetype,**kwargs)
