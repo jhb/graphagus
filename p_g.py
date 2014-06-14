@@ -59,7 +59,16 @@ class GraphDB(Persistent):
         if not hasattr(self.typeids,name):            
             self._typeid.change(1)
             setattr(self.typeids,name,self._typeid.value)
+            self.revtypes[self._typeid.value]=name
         return getattr(self.typeids,name)
+
+    @property
+    def revtypes(self):
+        if not hasattr(self,'_v_revtypes'):
+            dir(self.typeids)
+            dir(self.typeids)
+            self._v_revtypes = dict([(v,k) for k,v in self.typeids.__dict__.items()])
+        return self._v_revtypes
 
     def addNode(self,**kwargs):
         id = self.nodeid()
