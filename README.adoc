@@ -1,0 +1,342 @@
+graphagus
+=========
+:Author:  Joerg Baach
+:Email: joerg@baach.de
+
+*graphagus* is a graph database, a very thin on top of ZODB. 
+
+It actually provides what neo4j calls a 'property graph', e.g.  the nodes and 
+edges can have properties. These can be indexed for fast access.
+
+All in all graphagus seems to be reasonably fast. In my tests (from python) its
+way faster then e.g. neo4j or mysql for my purposes.
+
+NOTE: graphagus doesn't use zope, just zodb, zeo and repoze.catalog
+
+
+Requirements
+------------
+
+This package needs ZODB, repoze.catalog and optional ZEO
+
+Setting up
+----------
+
+Lets first do some basic imports:
+
+[source, python]
+----
+#usually you would do a: import graphagus
+>>> import core as graphagus
+
+#other imports
+>>> from ZODB import DB
+>>> from ZODB.FileStorage import FileStorage
+
+#The filename for the test database
+>>> filename = 'test.db'
+
+----
+
+
+With ZODB one can eihter use a database directly, or use ZEO for
+Server mode. Both works fine, here we use the direct mode.
+
+
+[source, python]
+----
+#setup ZODB
+>>> storage = FileStorage(filename)
+>>> db = DB(storage)
+>>> connection = db.open()
+>>> root = connection.root()
+
+----
+
+Now lets put a GraphDB instance in the root of the database, and
+configure the catalogs. The catalogs are optional. There are two
+catalogs:
+
+node_catalog::
+    For indexing the nodes
+edge_catalog::
+    For indexing the edges
+
+Let's only use the +node_catalog+ for now:
+
+[source,python]
+----
+>>> if not root.has_key('graphdb'):
+...     root['graphdb']=graphagus.GraphDB()
+...     g = root['graphdb']
+...     g.node_catalog['name']=graphagus.CatalogFieldIndex(graphagus.Nodegetter('name'))
+...     g.node_catalog['text']=graphagus.CatalogTextIndex(graphagus.Nodegetter('text'))
+...     g.edge_catalog['since']=graphagus.CatalogFieldIndex(graphagus.Edgegetter('since'))
+...     g.edge_catalog['text']=graphagus.CatalogTextIndex(graphagus.Edgegetter('text'))
+... else:
+...     g=root['graphdb']
+
+#
+>>> g.node_catalog['name']
+<repoze.catalog.indexes.field.CatalogFieldIndex object at ...>
+
+----
+
+Nodes
+-----
+
+Creating
+~~~~~~~~
+Lets create some nodes:
+
+[source,python]
+----
+>>> alice = g.addNode(name='alice')
+>>> bob = g.addNode(name='bob',lastname='The Builder')
+
+# lets have a look at alice
+>>> alice == { '_id': 1, 'name': 'alice'}
+True
+
+# and at bob
+>>> bob == {'_id': 2, 'lastname': 'The Builder', 'name': 'bob'}
+True
+
+----
+
++alice+ and +bob+ are +lightnodes+. This is a dictionary with the properties
+of the node, plus the additional internal +_id+. +Lightnode+ is what you 
+usually work with. To illustrate:
+
+[source,python]
+----
+>>> g.nodes[1]
+{'name': 'alice'}
+
+>>> alice == { '_id': 1, 'name': 'alice'}
+True
+
+>>> alice != g.nodes[1]
+True
+
+----
+
+There is a little wrapper method +lightNode+, which will return a +lightnode+ object,
+that is a dict with the +_id+ set, and either fetch a node from the db, or just
+copy values over:
+
+[source,python]
+----
+# it will either fetch a copy of the node...
+>>> alice2 = g.lightNode(1)
+
+# they have the same value
+>>> alice == alice2
+True
+
+# but are not the same object
+>>> id(alice) == id(alice2)
+False
+
+# ..., or, with a dict as a second parameter, only the _id will be set
+# in the copy of the dict
+
+>>> d = {}
+>>> dictid = id({})
+>>> out = g.lightNode(333,d)
+>>> out
+{'_id': 333}
+>>> id(out) != dictid
+True
+
+----
+
+Updating
+~~~~~~~~
+
+[source,python]
+----
+>>> bob['text'] = 'this is some wonderful text'
+>>> g.updateNode(bob)
+
+#thats all. Lets confirm
+
+>>> bob2 = g.lightNode(bob['_id'])
+>>> bob2 == bob
+True
+
+----
+
+Searching
+~~~~~~~~~
+
+How do you get nodes from the database?
+
+[source,python]
+----
+# using fulltext
+>>> nodes = g.queryNode(text='wonder*')
+>>> nodes[0] == bob
+True
+
+# or the other index that we configured
+>>> nodes = g.queryNode(name='alice')
+>>> nodes[0] == alice
+True
+
+# No index, no search
+>>> nodes = g.queryNode(lastname='The Builder')
+Traceback (most recent call last):
+    ...
+KeyError: 'lastname'
+
+----
+
+Deleting 
+~~~~~~~~
+
+[source,python]
+----
+>>> charlie = g.addNode(name='charlie')
+>>> g.delNode(charlie)
+
+----
+
+Edges
+-----
+
+Creating
+~~~~~~~~
+
+Let's create a simple edge
+
+[source,python]
+----
+>>> e1 = g.addEdge(alice,bob,'knows')
+>>> e1
+[1, 2, 1, {}, 1]
+
+----
+
+Lets add charlie again, and a link with extra data
+
+[source,python]
+----
+>>> charlie = g.addNode(name='charlie')
+>>> e2 = g.addEdge(bob,charlie,'knows',since=2012)
+>>> e2
+[2, 4, 1, {'since': 2012}, 2]
+
+----
+
+The returned data is the in the form of [source,target,type,attributes,edgeid]. It is a +lightEdge+. 
+
+There is a helper method to quickly get the type name of an edge
+[source,python]
+----
+>>> g.getType(e2)
+'knows'
+
+----
+
+
+Finding
+~~~~~~~
+
+Lets find some edges.
+
+[source,python]
+----
+
+#if we know the edge id, its quite easy
+>>> tmp = g.lightEdge(2)
+>>> tmp == e2
+True
+
+#alternatively we can use the catalog
+>>> res = g.queryEdge(since=2012)
+>>> len(res)
+1
+>>> res[0] == e2
+True
+
+# the most basic api for getting edges
+>>> tid = g.typeid('knows')
+>>> r = g.outgoing[tid][alice['_id']]
+
+# the data is a dict of the form {edgeid:nodeid}
+>>> r
+{1: 2}
+
+# so, from alice we have a 'knows' edge with id 1...
+>>> e1[4]
+1
+
+#...going to node 2
+>>> e1[1]
+2
+
+# it works the other way around as well
+>>> g.incoming[tid][bob['_id']]
+{1: 1}
+
+# a bit higher level up is the following
+>>> r = g.getAllEdges('outgoing',alice['_id'])
+>>> r[0] == e1
+True
+
+>>> r = g.getAllEdges('incoming',bob['_id'])
+>>> r[0] == e1
+True
+
+#or, a bit simpler
+>>> r = g.getAllEdges('incoming',bob)
+>>> r[0] == e1
+True
+
+----
+
+Updating
+~~~~~~~~
+
+[source,python]
+----
+>>> e2[3]['since']=2011
+>>> e2
+[2, 4, 1, {'since': 2011}, 2]
+
+----
+
+Deleting
+~~~~~~~~
+[source,python]
+----
+
+#lets create another extra node
+>>> eve = g.addNode(name='eve')
+
+#and connect to it
+>>> e3 = g.addEdge(bob,eve,'knows')
+
+
+# first off, you can't delete a connected node
+>>> g.delNode(eve)
+Traceback (most recent call last):
+    ...    
+StillConnected: ('incoming', {3: 2})
+
+#so, lets delete the edge
+>>> g.delEdge(e3)
+
+#are there still incoming edges on eve?
+>>> g.getAllEdges('incoming',eve)
+[]
+
+#So, lets remove Eve
+>>> g.delNode(eve)
+
+>>> import ipdb; ipdb.set_trace()
+----
+
+
+

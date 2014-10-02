@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="AsciiDoc 8.6.9">
+<title>graphagus</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+@media screen {
+  body {
+    max-width: 50em; /* approximately 80 characters wide */
+    margin-left: 16em;
+  }
+
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 13em;
+    padding: 0.5em;
+    padding-bottom: 1.5em;
+    margin: 0;
+    overflow: auto;
+    border-right: 3px solid #f8f8f8;
+    background-color: white;
+  }
+
+  #toc .toclevel1 {
+    margin-top: 0.5em;
+  }
+
+  #toc .toclevel2 {
+    margin-top: 0.25em;
+    display: list-item;
+    color: #aaaaaa;
+  }
+
+  #toctitle {
+    margin-top: 0.5em;
+  }
+}
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>graphagus</h1>
+<span id="author">Joerg Baach</span><br>
+<span id="email" class="monospaced">&lt;<a href="mailto:joerg@baach.de">joerg@baach.de</a>&gt;</span><br>
+<div id="toc">
+<div id="toctitle">Table of Contents</div>
+<script type="text/javascript">
+document.body.className += ' toc2';
+document.getElementById('toc').className = 'toc2';
+</script>
+<noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p><strong>graphagus</strong> is a graph database, a very thin on top of ZODB.</p></div>
+<div class="paragraph"><p>It actually provides what neo4j calls a 'property graph', e.g.  the nodes and
+edges can have properties. These can be indexed for fast access.</p></div>
+<div class="paragraph"><p>All in all graphagus seems to be reasonably fast. In my tests (from python) its
+way faster then e.g. neo4j or mysql for my purposes.</p></div>
+<div class="admonitionblock note">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">graphagus doesn&#8217;t use zope, just zodb, zeo and repoze.catalog</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_requirements">Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This package needs ZODB, repoze.catalog and optional ZEO</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setting_up">Setting up</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Lets first do some basic imports:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#usually you would do a: import graphagus</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000080">import</span></span> core as graphagus
+
+<span style="font-style: italic"><span style="color: #9A1900">#other imports</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000080">from</span></span> ZODB <span style="font-weight: bold"><span style="color: #000080">import</span></span> DB
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000080">from</span></span> ZODB<span style="color: #990000">.</span>FileStorage <span style="font-weight: bold"><span style="color: #000080">import</span></span> FileStorage
+
+<span style="font-style: italic"><span style="color: #9A1900">#The filename for the test database</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> filename <span style="color: #990000">=</span> <span style="color: #FF0000">'test.db'</span>
+</tt></pre></div></div>
+<div class="paragraph"><p>With ZODB one can eihter use a database directly, or use ZEO for
+Server mode. Both works fine, here we use the direct mode.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#setup ZODB</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> storage <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">FileStorage</span></span><span style="color: #990000">(</span>filename<span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> db <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">DB</span></span><span style="color: #990000">(</span>storage<span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> connection <span style="color: #990000">=</span> db<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">open</span></span><span style="color: #990000">()</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> root <span style="color: #990000">=</span> connection<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">root</span></span><span style="color: #990000">()</span>
+</tt></pre></div></div>
+<div class="paragraph"><p>Now lets put a GraphDB instance in the root of the database, and
+configure the catalogs. The catalogs are optional. There are two
+catalogs:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+node_catalog
+</dt>
+<dd>
+<p>
+    For indexing the nodes
+</p>
+</dd>
+<dt class="hdlist1">
+edge_catalog
+</dt>
+<dd>
+<p>
+    For indexing the edges
+</p>
+</dd>
+</dl></div>
+<div class="paragraph"><p>Let&#8217;s only use the +node_catalog+ for now:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="font-weight: bold"><span style="color: #0000FF">not</span></span> root<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">has_key</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">):</span>
+<span style="color: #990000">...</span>     root<span style="color: #990000">[</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">GraphDB</span></span><span style="color: #990000">()</span>
+<span style="color: #990000">...</span>     g <span style="color: #990000">=</span> root<span style="color: #990000">[</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">]</span>
+<span style="color: #990000">...</span>     g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'name'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogFieldIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Nodegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'name'</span><span style="color: #990000">))</span>
+<span style="color: #990000">...</span>     g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'text'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogTextIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Nodegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'text'</span><span style="color: #990000">))</span>
+<span style="color: #990000">...</span>     g<span style="color: #990000">.</span>edge_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'since'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogFieldIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Edgegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'since'</span><span style="color: #990000">))</span>
+<span style="color: #990000">...</span>     g<span style="color: #990000">.</span>edge_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'text'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogTextIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Edgegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'text'</span><span style="color: #990000">))</span>
+<span style="color: #990000">...</span> <span style="font-weight: bold"><span style="color: #0000FF">else</span></span><span style="color: #990000">:</span>
+<span style="color: #990000">...</span>     g<span style="color: #990000">=</span>root<span style="color: #990000">[</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">]</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'name'</span><span style="color: #990000">]</span>
+<span style="color: #990000">&lt;</span>repoze<span style="color: #990000">.</span>catalog<span style="color: #990000">.</span>indexes<span style="color: #990000">.</span>field<span style="color: #990000">.</span>CatalogFieldIndex object at <span style="color: #990000">...&gt;</span>
+</tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nodes">Nodes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_creating">Creating</h3>
+<div class="paragraph"><p>Lets create some nodes:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> alice <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'alice'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> bob <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'bob'</span><span style="color: #990000">,</span>lastname<span style="color: #990000">=</span><span style="color: #FF0000">'The Builder'</span><span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># lets have a look at alice</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> alice <span style="color: #990000">==</span> <span style="color: #990000">{</span> <span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #FF0000">'name'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'alice'</span><span style="color: #990000">}</span>
+True
+
+<span style="font-style: italic"><span style="color: #9A1900"># and at bob</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> bob <span style="color: #990000">==</span> <span style="color: #990000">{</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #FF0000">'lastname'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'The Builder'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'name'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'bob'</span><span style="color: #990000">}</span>
+True
+</tt></pre></div></div>
+<div class="paragraph"><p>+alice+ and +bob+ are +lightnodes+. This is a dictionary with the properties
+of the node, plus the additional internal +_id+. +Lightnode+ is what you
+usually work with. To illustrate:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>nodes<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span>
+<span style="color: #990000">{</span><span style="color: #FF0000">'name'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'alice'</span><span style="color: #990000">}</span>
+
+<span style="color: #990000">&gt;&gt;&gt;</span> alice <span style="color: #990000">==</span> <span style="color: #990000">{</span> <span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #FF0000">'name'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'alice'</span><span style="color: #990000">}</span>
+True
+
+<span style="color: #990000">&gt;&gt;&gt;</span> alice <span style="color: #990000">!=</span> g<span style="color: #990000">.</span>nodes<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span>
+True
+</tt></pre></div></div>
+<div class="paragraph"><p>There is a little wrapper method +lightNode+, which will return a +lightnode+ object,
+that is a dict with the +_id+ set, and either fetch a node from the db, or just
+copy values over:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># it will either fetch a copy of the node...</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> alice2 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">lightNode</span></span><span style="color: #990000">(</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># they have the same value</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> alice <span style="color: #990000">==</span> alice2
+True
+
+<span style="font-style: italic"><span style="color: #9A1900"># but are not the same object</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">id</span></span><span style="color: #990000">(</span>alice<span style="color: #990000">)</span> <span style="color: #990000">==</span> <span style="font-weight: bold"><span style="color: #000000">id</span></span><span style="color: #990000">(</span>alice2<span style="color: #990000">)</span>
+False
+
+<span style="font-style: italic"><span style="color: #9A1900"># ..., or, with a dict as a second parameter, only the _id will be set</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># in the copy of the dict</span></span>
+
+<span style="color: #990000">&gt;&gt;&gt;</span> d <span style="color: #990000">=</span> <span style="color: #990000">{}</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> dictid <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">id</span></span><span style="color: #990000">({})</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> out <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">lightNode</span></span><span style="color: #990000">(</span><span style="color: #993399">333</span><span style="color: #990000">,</span>d<span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> out
+<span style="color: #990000">{</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span> <span style="color: #993399">333</span><span style="color: #990000">}</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">id</span></span><span style="color: #990000">(</span>out<span style="color: #990000">)</span> <span style="color: #990000">!=</span> dictid
+True
+</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_updating">Updating</h3>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> bob<span style="color: #990000">[</span><span style="color: #FF0000">'text'</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> <span style="color: #FF0000">'this is some wonderful text'</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">updateNode</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#thats all. Lets confirm</span></span>
+
+<span style="color: #990000">&gt;&gt;&gt;</span> bob2 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">lightNode</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">])</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> bob2 <span style="color: #990000">==</span> bob
+True
+</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_searching">Searching</h3>
+<div class="paragraph"><p>How do you get nodes from the database?</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># using fulltext</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> nodes <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">queryNode</span></span><span style="color: #990000">(</span>text<span style="color: #990000">=</span><span style="color: #FF0000">'wonder*'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> nodes<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> bob
+True
+
+<span style="font-style: italic"><span style="color: #9A1900"># or the other index that we configured</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> nodes <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">queryNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'alice'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> nodes<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> alice
+True
+
+<span style="font-style: italic"><span style="color: #9A1900"># No index, no search</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> nodes <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">queryNode</span></span><span style="color: #990000">(</span>lastname<span style="color: #990000">=</span><span style="color: #FF0000">'The Builder'</span><span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #000000">Traceback</span></span> <span style="color: #990000">(</span>most recent call last<span style="color: #990000">):</span>
+    <span style="color: #990000">...</span>
+KeyError<span style="color: #990000">:</span> <span style="color: #FF0000">'lastname'</span>
+</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_deleting">Deleting</h3>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> charlie <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'charlie'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delNode</span></span><span style="color: #990000">(</span>charlie<span style="color: #990000">)</span>
+</tt></pre></div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_edges">Edges</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_creating_2">Creating</h3>
+<div class="paragraph"><p>Let&#8217;s create a simple edge</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> e1 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>alice<span style="color: #990000">,</span>bob<span style="color: #990000">,</span><span style="color: #FF0000">'knows'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e1
+<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{},</span> <span style="color: #993399">1</span><span style="color: #990000">]</span>
+</tt></pre></div></div>
+<div class="paragraph"><p>Lets add charlie again, and a link with extra data</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> charlie <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'charlie'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e2 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">,</span>charlie<span style="color: #990000">,</span><span style="color: #FF0000">'knows'</span><span style="color: #990000">,</span>since<span style="color: #990000">=</span><span style="color: #993399">2012</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e2
+<span style="color: #990000">[</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2012</span><span style="color: #990000">},</span> <span style="color: #993399">2</span><span style="color: #990000">]</span>
+</tt></pre></div></div>
+<div class="paragraph"><p>The returned data is the in the form of [source,target,type,attributes,edgeid]. It is a +lightEdge+.</p></div>
+<div class="paragraph"><p>There is a helper method to quickly get the type name of an edge</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getType</span></span><span style="color: #990000">(</span>e2<span style="color: #990000">)</span>
+<span style="font-style: italic"><span style="color: #9A1900">'knows'</span></span>
+</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_finding">Finding</h3>
+<div class="paragraph"><p>Lets find some edges.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>
+<span style="font-style: italic"><span style="color: #9A1900">#if we know the edge id, its quite easy</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> tmp <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">lightEdge</span></span><span style="color: #990000">(</span><span style="color: #993399">2</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> tmp <span style="color: #990000">==</span> e2
+True
+
+<span style="font-style: italic"><span style="color: #9A1900">#alternatively we can use the catalog</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> res <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">queryEdge</span></span><span style="color: #990000">(</span>since<span style="color: #990000">=</span><span style="color: #993399">2012</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">len</span></span><span style="color: #990000">(</span>res<span style="color: #990000">)</span>
+<span style="color: #993399">1</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> res<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> e2
+True
+
+<span style="font-style: italic"><span style="color: #9A1900"># the most basic api for getting edges</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> tid <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">typeid</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'knows'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span>outgoing<span style="color: #990000">[</span>tid<span style="color: #990000">][</span>alice<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">]]</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># the data is a dict of the form {edgeid:nodeid}</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r
+<span style="color: #990000">{</span><span style="color: #993399">1</span><span style="color: #990000">:</span> <span style="color: #993399">2</span><span style="color: #990000">}</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># so, from alice we have a 'knows' edge with id 1...</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e1<span style="color: #990000">[</span><span style="color: #993399">4</span><span style="color: #990000">]</span>
+<span style="color: #993399">1</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#...going to node 2</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e1<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span>
+<span style="color: #993399">2</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># it works the other way around as well</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>incoming<span style="color: #990000">[</span>tid<span style="color: #990000">][</span>bob<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">]]</span>
+<span style="color: #990000">{</span><span style="color: #993399">1</span><span style="color: #990000">:</span> <span style="color: #993399">1</span><span style="color: #990000">}</span>
+
+<span style="font-style: italic"><span style="color: #9A1900"># a bit higher level up is the following</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'outgoing'</span><span style="color: #990000">,</span>alice<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">])</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> e1
+True
+
+<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'incoming'</span><span style="color: #990000">,</span>bob<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">])</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> e1
+True
+
+<span style="font-style: italic"><span style="color: #9A1900">#or, a bit simpler</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'incoming'</span><span style="color: #990000">,</span>bob<span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> e1
+True
+</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_updating_2">Updating</h3>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> e2<span style="color: #990000">[</span><span style="color: #993399">3</span><span style="color: #990000">][</span><span style="color: #FF0000">'since'</span><span style="color: #990000">]=</span><span style="color: #993399">2011</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e2
+<span style="color: #990000">[</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2011</span><span style="color: #990000">},</span> <span style="color: #993399">2</span><span style="color: #990000">]</span>
+</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_deleting_2">Deleting</h3>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>
+<span style="font-style: italic"><span style="color: #9A1900">#lets create another extra node</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> eve <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'eve'</span><span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#and connect to it</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e3 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">,</span>eve<span style="color: #990000">,</span><span style="color: #FF0000">'knows'</span><span style="color: #990000">)</span>
+
+
+<span style="font-style: italic"><span style="color: #9A1900"># first off, you can't delete a connected node</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delNode</span></span><span style="color: #990000">(</span>eve<span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #000000">Traceback</span></span> <span style="color: #990000">(</span>most recent call last<span style="color: #990000">):</span>
+    <span style="color: #990000">...</span>
+StillConnected<span style="color: #990000">:</span> <span style="color: #990000">(</span><span style="color: #FF0000">'incoming'</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #993399">3</span><span style="color: #990000">:</span> <span style="color: #993399">2</span><span style="color: #990000">})</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#so, lets delete the edge</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delEdge</span></span><span style="color: #990000">(</span>e3<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#are there still incoming edges on eve?</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'incoming'</span><span style="color: #990000">,</span>eve<span style="color: #990000">)</span>
+<span style="color: #990000">[]</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#So, lets remove Eve</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delNode</span></span><span style="color: #990000">(</span>eve<span style="color: #990000">)</span>
+
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000080">import</span></span> ipdb<span style="color: #990000">;</span> ipdb<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">set_trace</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2014-10-02 15:20:44 CEST
+</div>
+</div>
+</body>
+</html>

@@ -17,13 +17,22 @@ class StillConnected(Exception):
 class PObject(Persistent):
     pass
 
-class get_key():
+class Nodegetter():
 
     def __init__(self,key):
         self.key=key
 
     def __call__(self,object,default):
         return object.get(self.key,default)
+
+class Edgegetter():
+
+    def __init__(self,key):
+        self.key=key
+
+    def __call__(self,obj,default):
+        return obj[3].get(self.key,default)
+
 
 
 class GraphDB(Persistent):
@@ -70,57 +79,66 @@ class GraphDB(Persistent):
             self._v_revtypes = dict([(v,k) for k,v in self.typeids.__dict__.items()])
         return self._v_revtypes
 
+    def getType(self,typeid):
+        if type(typeid) != int:
+            #lets assume an edge
+            typeid = typeid[2]
+        return self.revtypes[typeid]
+
+
     def addNode(self,**kwargs):
-        id = self.nodeid()
-        self.nodes[id]=kwargs
-        ln =  self.lightNode(id,kwargs)
-        self.node_catalog.index_doc(id,ln)
+        _id = self.nodeid()
+        self.nodes[_id]=kwargs
+        ln =  self.lightNode(_id,kwargs)
+        self.node_catalog.index_doc(_id,ln)
         return ln
     
-    def lightNode(self,id,node=None):
+    def lightNode(self,_id,node=None):
         "{'id':nodeid, ...other attributes...}"
         if node==None:
-            node = self.nodes[id]
+            node = self.nodes[_id]
         out = dict(node)
-        out['id'] = id
+        out['_id'] = _id
         return out
 
     def addEdge(self,start,end,edgetype,**kwargs):
-        id = self.edgeid()
+        _id = self.edgeid()
     
         if type(edgetype) != int:
             edgetype = self.typeid(edgetype)
 
         if type(start) == dict:
-            start = start['id']
+            start = start['_id']
         if type(end) == dict:
-            end = end['id']
+            end = end['_id']
 
         edge = [start,end,edgetype]
-        self.edges[id]=edge
+        self.edges[_id]=edge
+        
         if kwargs:
-            self.edgedata[i]=kwargs
-            self.edge_catalog.index_doc(id,le)
+            self.edgedata[_id]=kwargs
+            le =  self.lightEdge(_id,edge)
+            self.edge_catalog.index_doc(_id,le)
        
+        le =  self.lightEdge(_id,edge)
         # edgeid:nodeid
         data = self.outgoing.setdefault(edgetype,IOBTree()).setdefault(start,{})
-        data[id]=end
+        data[_id]=end
         self.outgoing[edgetype][start]=data
 
         data = self.incoming.setdefault(edgetype,IOBTree()).setdefault(end,{})
-        data[id]=start
+        data[_id]=start
         self.incoming[edgetype][end]=data
 
-        le =  self.lightEdge(id,edge)
         return le
 
-    def lightEdge(self,id,edge=None):
+    def lightEdge(self,_id,edge=None):
         '[sourceid targetid typeid kwargs edgeid]'
         if edge==None:
-            edge = self.edges[id]
+            edge = self.edges[_id]
         out = list(edge)
-        out.append(self.edgedata.get(id,{}))
-        out.append(id)
+        out.append(self.edgedata.get(_id,{}))
+        out.append(_id)
         return out
 
     def delEdge(self,edge):
@@ -146,7 +164,7 @@ class GraphDB(Persistent):
     def delNode(self,node):
         if type(node)==int:
             node=self.nodes[node]
-        nodeid = node['id']
+        nodeid = node['_id']
        
         for edgetype in self.outgoing.keys():
             if len(self.outgoing[edgetype].get(nodeid,{}))>0:
@@ -169,7 +187,7 @@ class GraphDB(Persistent):
         del(self.nodes[nodeid])
 
     def updateNode(self,lightnode):
-        nodeid = lightnode['id']
+        nodeid = lightnode['_id']
         data = dict(lightnode)
         self.nodes[nodeid]=data
         self.node_catalog.reindex_doc(nodeid,lightnode)
@@ -203,6 +221,8 @@ class GraphDB(Persistent):
         return [self.lightEdge(i) for i in result[1]]
 
     def getAllEdges(self,direction,nodeid):
+        if type(nodeid) != int:
+            nodeid = nodeid['_id']
         out = []
         container = getattr(self,direction)
         for edgetype in container.keys():
@@ -217,9 +237,9 @@ class GraphDB(Persistent):
             edgetype = self.typeid(edgetype)
 
         if type(start) == dict:
-            start = start['id']
+            start = start['_id']
         if type(end) == dict:
-            end = end['id']
+            end = end['_id']
 
         out = []
         targets = self.outgoing.get(edgetype,{}).get(start,{})
