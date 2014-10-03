@@ -45,7 +45,7 @@ class EdgeDict(dict):
     def o(self):
         return self.get('o',[])
 
-
+#higher level API
 class Edge(list):
 
     def __init__(self,g,lightEdge):
@@ -78,6 +78,7 @@ class Edge(list):
         else:
             raise AttributeError
 
+#higher level API
 class Node(dict):
 
     def __init__(self,g,lightNode):
@@ -289,6 +290,8 @@ class GraphDB(Persistent):
     def queryEdge(self,**kwargs):
         result = self.edge_catalog.query(self.kwQuery(**kwargs))
         return [self.lightEdge(i) for i in result[1]]
+    
+################## Higher Level API, functionality > speed ###################
 
     def getAllEdges(self,nodeids,directions=None,types=None):
         
