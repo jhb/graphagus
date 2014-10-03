@@ -75,7 +75,6 @@ node_catalog::
 edge_catalog::
     For indexing the edges
 
-Let's only use the +node_catalog+ for now:
 
 [source,python]
 ----
