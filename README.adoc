@@ -3,7 +3,7 @@ graphagus
 :Author:  Joerg Baach
 :Email: joerg@baach.de
 
-*graphagus* is a graph database, a very thin on top of ZODB. 
+*graphagus* is a graph database, a very thin layer on top of ZODB. 
 
 It actually provides what neo4j calls a 'property graph', e.g.  the nodes and 
 edges can have properties. These can be indexed for fast access.
@@ -268,30 +268,58 @@ True
 >>> r
 {1: 2}
 
-# so, from alice we have a 'knows' edge with id 1...
+# edge e1 has id 1 ...
 >>> e1[4]
 1
 
-#...going to node 2
+#starts at node 1 (alice)
+>>> e1[0]
+1
+
+>>> alice['_id']
+1
+
+#...going to node 2 (bob)
 >>> e1[1]
+2
+
+>>> bob['_id']
 2
 
 # it works the other way around as well
 >>> g.incoming[tid][bob['_id']]
 {1: 1}
 
+----
+
+There is a more comfortable api, which is less direct (hence slower), but probably much more usable.
+
+
+[source,python]
+----
 # a bit higher level up is the following
->>> r = g.getAllEdges('outgoing',alice['_id'])
+>>> r = g.getAllEdges(alice['_id'],'o')
 >>> r[0] == e1
 True
 
->>> r = g.getAllEdges('incoming',bob['_id'])
+>>> r = g.getAllEdges(bob['_id'],'i')
 >>> r[0] == e1
 True
 
 #or, a bit simpler
->>> r = g.getAllEdges('incoming',bob)
+>>> r = g.getAllEdges(bob,'i')
 >>> r[0] == e1
+True
+
+#or get all edges
+>>> r = g.getAllEdges(bob)
+
+#incoming
+>>> r.i[0]==e1
+True
+
+#outgoing
+>>> r.o[0]==e2
 True
 
 ----
@@ -329,14 +357,87 @@ StillConnected: ('incoming', {3: 2})
 >>> g.delEdge(e3)
 
 #are there still incoming edges on eve?
->>> g.getAllEdges('incoming',eve)
+>>> g.getAllEdges(eve,'i')
 []
 
 #So, lets remove Eve
 >>> g.delNode(eve)
 
->>> import ipdb; ipdb.set_trace()
+#It seems that did work ok
+
+
 ----
 
+Example
+-------
+
+This example follows http://docs.neo4j.org/chunked/stable/cypher-cookbook-multirelational-social-network.html
+
+Setting up
+~~~~~~~~~~
+[source,python]
+----
+>>> g.clean()
+
+>>> cats = g.addNode(name='cats')
+>>> nature = g.addNode(name='nature')
+>>> ben = g.addNode(name='Ben')
+>>> sara = g.addNode(name='Sara')
+>>> bikes = g.addNode(name='bikes')
+>>> maria = g.addNode(name='Maria')
+>>> cars = g.addNode(name='cars')
+>>> joe = g.addNode(name='Joe')
+
+>>> e1 =  g.addEdge(sara,joe,'follows')
+>>> e2 =  g.addEdge(sara,ben,'follows')
+>>> e3 =  g.addEdge(sara,bikes,'likes')
+>>> e4 =  g.addEdge(sara,cars,'likes')
+>>> e5 =  g.addEdge(sara,cats,'likes')
+>>> e6 =  g.addEdge(maria,joe,'follows')
+>>> e7 =  g.addEdge(maria,joe,'loves')
+>>> e8 =  g.addEdge(maria,cars,'likes')
+>>> e9 =  g.addEdge(joe,sara,'follows')
+>>> e10 = g.addEdge(joe,maria,'follows')
+>>> e11 = g.addEdge(joe,maria,'loves')
+>>> e12 = g.addEdge(joe,bikes,'likes')
+>>> e13 = g.addEdge(joe,nature,'likes')
+
+#We could render the graph
+>>> #g.render()
+
+----
+
+This would create the following graph:
+
+image::graphagus.svg[]
+
+Querying
+~~~~~~~~
+Ok, so lets query our graph.
+
+[source,python]
+----
+
+#lets 'wrap' joe as a more functional node
+>>> joe = g.node(joe)
+
+#Query people that joe follows or loves, and that have the same relationship back to him
+
+#This means finding edges of certain types going out from joe, and checking if an edge of the same type is going reverse
+>>> result = [e for e in joe.allEdges('outgoing') 
+...             if e.type in ('loves','follows') 
+...             and 
+...             g.getEdges(e.target,joe,e.type)]
+
+#Now we can print the result
+>>> for edge in result:
+...    print edge.target.name, edge.type
+Sara follows
+Maria follows
+Maria loves
+
+
+
+----
 
 

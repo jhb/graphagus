@@ -17,14 +17,16 @@ class StillConnected(Exception):
 class PObject(Persistent):
     pass
 
+#for the node catalog
 class Nodegetter():
 
     def __init__(self,key):
         self.key=key
 
-    def __call__(self,object,default):
-        return object.get(self.key,default)
+    def __call__(self,obj,default):
+        return obj.get(self.key,default)
 
+#for the edge catalog
 class Edgegetter():
 
     def __init__(self,key):
@@ -33,8 +35,62 @@ class Edgegetter():
     def __call__(self,obj,default):
         return obj[3].get(self.key,default)
 
+class EdgeDict(dict):
+
+    @property
+    def i(self):
+        return self.get('i',[])
+
+    @property
+    def o(self):
+        return self.get('o',[])
 
 
+class Edge(list):
+
+    def __init__(self,g,lightEdge):
+        self.g = g
+        self.le = lightEdge
+        self.extend(lightEdge)
+
+    @property
+    def source(self):
+        return self.g.node(self[0])
+
+    @property
+    def target(self):
+        return self.g.node(self[1])
+
+    @property
+    def type(self):
+        return self.g.revtypes[self[2]]
+
+    @property
+    def data(self):
+        return self[3]
+
+    def __getattr__(self,key):
+        if self.data.has_key(key):
+            return self.data[key]
+        else:
+            raise AttributeError
+
+class Node(dict):
+
+    def __init__(self,g,lightNode):
+        self.g = g
+        self.ln = lightNode
+        self.update(lightNode)
+    
+    def __getattr__(self,key):
+        if self.has_key(key):
+            return self[key]
+        else:
+            raise AttributeError
+
+    def allEdges(self,directions):
+        return self.g.getAllEdges(self,directions=directions)
+    
 class GraphDB(Persistent):
 
     def __init__(self,nodeindexes=(),edgeindexes=()):
@@ -158,12 +214,12 @@ class GraphDB(Persistent):
         del(self.edges[edgeid])
         if self.edgedata.has_key(edgeid):
             self.edge_catalog.unindex_doc(edgeid)
-            del(self.edges[edgeid])
+            #del(self.edges[edgeid])
 
 
     def delNode(self,node):
         if type(node)==int:
-            node=self.nodes[node]
+            node=self.lightNode(node)
         nodeid = node['_id']
        
         for edgetype in self.outgoing.keys():
@@ -220,25 +276,52 @@ class GraphDB(Persistent):
         result = self.edge_catalog.query(self.kwQuery(**kwargs))
         return [self.lightEdge(i) for i in result[1]]
 
-    def getAllEdges(self,direction,nodeid):
-        if type(nodeid) != int:
-            nodeid = nodeid['_id']
-        out = []
-        container = getattr(self,direction)
-        for edgetype in container.keys():
-            d = container[edgetype].get(nodeid,{})
-            for key in d.keys():
-                out.append(self.lightEdge(key))
-        return out
+    def getAllEdges(self,nodeids,directions=['i','o']):
+        #nodeinfo needs to be a list of node ids
+        if type(nodeids) not in (list,tuple):
+            nodeids = [nodeids]
+        if type(directions) not in (list,tuple):
+            directions = [directions]
 
-    def getEdges(self,start,end,edgetype,**kwargs):
+        tmp = []
+        for n in nodeids:
+            if type(n) != int:
+                n = n['_id']
+            tmp.append(n)
+        nodeids = tmp
 
+        out = EdgeDict()
+
+        for direction in directions:
+            if direction.startswith('i'):
+                d = 'incoming'
+            elif direction.startswith('o'):
+                d = 'outgoing'
+            else:
+                raise 'unknown'
+
+            result = []
+            container = getattr(self,d)
+            for edgetype in container.keys():
+                for n in nodeids:
+                    edges = container[edgetype].get(n,{})
+                    for key in edges.keys():
+                        result.append(self.edge(key))
+            out[direction] = result
+        if len(directions) == 1:
+            return result
+        else:
+            return out
+
+    # XXX work in progress
+    def getEdges(self,start,end,edgetype):
+        #import ipdb; ipdb.set_trace()
         if type(edgetype) != int:
             edgetype = self.typeid(edgetype)
 
-        if type(start) == dict:
+        if type(start) != int:
             start = start['_id']
-        if type(end) == dict:
+        if type(end) != int:
             end = end['_id']
 
         out = []
@@ -248,6 +331,44 @@ class GraphDB(Persistent):
                 out.append(self.lightEdge(edgeid))
         return out
 
+    # XXX work in progress
     def addUniqueEdge(self,start,end,edgetype,**kwargs):
         if not self.getEdges(start,end,edgetype):
             return self.addEdge(start,end,edgetype,**kwargs)
+
+    def clean(self):
+        #import ipdb; ipdb.set_trace()
+        for k in list(self.edges.keys()):
+            self.delEdge(k)
+
+        for k in list(self.nodes.keys()):
+            self.delNode(k)
+
+    def render(self,filename='graphagus',source=False):
+        from graphviz import Digraph
+        
+        dot = Digraph('Graphagus dump',format='svg')
+        
+        for k in self.nodes.keys():
+            n = self.lightNode(k)
+            dot.node(str(k),n['name'])
+        
+        for k in self.edges.keys():
+            e = self.lightEdge(k)
+            dot.edge(str(e[0]),
+                     str(e[1]),
+                     self.getType(e))
+        if source:
+            return dot.source
+        else:
+            dot.render(filename,cleanup=True)
+
+    def edge(self,lightEdge):
+        if type(lightEdge) == int:
+            lightEdge = self.lightEdge(lightEdge)
+        return Edge(self,lightEdge)
+
+    def node(self,lightNode):
+        if type(lightNode) == int:
+            lightNode = self.lightNode(lightNode)
+        return Node(self,lightNode)

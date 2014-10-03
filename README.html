@@ -1,8 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="AsciiDoc 8.6.9">
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
 <title>graphagus</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -767,26 +768,22 @@ asciidoc.install(2);
 <body class="article">
 <div id="header">
 <h1>graphagus</h1>
-<span id="author">Joerg Baach</span><br>
-<span id="email" class="monospaced">&lt;<a href="mailto:joerg@baach.de">joerg@baach.de</a>&gt;</span><br>
+<span id="author">Joerg Baach</span><br />
+<span id="email"><code>&lt;<a href="mailto:joerg@baach.de">joerg@baach.de</a>&gt;</code></span><br />
 <div id="toc">
-<div id="toctitle">Table of Contents</div>
-<script type="text/javascript">
-document.body.className += ' toc2';
-document.getElementById('toc').className = 'toc2';
-</script>
-<noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
 </div>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<div class="paragraph"><p><strong>graphagus</strong> is a graph database, a very thin on top of ZODB.</p></div>
-<div class="paragraph"><p>It actually provides what neo4j calls a 'property graph', e.g.  the nodes and
+<div class="paragraph"><p><strong>graphagus</strong> is a graph database, a very thin layer on top of ZODB.</p></div>
+<div class="paragraph"><p>It actually provides what neo4j calls a <em>property graph</em>, e.g.  the nodes and
 edges can have properties. These can be indexed for fast access.</p></div>
 <div class="paragraph"><p>All in all graphagus seems to be reasonably fast. In my tests (from python) its
 way faster then e.g. neo4j or mysql for my purposes.</p></div>
-<div class="admonitionblock note">
+<div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <div class="title">Note</div>
@@ -855,7 +852,7 @@ edge_catalog
 </p>
 </dd>
 </dl></div>
-<div class="paragraph"><p>Let&#8217;s only use the +node_catalog+ for now:</p></div>
+<div class="paragraph"><p>Let&#8217;s only use the <code>node_catalog</code> for now:</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
 by Lorenzo Bettini
@@ -899,8 +896,8 @@ True
 <span style="color: #990000">&gt;&gt;&gt;</span> bob <span style="color: #990000">==</span> <span style="color: #990000">{</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #FF0000">'lastname'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'The Builder'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'name'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'bob'</span><span style="color: #990000">}</span>
 True
 </tt></pre></div></div>
-<div class="paragraph"><p>+alice+ and +bob+ are +lightnodes+. This is a dictionary with the properties
-of the node, plus the additional internal +_id+. +Lightnode+ is what you
+<div class="paragraph"><p><code>alice</code> and <code>bob</code> are <code>lightnodes</code>. This is a dictionary with the properties
+of the node, plus the additional internal <code>_id</code>. <code>Lightnode</code> is what you
 usually work with. To illustrate:</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
@@ -916,8 +913,8 @@ True
 <span style="color: #990000">&gt;&gt;&gt;</span> alice <span style="color: #990000">!=</span> g<span style="color: #990000">.</span>nodes<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span>
 True
 </tt></pre></div></div>
-<div class="paragraph"><p>There is a little wrapper method +lightNode+, which will return a +lightnode+ object,
-that is a dict with the +_id+ set, and either fetch a node from the db, or just
+<div class="paragraph"><p>There is a little wrapper method <code>lightNode</code>, which will return a <code>lightnode</code> object,
+that is a dict with the <code>_id</code> set, and either fetch a node from the db, or just
 copy values over:</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
@@ -1028,7 +1025,7 @@ http://www.gnu.org/software/src-highlite -->
 <span style="color: #990000">&gt;&gt;&gt;</span> e2
 <span style="color: #990000">[</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2012</span><span style="color: #990000">},</span> <span style="color: #993399">2</span><span style="color: #990000">]</span>
 </tt></pre></div></div>
-<div class="paragraph"><p>The returned data is the in the form of [source,target,type,attributes,edgeid]. It is a +lightEdge+.</p></div>
+<div class="paragraph"><p>The returned data is the in the form of [source,target,type,attributes,edgeid]. It is a <code>lightEdge</code>.</p></div>
 <div class="paragraph"><p>There is a helper method to quickly get the type name of an edge</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
@@ -1068,30 +1065,57 @@ True
 <span style="color: #990000">&gt;&gt;&gt;</span> r
 <span style="color: #990000">{</span><span style="color: #993399">1</span><span style="color: #990000">:</span> <span style="color: #993399">2</span><span style="color: #990000">}</span>
 
-<span style="font-style: italic"><span style="color: #9A1900"># so, from alice we have a 'knows' edge with id 1...</span></span>
+<span style="font-style: italic"><span style="color: #9A1900"># edge e1 has id 1 ...</span></span>
 <span style="color: #990000">&gt;&gt;&gt;</span> e1<span style="color: #990000">[</span><span style="color: #993399">4</span><span style="color: #990000">]</span>
 <span style="color: #993399">1</span>
 
-<span style="font-style: italic"><span style="color: #9A1900">#...going to node 2</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">#starts at node 1 (alice)</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e1<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span>
+<span style="color: #993399">1</span>
+
+<span style="color: #990000">&gt;&gt;&gt;</span> alice<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">]</span>
+<span style="color: #993399">1</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#...going to node 2 (bob)</span></span>
 <span style="color: #990000">&gt;&gt;&gt;</span> e1<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span>
+<span style="color: #993399">2</span>
+
+<span style="color: #990000">&gt;&gt;&gt;</span> bob<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">]</span>
 <span style="color: #993399">2</span>
 
 <span style="font-style: italic"><span style="color: #9A1900"># it works the other way around as well</span></span>
 <span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>incoming<span style="color: #990000">[</span>tid<span style="color: #990000">][</span>bob<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">]]</span>
 <span style="color: #990000">{</span><span style="color: #993399">1</span><span style="color: #990000">:</span> <span style="color: #993399">1</span><span style="color: #990000">}</span>
-
-<span style="font-style: italic"><span style="color: #9A1900"># a bit higher level up is the following</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'outgoing'</span><span style="color: #990000">,</span>alice<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">])</span>
+</tt></pre></div></div>
+<div class="paragraph"><p>There is a more comfortable api, which is less direct (hence slower), but probably much more usable.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># a bit higher level up is the following</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>alice<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">],</span><span style="color: #FF0000">'o'</span><span style="color: #990000">)</span>
 <span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> e1
 True
 
-<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'incoming'</span><span style="color: #990000">,</span>bob<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">])</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">],</span><span style="color: #FF0000">'i'</span><span style="color: #990000">)</span>
 <span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> e1
 True
 
 <span style="font-style: italic"><span style="color: #9A1900">#or, a bit simpler</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'incoming'</span><span style="color: #990000">,</span>bob<span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">,</span><span style="color: #FF0000">'i'</span><span style="color: #990000">)</span>
 <span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> e1
+True
+
+<span style="font-style: italic"><span style="color: #9A1900">#or get all edges</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#incoming</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">.</span>i<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]==</span>e1
+True
+
+<span style="font-style: italic"><span style="color: #9A1900">#outgoing</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">.</span>o<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]==</span>e2
 True
 </tt></pre></div></div>
 </div>
@@ -1132,21 +1156,101 @@ StillConnected<span style="color: #990000">:</span> <span style="color: #990000"
 <span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delEdge</span></span><span style="color: #990000">(</span>e3<span style="color: #990000">)</span>
 
 <span style="font-style: italic"><span style="color: #9A1900">#are there still incoming edges on eve?</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'incoming'</span><span style="color: #990000">,</span>eve<span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>eve<span style="color: #990000">,</span><span style="color: #FF0000">'i'</span><span style="color: #990000">)</span>
 <span style="color: #990000">[]</span>
 
 <span style="font-style: italic"><span style="color: #9A1900">#So, lets remove Eve</span></span>
 <span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delNode</span></span><span style="color: #990000">(</span>eve<span style="color: #990000">)</span>
 
-<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000080">import</span></span> ipdb<span style="color: #990000">;</span> ipdb<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">set_trace</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+<span style="font-style: italic"><span style="color: #9A1900">#It seems that did work ok</span></span>
+
+</tt></pre></div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example">Example</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This example follows <a href="http://docs.neo4j.org/chunked/stable/cypher-cookbook-multirelational-social-network.html">http://docs.neo4j.org/chunked/stable/cypher-cookbook-multirelational-social-network.html</a></p></div>
+<div class="sect2">
+<h3 id="_setting_up_2">Setting up</h3>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">clean</span></span><span style="color: #990000">()</span>
+
+<span style="color: #990000">&gt;&gt;&gt;</span> cats <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'cats'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> nature <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'nature'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> ben <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'Ben'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> sara <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'Sara'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> bikes <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'bikes'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> maria <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'Maria'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> cars <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'cars'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> joe <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'Joe'</span><span style="color: #990000">)</span>
+
+<span style="color: #990000">&gt;&gt;&gt;</span> e1 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>sara<span style="color: #990000">,</span>joe<span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e2 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>sara<span style="color: #990000">,</span>ben<span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e3 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>sara<span style="color: #990000">,</span>bikes<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e4 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>sara<span style="color: #990000">,</span>cars<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e5 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>sara<span style="color: #990000">,</span>cats<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e6 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>maria<span style="color: #990000">,</span>joe<span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e7 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>maria<span style="color: #990000">,</span>joe<span style="color: #990000">,</span><span style="color: #FF0000">'loves'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e8 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>maria<span style="color: #990000">,</span>cars<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e9 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">,</span>sara<span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e10 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">,</span>maria<span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e11 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">,</span>maria<span style="color: #990000">,</span><span style="color: #FF0000">'loves'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e12 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">,</span>bikes<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> e13 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">,</span>nature<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#We could render the graph</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-style: italic"><span style="color: #9A1900">#g.render()</span></span>
+</tt></pre></div></div>
+<div class="paragraph"><p>This would create the following graph:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="graphagus.svg" alt="graphagus.svg" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_querying">Querying</h3>
+<div class="paragraph"><p>Ok, so lets query our graph.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>
+<span style="font-style: italic"><span style="color: #9A1900">#lets 'wrap' joe as a more functional node</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> joe <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">node</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">)</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#Query people that joe follows or loves, and that have the same relationship back to him</span></span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#This means finding edges of certain types going out from joe, and checking if an edge of the same type is going reverse</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> result <span style="color: #990000">=</span> <span style="color: #990000">[</span>e <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> e <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> joe<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">allEdges</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'outgoing'</span><span style="color: #990000">)</span>
+<span style="color: #990000">...</span>             <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> e<span style="color: #990000">.</span>type <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> <span style="color: #990000">(</span><span style="color: #FF0000">'loves'</span><span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">)</span>
+<span style="color: #990000">...</span>             <span style="font-weight: bold"><span style="color: #0000FF">and</span></span>
+<span style="color: #990000">...</span>             g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getEdges</span></span><span style="color: #990000">(</span>e<span style="color: #990000">.</span>target<span style="color: #990000">,</span>joe<span style="color: #990000">,</span>e<span style="color: #990000">.</span>type<span style="color: #990000">)]</span>
+
+<span style="font-style: italic"><span style="color: #9A1900">#Now we can print the result</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> edge <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> result<span style="color: #990000">:</span>
+<span style="color: #990000">...</span>    <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> edge<span style="color: #990000">.</span>target<span style="color: #990000">.</span>name<span style="color: #990000">,</span> edge<span style="color: #990000">.</span>type
+Sara follows
+Maria follows
+Maria loves
+
+
+</tt></pre></div></div>
 </div>
 </div>
 </div>
 </div>
-<div id="footnotes"><hr></div>
+<div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-10-02 15:20:44 CEST
+Last updated 2014-10-03 13:03:31 CEST
 </div>
 </div>
 </body>
