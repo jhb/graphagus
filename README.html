@@ -1242,7 +1242,7 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-style: italic"><span style="color: #9A1900">#Query people that joe follows or loves, and that have the same relationship back to him</span></span>
 
 <span style="font-style: italic"><span style="color: #9A1900">#This means finding edges of certain types going out from joe, and checking if an edge of the same type is going reverse</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> result <span style="color: #990000">=</span> <span style="color: #990000">[</span>e <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> e <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> joe<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">outgoing</span></span><span style="color: #990000">((</span><span style="color: #FF0000">'loves'</span><span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">))</span> <span style="font-style: italic"><span style="color: #9A1900">#get edges specified types</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> result <span style="color: #990000">=</span> <span style="color: #990000">[</span>e <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> e <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> joe<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">outgoing</span></span><span style="color: #990000">((</span><span style="color: #FF0000">'loves'</span><span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">))</span> <span style="font-style: italic"><span style="color: #9A1900">#get edges of specified types</span></span>
 <span style="color: #990000">...</span>                   <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getEdges</span></span><span style="color: #990000">(</span>e<span style="color: #990000">.</span>target<span style="color: #990000">,</span>joe<span style="color: #990000">,</span>e<span style="color: #990000">.</span>type<span style="color: #990000">)]</span>  <span style="font-style: italic"><span style="color: #9A1900">#and check if there is a similar backlink</span></span>
 
 <span style="font-style: italic"><span style="color: #9A1900">#Now we can print the result</span></span>
@@ -1262,7 +1262,7 @@ True
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-10-03 14:31:57 CEST
+Last updated 2014-10-03 14:33:08 CEST
 </div>
 </div>
 </body>
