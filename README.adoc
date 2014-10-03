@@ -17,7 +17,20 @@ NOTE: graphagus doesn't use zope, just zodb, zeo and repoze.catalog
 Requirements
 ------------
 
-This package needs ZODB, repoze.catalog and optional ZEO
+This package needs ZODB, repoze.catalog and optional ZEO.
+
+As I haven't packed this code as an egg yet, you could do the setup by doing the following:
+[source, bash]
+----
+git clone https://github.com/jhb/graphagus.git
+cd graphagus
+virtualenv .
+./bin/easy_install ZODB repoze.catalog ZEO graphviz
+
+#and now confirm it working
+./bin/python test.py
+
+----
 
 Setting up
 ----------
