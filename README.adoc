@@ -436,7 +436,7 @@ Ok, so lets query our graph.
 #Query people that joe follows or loves, and that have the same relationship back to him
 
 #This means finding edges of certain types going out from joe, and checking if an edge of the same type is going reverse
->>> result = [e for e in joe.outgoing(('loves','follows')) #get edges specified types 
+>>> result = [e for e in joe.outgoing(('loves','follows')) #get edges of specified types 
 ...                   if g.getEdges(e.target,joe,e.type)]  #and check if there is a similar backlink
 
 #Now we can print the result
