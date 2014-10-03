@@ -392,14 +392,14 @@ Creating the graph
 ----
 >>> g.clean()
 
->>> cats = g.addNode(name='cats')
+>>> cats =   g.addNode(name='cats')
 >>> nature = g.addNode(name='nature')
->>> ben = g.addNode(name='Ben')
->>> sara = g.addNode(name='Sara')
->>> bikes = g.addNode(name='bikes')
->>> maria = g.addNode(name='Maria')
->>> cars = g.addNode(name='cars')
->>> joe = g.addNode(name='Joe')
+>>> ben =    g.addNode(name='Ben')
+>>> sara =   g.addNode(name='Sara')
+>>> bikes =  g.addNode(name='bikes')
+>>> maria =  g.addNode(name='Maria')
+>>> cars =   g.addNode(name='cars')
+>>> joe =    g.addNode(name='Joe')
 
 >>> e1 =  g.addEdge(sara,joe,'follows')
 >>> e2 =  g.addEdge(sara,ben,'follows')
@@ -437,10 +437,8 @@ Ok, so lets query our graph.
 #Query people that joe follows or loves, and that have the same relationship back to him
 
 #This means finding edges of certain types going out from joe, and checking if an edge of the same type is going reverse
->>> result = [e for e in joe.allEdges('outgoing') 
-...             if e.type in ('loves','follows') 
-...             and 
-...             g.getEdges(e.target,joe,e.type)]
+>>> result = [e for e in joe.outgoing(('loves','follows')) #get edges specified types 
+...                   if g.getEdges(e.target,joe,e.type)]  #and check if there is a similar backlink
 
 #Now we can print the result
 >>> for edge in result:
@@ -449,7 +447,8 @@ Sara follows
 Maria follows
 Maria loves
 
-
+>>> joe.outgoing('loves')[0].target==maria
+True
 
 ----
 

@@ -53,6 +53,9 @@ class Edge(list):
         self.le = lightEdge
         self.extend(lightEdge)
 
+    def __repr__(self):
+        return 'Edge(%s)' % self.le
+
     @property
     def source(self):
         return self.g.node(self[0])
@@ -82,15 +85,26 @@ class Node(dict):
         self.ln = lightNode
         self.update(lightNode)
     
+    def __repr__(self):
+        return 'Node(%s)' % self.ln
+
     def __getattr__(self,key):
         if self.has_key(key):
             return self[key]
         else:
             raise AttributeError
 
-    def allEdges(self,directions):
-        return self.g.getAllEdges(self,directions=directions)
-    
+    def allEdges(self,directions=None,types=None):
+        return self.g.getAllEdges(self,directions=directions,types=types)
+
+    def outgoing(self,types=None):
+        return self.allEdges('outgoing',types=types)
+    o = property(outgoing)
+
+    def incoming(self,types=None):
+        return self.allEdges('incoming',types=types)
+    i = property(incoming)
+
 class GraphDB(Persistent):
 
     def __init__(self,nodeindexes=(),edgeindexes=()):
@@ -276,13 +290,26 @@ class GraphDB(Persistent):
         result = self.edge_catalog.query(self.kwQuery(**kwargs))
         return [self.lightEdge(i) for i in result[1]]
 
-    def getAllEdges(self,nodeids,directions=['i','o']):
-        #nodeinfo needs to be a list of node ids
+    def getAllEdges(self,nodeids,directions=None,types=None):
+        
+
         if type(nodeids) not in (list,tuple):
             nodeids = [nodeids]
-        if type(directions) not in (list,tuple):
+        if directions == None:
+            directions = ['i','o']
+        elif type(directions) not in (list,tuple):
             directions = [directions]
 
+        if types != None:
+            if type(types) not in (list,tuple):
+                types = [types]
+            tmp = []
+            for t in types:
+                if type(t)==str:
+                    t = self.typeid(t)
+                tmp.append(t)
+            types = tmp
+            
         tmp = []
         for n in nodeids:
             if type(n) != int:
@@ -302,7 +329,10 @@ class GraphDB(Persistent):
 
             result = []
             container = getattr(self,d)
+            
             for edgetype in container.keys():
+                if types !=None and edgetype not in types:
+                    continue
                 for n in nodeids:
                     edges = container[edgetype].get(n,{})
                     for key in edges.keys():
