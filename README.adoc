@@ -386,8 +386,8 @@ Example
 
 This example follows http://docs.neo4j.org/chunked/stable/cypher-cookbook-multirelational-social-network.html
 
-Setting up
-~~~~~~~~~~
+Creating the graph
+~~~~~~~~~~~~~~~~~~
 [source,python]
 ----
 >>> g.clean()
