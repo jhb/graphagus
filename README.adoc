@@ -3,7 +3,10 @@ graphagus
 :Author:  Joerg Baach
 :Email: joerg@baach.de
 
+
 *graphagus* is a graph database, a very thin layer on top of ZODB. 
+
+TIP: A better rendered version of this document is at  https://rawgit.com/jhb/graphagus/master/README.html.
 
 It actually provides what neo4j calls a 'property graph', e.g.  the nodes and 
 edges can have properties. These can be indexed for fast access.
@@ -37,65 +40,31 @@ Quick Overview
 Setup
 ~~~~~
 
-Lets first do some basic imports:
+With ZODB one can eihter use a database directly, or use ZEO for Server mode. Both work fine, here we use the direct mode, without
+ZEO. For completeness we use a FileStorage here, other backends are possible as well, e.g. MemoryStorage.
+
+'graphagus.DB' is really just ZODB.DB
 
 [source, python]
 ----
 #usually you would do a: import graphagus
 >>> import core as graphagus
-
-#other imports
->>> from ZODB import DB
->>> from ZODB.FileStorage import FileStorage
-
-#The filename for the test database
->>> filename = 'test.db'
-
-----
-
-
-With ZODB one can eihter use a database directly, or use ZEO for
-Server mode. Both works fine, here we use the direct mode, without
-ZEO. We also use a FileStorage. There are other backends as well.
-
-
-[source, python]
-----
-#setup ZODB
->>> storage = FileStorage(filename)
->>> db = DB(storage)
+>>> storage = graphagus.FileStorage('test.db')
+>>> db = graphagus.DB(storage)
 >>> connection = db.open()
 >>> root = connection.root()
 
 ----
 
-Now lets put a GraphDB instance in the root of the database, and
-configure the catalogs. The catalogs are optional, but we use them
-later on, so lets set them up right now.
-
-There are two catalogs:
-
-node_catalog::
-    For indexing the nodes
-edge_catalog::
-    For indexing the edges
-
+Now lets put a GraphDB instance in the root of the database
 
 [source,python]
 ----
 >>> if not root.has_key('graphdb'):
 ...     root['graphdb']=graphagus.GraphDB()
-...     g = root['graphdb']
-...     g.node_catalog['name']=graphagus.CatalogFieldIndex(graphagus.Nodegetter('name'))
-...     g.node_catalog['text']=graphagus.CatalogTextIndex(graphagus.Nodegetter('text'))
-...     g.edge_catalog['since']=graphagus.CatalogFieldIndex(graphagus.Edgegetter('since'))
-...     g.edge_catalog['text']=graphagus.CatalogTextIndex(graphagus.Edgegetter('text'))
-... else:
-...     g=root['graphdb']
+>>> g=root['graphdb']
 
 #
->>> g.node_catalog['name']
-<repoze.catalog.indexes.field.CatalogFieldIndex object at ...>
 
 ----
 
@@ -254,7 +223,40 @@ When doing "just" graph traversal, usually those directory entries are all that 
 [source,python]
 nodeids = g.incoming[1][1].values()
 
-Sticking to these directories as much as possible is the key to doing very fast queries, because one avoids unpickling of the edges and nodes. 
+IMPORTANT: Sticking to these directories as much as possible is the key to doing very fast queries, because one avoids unpickling of the edges and nodes. 
+
+Catalogs
+--------
+
+In order to search nodes or edges, as shown in the examples below, one needs to setup up indexes on specific properties. 
+
+The indexing is optional, but we use them later on (see <<searching,searching>>), so lets set them up right now.
+
+There are two catalogs:
+
+node_catalog::
+    For indexing the nodes
+edge_catalog::
+    For indexing the edges
+
+The catalog and indexing machinery comes from the fine 'repoze.catalog' project, so please check there for more details: http://docs.repoze.org/catalog/. Within graphagus we have to little helpers, 'Nodegetter' and 'Edgegetter', which will basically return the value of the specified attribute. 
+
+[source,python]
+----
+>>> g.node_catalog['name']=graphagus.CatalogFieldIndex(graphagus.Nodegetter('name'))
+>>> g.node_catalog['text']=graphagus.CatalogTextIndex(graphagus.Nodegetter('text'))
+
+>>> g.edge_catalog['since']=graphagus.CatalogFieldIndex(graphagus.Edgegetter('since'))
+>>> g.edge_catalog['text']=graphagus.CatalogTextIndex(graphagus.Edgegetter('text'))
+
+>>> g.node_catalog['name']
+<repoze.catalog.indexes.field.CatalogFieldIndex object at ...>
+
+----
+
+From now on, whenever nodes or edges are added to the graph, they are automatically cataloged and indexed using these indexes.
+
+Please also check the section on <<searching,searching>> nodes and <<finding,finding>> edges.
 
 Nodes
 -----
@@ -343,6 +345,8 @@ True
 
 ----
 
+anchor:searching[]
+
 Searching
 ~~~~~~~~~
 
@@ -417,6 +421,7 @@ There is a helper method to quickly get the type name of an edge
 
 ----
 
+anchor:finding[]
 
 Finding
 ~~~~~~~

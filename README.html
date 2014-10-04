@@ -779,6 +779,14 @@ asciidoc.install(2);
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph"><p><strong>graphagus</strong> is a graph database, a very thin layer on top of ZODB.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">A better rendered version of this document is at  <a href="https://rawgit.com/jhb/graphagus/master/README.html">https://rawgit.com/jhb/graphagus/master/README.html</a>.</td>
+</tr></table>
+</div>
 <div class="paragraph"><p>It actually provides what neo4j calls a <em>property graph</em>, e.g.  the nodes and
 edges can have properties. These can be indexed for fast access.</p></div>
 <div class="paragraph"><p>All in all graphagus seems to be reasonably fast. In my tests (from python) its
@@ -786,7 +794,7 @@ way faster then e.g. neo4j or mysql for my purposes.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<div class="title">Note</div>
+<img src="./images/icons/note.png" alt="Note" />
 </td>
 <td class="content">graphagus doesn&#8217;t use zope, just zodb, zeo and repoze.catalog</td>
 </tr></table>
@@ -818,7 +826,9 @@ virtualenv <span style="color: #990000">.</span>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_setup">Setup</h3>
-<div class="paragraph"><p>Lets first do some basic imports:</p></div>
+<div class="paragraph"><p>With ZODB one can eihter use a database directly, or use ZEO for Server mode. Both work fine, here we use the direct mode, without
+ZEO. For completeness we use a FileStorage here, other backends are possible as well, e.g. MemoryStorage.</p></div>
+<div class="paragraph"><p><em>graphagus.DB</em> is really just ZODB.DB</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
 by Lorenzo Bettini
@@ -826,50 +836,12 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-style: italic"><span style="color: #9A1900">#usually you would do a: import graphagus</span></span>
 <span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000080">import</span></span> core as graphagus
-
-<span style="font-style: italic"><span style="color: #9A1900">#other imports</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000080">from</span></span> ZODB <span style="font-weight: bold"><span style="color: #000080">import</span></span> DB
-<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000080">from</span></span> ZODB<span style="color: #990000">.</span>FileStorage <span style="font-weight: bold"><span style="color: #000080">import</span></span> FileStorage
-
-<span style="font-style: italic"><span style="color: #9A1900">#The filename for the test database</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> filename <span style="color: #990000">=</span> <span style="color: #FF0000">'test.db'</span>
-</tt></pre></div></div>
-<div class="paragraph"><p>With ZODB one can eihter use a database directly, or use ZEO for
-Server mode. Both works fine, here we use the direct mode, without
-ZEO. We also use a FileStorage. There are other backends as well.</p></div>
-<div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#setup ZODB</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> storage <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">FileStorage</span></span><span style="color: #990000">(</span>filename<span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> db <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">DB</span></span><span style="color: #990000">(</span>storage<span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> storage <span style="color: #990000">=</span> graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">FileStorage</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'test.db'</span><span style="color: #990000">)</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> db <span style="color: #990000">=</span> graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">DB</span></span><span style="color: #990000">(</span>storage<span style="color: #990000">)</span>
 <span style="color: #990000">&gt;&gt;&gt;</span> connection <span style="color: #990000">=</span> db<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">open</span></span><span style="color: #990000">()</span>
 <span style="color: #990000">&gt;&gt;&gt;</span> root <span style="color: #990000">=</span> connection<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">root</span></span><span style="color: #990000">()</span>
 </tt></pre></div></div>
-<div class="paragraph"><p>Now lets put a GraphDB instance in the root of the database, and
-configure the catalogs. The catalogs are optional, but we use them
-later on, so lets set them up right now.</p></div>
-<div class="paragraph"><p>There are two catalogs:</p></div>
-<div class="dlist"><dl>
-<dt class="hdlist1">
-node_catalog
-</dt>
-<dd>
-<p>
-    For indexing the nodes
-</p>
-</dd>
-<dt class="hdlist1">
-edge_catalog
-</dt>
-<dd>
-<p>
-    For indexing the edges
-</p>
-</dd>
-</dl></div>
+<div class="paragraph"><p>Now lets put a GraphDB instance in the root of the database</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
 by Lorenzo Bettini
@@ -877,17 +849,9 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="font-weight: bold"><span style="color: #0000FF">not</span></span> root<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">has_key</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">):</span>
 <span style="color: #990000">...</span>     root<span style="color: #990000">[</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">GraphDB</span></span><span style="color: #990000">()</span>
-<span style="color: #990000">...</span>     g <span style="color: #990000">=</span> root<span style="color: #990000">[</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">]</span>
-<span style="color: #990000">...</span>     g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'name'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogFieldIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Nodegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'name'</span><span style="color: #990000">))</span>
-<span style="color: #990000">...</span>     g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'text'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogTextIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Nodegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'text'</span><span style="color: #990000">))</span>
-<span style="color: #990000">...</span>     g<span style="color: #990000">.</span>edge_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'since'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogFieldIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Edgegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'since'</span><span style="color: #990000">))</span>
-<span style="color: #990000">...</span>     g<span style="color: #990000">.</span>edge_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'text'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogTextIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Edgegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'text'</span><span style="color: #990000">))</span>
-<span style="color: #990000">...</span> <span style="font-weight: bold"><span style="color: #0000FF">else</span></span><span style="color: #990000">:</span>
-<span style="color: #990000">...</span>     g<span style="color: #990000">=</span>root<span style="color: #990000">[</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">]</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">=</span>root<span style="color: #990000">[</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">]</span>
 
 <span style="font-style: italic"><span style="color: #9A1900">#</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'name'</span><span style="color: #990000">]</span>
-<span style="color: #990000">&lt;</span>repoze<span style="color: #990000">.</span>catalog<span style="color: #990000">.</span>indexes<span style="color: #990000">.</span>field<span style="color: #990000">.</span>CatalogFieldIndex object at <span style="color: #990000">...&gt;</span>
 </tt></pre></div></div>
 </div>
 <div class="sect2">
@@ -1061,8 +1025,58 @@ by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt>nodeids <span style="color: #990000">=</span> g<span style="color: #990000">.</span>incoming<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">][</span><span style="color: #993399">1</span><span style="color: #990000">].</span><span style="font-weight: bold"><span style="color: #000000">values</span></span><span style="color: #990000">()</span></tt></pre></div></div>
-<div class="paragraph"><p>Sticking to these directories as much as possible is the key to doing very fast queries, because one avoids unpickling of the edges and nodes.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/important.png" alt="Important" />
+</td>
+<td class="content">Sticking to these directories as much as possible is the key to doing very fast queries, because one avoids unpickling of the edges and nodes.</td>
+</tr></table>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_catalogs">Catalogs</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In order to search nodes or edges, as shown in the examples below, one needs to setup up indexes on specific properties.</p></div>
+<div class="paragraph"><p>The indexing is optional, but we use them later on (see <a href="#searching">searching</a>), so lets set them up right now.</p></div>
+<div class="paragraph"><p>There are two catalogs:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+node_catalog
+</dt>
+<dd>
+<p>
+    For indexing the nodes
+</p>
+</dd>
+<dt class="hdlist1">
+edge_catalog
+</dt>
+<dd>
+<p>
+    For indexing the edges
+</p>
+</dd>
+</dl></div>
+<div class="paragraph"><p>The catalog and indexing machinery comes from the fine <em>repoze.catalog</em> project, so please check there for more details: <a href="http://docs.repoze.org/catalog/">http://docs.repoze.org/catalog/</a>. Within graphagus we have to little helpers, <em>Nodegetter</em> and <em>Edgegetter</em>, which will basically return the value of the specified attribute.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'name'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogFieldIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Nodegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'name'</span><span style="color: #990000">))</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'text'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogTextIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Nodegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'text'</span><span style="color: #990000">))</span>
+
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>edge_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'since'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogFieldIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Edgegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'since'</span><span style="color: #990000">))</span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>edge_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'text'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogTextIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Edgegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'text'</span><span style="color: #990000">))</span>
+
+<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'name'</span><span style="color: #990000">]</span>
+<span style="color: #990000">&lt;</span>repoze<span style="color: #990000">.</span>catalog<span style="color: #990000">.</span>indexes<span style="color: #990000">.</span>field<span style="color: #990000">.</span>CatalogFieldIndex object at <span style="color: #990000">...&gt;</span>
+</tt></pre></div></div>
+<div class="paragraph"><p>From now on, whenever nodes or edges are added to the graph, they are automatically cataloged and indexed using these indexes.</p></div>
+<div class="paragraph"><p>Please also check the section on <a href="#searching">searching</a> nodes and <a href="#finding">finding</a> edges.</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -1152,6 +1166,7 @@ http://www.gnu.org/software/src-highlite -->
 <span style="color: #990000">&gt;&gt;&gt;</span> bob2 <span style="color: #990000">==</span> bob
 True
 </tt></pre></div></div>
+<div class="paragraph"><p><a id="searching"></a></p></div>
 </div>
 <div class="sect2">
 <h3 id="_searching">Searching</h3>
@@ -1228,6 +1243,7 @@ http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getType</span></span><span style="color: #990000">(</span>e2<span style="color: #990000">)</span>
 <span style="font-style: italic"><span style="color: #9A1900">'knows'</span></span>
 </tt></pre></div></div>
+<div class="paragraph"><p><a id="finding"></a></p></div>
 </div>
 <div class="sect2">
 <h3 id="_finding">Finding</h3>
@@ -1372,7 +1388,7 @@ http://www.gnu.org/software/src-highlite -->
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-10-04 12:13:41 CEST
+Last updated 2014-10-04 12:57:18 CEST
 </div>
 </div>
 </body>

@@ -10,6 +10,8 @@ from repoze.catalog.indexes.text import CatalogTextIndex
 from repoze.catalog.indexes.keyword import CatalogKeywordIndex
 from repoze.catalog.indexes.path import CatalogPathIndex
 from repoze.catalog import query as rc_query
+from ZODB import DB
+from ZODB.FileStorage import FileStorage
 
 class StillConnected(Exception):
     pass
