@@ -146,7 +146,7 @@ or, with a bit more data like this:
 [source,python]
 g.nodes[2] = {'name':'Second Node'}
 
-This is what nodes look like on the lowest level. Usually within graphagus one actually uses 'lightNodes'. This is just a funky name for the node directory with the node's id added under the '_id' key:
+This is what nodes look like on the lowest level. Usually within graphagus one actually uses 'lightNodes'. This is just a funky name for the node dictionary with the node's id added under the '_id' key:
 
 [source,python]
 g.lightNode(2) == {'_id':2,'name':'Second Node'}
