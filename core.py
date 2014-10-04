@@ -110,6 +110,12 @@ class GraphDB(Persistent):
 
     def __init__(self,nodeindexes=(),edgeindexes=()):
         
+        self._init()
+        
+        self.node_catalog= Catalog()
+        self.edge_catalog = Catalog()
+
+    def _init(self):
         self.nodes = IOBTree()
         self.edges = IOBTree()
         self.edgedata = IOBTree()
@@ -122,9 +128,6 @@ class GraphDB(Persistent):
         self._nodeid = Length(0)
         self._edgeid = Length(0)
         self._typeid = Length(0)
-
-        self.node_catalog= Catalog()
-        self.edge_catalog = Catalog()
 
 
     def nodeid(self):
@@ -377,6 +380,8 @@ class GraphDB(Persistent):
         for k in list(self.nodes.keys()):
             self.delNode(k)
 
+        self._init()
+    
     def render(self,filename='graphagus',source=False):
         from graphviz import Digraph
         

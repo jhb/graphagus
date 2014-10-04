@@ -31,9 +31,11 @@ virtualenv .
 ./bin/python test.py
 
 ----
+Quick Overview
+--------------
 
-Setting up
-----------
+Setup
+~~~~~
 
 Lets first do some basic imports:
 
@@ -53,7 +55,8 @@ Lets first do some basic imports:
 
 
 With ZODB one can eihter use a database directly, or use ZEO for
-Server mode. Both works fine, here we use the direct mode.
+Server mode. Both works fine, here we use the direct mode, without
+ZEO. We also use a FileStorage. There are other backends as well.
 
 
 [source, python]
@@ -67,8 +70,10 @@ Server mode. Both works fine, here we use the direct mode.
 ----
 
 Now lets put a GraphDB instance in the root of the database, and
-configure the catalogs. The catalogs are optional. There are two
-catalogs:
+configure the catalogs. The catalogs are optional, but we use them
+later on, so lets set them up right now.
+
+There are two catalogs:
 
 node_catalog::
     For indexing the nodes
@@ -94,8 +99,167 @@ edge_catalog::
 
 ----
 
+
+Creating the graph
+~~~~~~~~~~~~~~~~~~
+
+Ok, now lets populate the database with a first example. It follows http://docs.neo4j.org/chunked/stable/cypher-cookbook-multirelational-social-network.html
+
+[source,python]
+----
+
+>>> cats =   g.addNode(name='cats')
+>>> nature = g.addNode(name='nature')
+>>> ben =    g.addNode(name='Ben')
+>>> sara =   g.addNode(name='Sara')
+>>> bikes =  g.addNode(name='bikes')
+>>> maria =  g.addNode(name='Maria')
+>>> cars =   g.addNode(name='cars')
+>>> joe =    g.addNode(name='Joe')
+
+>>> e1 =  g.addEdge(sara,joe,'follows')
+>>> e2 =  g.addEdge(sara,ben,'follows')
+>>> e3 =  g.addEdge(sara,bikes,'likes')
+>>> e4 =  g.addEdge(sara,cars,'likes')
+>>> e5 =  g.addEdge(sara,cats,'likes')
+>>> e6 =  g.addEdge(maria,joe,'follows')
+>>> e7 =  g.addEdge(maria,joe,'loves')
+>>> e8 =  g.addEdge(maria,cars,'likes')
+>>> e9 =  g.addEdge(joe,sara,'follows')
+>>> e10 = g.addEdge(joe,maria,'follows')
+>>> e11 = g.addEdge(joe,maria,'loves')
+>>> e12 = g.addEdge(joe,bikes,'likes')
+>>> e13 = g.addEdge(joe,nature,'likes')
+
+# We can render the graph to an image
+>>> #g.render('graphagus')
+
+----
+
+The rendered graph looks like this:
+
+image::graphagus.svg[]
+
+Querying
+~~~~~~~~
+Ok, so lets query our graph.
+
+[source,python]
+----
+
+#lets 'wrap' joe as a more functional node
+>>> joe = g.node(joe)
+
+#Query people that joe follows or loves, and that have the same relationship back to him
+
+#This means finding edges of certain types going out from joe, and checking if an edge of the same type is going reverse
+>>> result = [e for e in joe.outgoing(('loves','follows')) #get edges of specified types 
+...                   if g.getEdges(e.target,joe,e.type)]  #and check if there is a similar backlink
+
+#Now we can print the result
+>>> for edge in result:
+...    print edge.target.name, edge.type
+Sara follows
+Maria follows
+Maria loves
+
+>>> joe.outgoing('loves')[0].target==maria
+True
+
+----
+
+And now that we are finished with the example, lets clean out the whole
+database:
+
+[source,python]
+----
+
+>>> g.clean()
+
+----
+
+
+Architecture
+------------
+
+Graphagus started out as a silly idea, while evaluating performance claims on neo4j (https://baach.de/Members/jhb/neo4j-performance-compared-to-mysql). The silly idea led to some more python/ZODB/pickling performance measurements, and inspired the following design.
+
+Nodes
+~~~~~
+
+Nodes are entries in an IOBTree, which means that an integer (the node id) is pointing to a dictionary. The dictionary contains the properties of the node. So the most simple entry looks like this:
+
+[source, python]
+g.nodes[1] = {}
+
+or, with a bit more data like this:
+[source,python]
+g.nodes[2] = {'name':'Second Node'}
+
+This is what nodes look like on the lowest level. Usually within graphagus one actually uses 'lightNodes'. This is just a funky name for the node directory with the node's id added under the '_id' key:
+
+[source,python]
+g.lightNode(2) == {'_id':2,'name':'Second Node'}
+
+This makes handling the nodes way easier internally. 
+
+Edges
+~~~~~
+
+Edges are the more interesting bit. Their basic structure is list with three entries:
+
+[source,python]
+g.edges[1] = [1,2,1]
+
+This is an edge connecting source node 1 with target node 2, and the edge is of the edgetype 1. There is an object containing the mapping of 'type names' to edgetypes:
+
+[source,python]
+g.typeids.friend = 1
+
+If you want to store properties on an edge, these props get stored within a  dictionary, which is then placed into another IOBTree
+
+[source,python]
+g.edgedata[1] = {'duration':'5 years'}
+
+As with the nodes there is a 'lightEdge' structure, which is what you usually get when using the lower level APIs:
+
+[source,python]
+g.lightEdge(1) == [1, 2, 1, {'duration':'5 years'},1]
+
+So, it is the basic edge structure (source,target,type) extended by the properties, and the internal id.
+
+Graph directories
+~~~~~~~~~~~~~~~~~
+
+Given the above structure one would have no way to directly find edges from one node to the other. But fear not! There are two 'directories' that help the lookup. They have a very similar structure:
+
+[source,python]
+----
+g.outgoing[typeid][source] = {edgeid:target, ...}
+g.incoming[typeid][target] = {edgeid:source, ...}
+
+----
+
+With the examples above, we would have generated the following entries:
+
+[source,python]
+----
+g.outgoing[1][1] = {1:2}
+g.incoming[1][2] = {1:1}
+
+----
+
+When doing "just" graph traversal, usually those directory entries are all that is needed. E.g. when finding nodes that link to node 2 using typeid 1, one could use:
+
+[source,python]
+nodeids = g.incoming[1][1].values()
+
+Sticking to these directories as much as possible is the key to doing very fast queries, because one avoids unpickling of the edges and nodes. 
+
 Nodes
 -----
+
+This section shows how to deal with nodes.
 
 Creating
 ~~~~~~~~
@@ -216,6 +380,8 @@ Deleting
 
 Edges
 -----
+
+Where we learn all about connecting nodes.
 
 Creating
 ~~~~~~~~
@@ -377,78 +543,11 @@ StillConnected: ('incoming', {3: 2})
 
 #It seems that did work ok
 
-
 ----
 
-Example
--------
+To be continued...
 
-This example follows http://docs.neo4j.org/chunked/stable/cypher-cookbook-multirelational-social-network.html
-
-Creating the graph
-~~~~~~~~~~~~~~~~~~
+And for debugging:
 [source,python]
-----
->>> g.clean()
-
->>> cats =   g.addNode(name='cats')
->>> nature = g.addNode(name='nature')
->>> ben =    g.addNode(name='Ben')
->>> sara =   g.addNode(name='Sara')
->>> bikes =  g.addNode(name='bikes')
->>> maria =  g.addNode(name='Maria')
->>> cars =   g.addNode(name='cars')
->>> joe =    g.addNode(name='Joe')
-
->>> e1 =  g.addEdge(sara,joe,'follows')
->>> e2 =  g.addEdge(sara,ben,'follows')
->>> e3 =  g.addEdge(sara,bikes,'likes')
->>> e4 =  g.addEdge(sara,cars,'likes')
->>> e5 =  g.addEdge(sara,cats,'likes')
->>> e6 =  g.addEdge(maria,joe,'follows')
->>> e7 =  g.addEdge(maria,joe,'loves')
->>> e8 =  g.addEdge(maria,cars,'likes')
->>> e9 =  g.addEdge(joe,sara,'follows')
->>> e10 = g.addEdge(joe,maria,'follows')
->>> e11 = g.addEdge(joe,maria,'loves')
->>> e12 = g.addEdge(joe,bikes,'likes')
->>> e13 = g.addEdge(joe,nature,'likes')
-
-#We could render the graph
->>> #g.render()
-
-----
-
-This would create the following graph:
-
-image::graphagus.svg[]
-
-Querying
-~~~~~~~~
-Ok, so lets query our graph.
-
-[source,python]
-----
-
-#lets 'wrap' joe as a more functional node
->>> joe = g.node(joe)
-
-#Query people that joe follows or loves, and that have the same relationship back to him
-
-#This means finding edges of certain types going out from joe, and checking if an edge of the same type is going reverse
->>> result = [e for e in joe.outgoing(('loves','follows')) #get edges of specified types 
-...                   if g.getEdges(e.target,joe,e.type)]  #and check if there is a similar backlink
-
-#Now we can print the result
->>> for edge in result:
-...    print edge.target.name, edge.type
-Sara follows
-Maria follows
-Maria loves
-
->>> joe.outgoing('loves')[0].target==maria
-True
-
-----
-
+>>> #import ipdb; ipdb.set_trace()
 
