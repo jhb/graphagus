@@ -1,7 +1,7 @@
 graphagus
 =========
 :Author:  Joerg Baach
-:Email: joerg@baach.de
+:Email: mail@baach.de
 
 TIP: A nicer version of this document is at  https://rawgit.com/jhb/graphagus/master/graphagus/README.html.
 
