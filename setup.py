@@ -8,7 +8,11 @@ setup(name='graphagus',
       description="A graph database on top of ZODB",
       long_description="""\
 """,
-      classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=["License :: OSI Approved :: GNU General Public License (GPL)",
+          "Programming Language :: Python",
+          "Development Status :: 3 - Alpha",
+          "Intended Audience :: Developers",
+          "Topic :: Database",], 
       keywords='graph ZODB',
       author='Joerg Baach',
       author_email='mail@baach.de',
