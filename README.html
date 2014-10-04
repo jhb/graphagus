@@ -796,7 +796,7 @@ way faster then e.g. neo4j or mysql for my purposes.</p></div>
 <td class="icon">
 <img src="./images/icons/note.png" alt="Note" />
 </td>
-<td class="content">graphagus doesn&#8217;t use zope, just zodb, zeo and repoze.catalog</td>
+<td class="content">graphagus doesn&#8217;t use zope, just zodb, zeo and repoze.catalog. And, optionally graphviz, if you want to render the graph.</td>
 </tr></table>
 </div>
 </div>
@@ -849,9 +849,8 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="font-weight: bold"><span style="color: #0000FF">not</span></span> root<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">has_key</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">):</span>
 <span style="color: #990000">...</span>     root<span style="color: #990000">[</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">]=</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">GraphDB</span></span><span style="color: #990000">()</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">=</span>root<span style="color: #990000">[</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">]</span>
 
-<span style="font-style: italic"><span style="color: #9A1900">#</span></span>
+<span style="color: #990000">&gt;&gt;&gt;</span> g <span style="color: #990000">=</span> root<span style="color: #990000">[</span><span style="color: #FF0000">'graphdb'</span><span style="color: #990000">]</span>
 </tt></pre></div></div>
 </div>
 <div class="sect2">
@@ -1037,11 +1036,9 @@ http://www.gnu.org/software/src-highlite -->
 </div>
 </div>
 <div class="sect1">
-<h2 id="_catalogs">Catalogs</h2>
+<h2 id="_indexing">Indexing</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>In order to search nodes or edges, as shown in the examples below, one needs to setup up indexes on specific properties.</p></div>
-<div class="paragraph"><p>The indexing is optional, but we use them later on (see <a href="#searching">searching</a>), so lets set them up right now.</p></div>
-<div class="paragraph"><p>There are two catalogs:</p></div>
+<div class="paragraph"><p>In order to search nodes or edges, as shown in the examples below, one needs to setup up indexes on specific properties. These indexes are setup in the catalogs:</p></div>
 <div class="dlist"><dl>
 <dt class="hdlist1">
 node_catalog
@@ -1060,7 +1057,9 @@ edge_catalog
 </p>
 </dd>
 </dl></div>
-<div class="paragraph"><p>The catalog and indexing machinery comes from the fine <em>repoze.catalog</em> project, so please check there for more details: <a href="http://docs.repoze.org/catalog/">http://docs.repoze.org/catalog/</a>. Within graphagus we have to little helpers, <em>Nodegetter</em> and <em>Edgegetter</em>, which will basically return the value of the specified attribute.</p></div>
+<div class="paragraph"><p>The catalog and indexing machinery comes from the fine <em>repoze.catalog</em> project, so please check there for more details: <a href="http://docs.repoze.org/catalog/">http://docs.repoze.org/catalog/</a>.</p></div>
+<div class="paragraph"><p>Within graphagus we have to little helpers, <em>Nodegetter</em> and <em>Edgegetter</em>, which will basically return the value of the specified attribute.</p></div>
+<div class="paragraph"><p>Setting up indexes is optional, but we use them later on in this tutorial (see <a href="#searching">searching</a>, <a href="#finding">finding</a>), so lets set them up right now.</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.6
 by Lorenzo Bettini
@@ -1075,7 +1074,14 @@ http://www.gnu.org/software/src-highlite -->
 <span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'name'</span><span style="color: #990000">]</span>
 <span style="color: #990000">&lt;</span>repoze<span style="color: #990000">.</span>catalog<span style="color: #990000">.</span>indexes<span style="color: #990000">.</span>field<span style="color: #990000">.</span>CatalogFieldIndex object at <span style="color: #990000">...&gt;</span>
 </tt></pre></div></div>
-<div class="paragraph"><p>From now on, whenever nodes or edges are added to the graph, they are automatically cataloged and indexed using these indexes.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/important.png" alt="Important" />
+</td>
+<td class="content">From now on, whenever nodes or edges are added to the graph, they are automatically cataloged and indexed using these indexes.</td>
+</tr></table>
+</div>
 <div class="paragraph"><p>Please also check the section on <a href="#searching">searching</a> nodes and <a href="#finding">finding</a> edges.</p></div>
 </div>
 </div>
@@ -1388,7 +1394,7 @@ http://www.gnu.org/software/src-highlite -->
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-10-04 12:57:18 CEST
+Last updated 2014-10-04 13:05:02 CEST
 </div>
 </div>
 </body>

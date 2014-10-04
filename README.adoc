@@ -14,7 +14,7 @@ edges can have properties. These can be indexed for fast access.
 All in all graphagus seems to be reasonably fast. In my tests (from python) its
 way faster then e.g. neo4j or mysql for my purposes.
 
-NOTE: graphagus doesn't use zope, just zodb, zeo and repoze.catalog
+NOTE: graphagus doesn't use zope, just zodb, zeo and repoze.catalog. And, optionally graphviz, if you want to render the graph.
 
 
 Requirements
@@ -62,9 +62,8 @@ Now lets put a GraphDB instance in the root of the database
 ----
 >>> if not root.has_key('graphdb'):
 ...     root['graphdb']=graphagus.GraphDB()
->>> g=root['graphdb']
 
-#
+>>> g = root['graphdb']
 
 ----
 
@@ -225,21 +224,21 @@ nodeids = g.incoming[1][1].values()
 
 IMPORTANT: Sticking to these directories as much as possible is the key to doing very fast queries, because one avoids unpickling of the edges and nodes. 
 
-Catalogs
+Indexing
 --------
 
-In order to search nodes or edges, as shown in the examples below, one needs to setup up indexes on specific properties. 
-
-The indexing is optional, but we use them later on (see <<searching,searching>>), so lets set them up right now.
-
-There are two catalogs:
+In order to search nodes or edges, as shown in the examples below, one needs to setup up indexes on specific properties. These indexes are setup in the catalogs:
 
 node_catalog::
     For indexing the nodes
 edge_catalog::
     For indexing the edges
 
-The catalog and indexing machinery comes from the fine 'repoze.catalog' project, so please check there for more details: http://docs.repoze.org/catalog/. Within graphagus we have to little helpers, 'Nodegetter' and 'Edgegetter', which will basically return the value of the specified attribute. 
+The catalog and indexing machinery comes from the fine 'repoze.catalog' project, so please check there for more details: http://docs.repoze.org/catalog/. 
+
+Within graphagus we have to little helpers, 'Nodegetter' and 'Edgegetter', which will basically return the value of the specified attribute. 
+
+Setting up indexes is optional, but we use them later on in this tutorial (see <<searching,searching>>, <<finding,finding>>), so lets set them up right now.
 
 [source,python]
 ----
@@ -254,7 +253,7 @@ The catalog and indexing machinery comes from the fine 'repoze.catalog' project,
 
 ----
 
-From now on, whenever nodes or edges are added to the graph, they are automatically cataloged and indexed using these indexes.
+IMPORTANT: From now on, whenever nodes or edges are added to the graph, they are automatically cataloged and indexed using these indexes.
 
 Please also check the section on <<searching,searching>> nodes and <<finding,finding>> edges.
 
