@@ -783,7 +783,7 @@ asciidoc.install(2);
 <td class="icon">
 <img src="./images/icons/tip.png" alt="Tip" />
 </td>
-<td class="content">A nicer version of this document is at  <a href="https://rawgit.com/jhb/graphagus/master/README.html">https://rawgit.com/jhb/graphagus/master/README.html</a>.</td>
+<td class="content">A nicer version of this document is at  <a href="https://rawgit.com/jhb/graphagus/master/graphagus/README.html">https://rawgit.com/jhb/graphagus/master/graphagus/README.html</a>.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p><strong>graphagus</strong> is a graph database, a very thin layer on top of ZODB.</p></div>
@@ -796,29 +796,9 @@ way faster then e.g. neo4j or mysql for my purposes.</p></div>
 <td class="icon">
 <img src="./images/icons/note.png" alt="Note" />
 </td>
-<td class="content">graphagus doesn&#8217;t use zope, just zodb, zeo and repoze.catalog. And, optionally graphviz, if you want to render the graph.</td>
+<td class="content">graphagus doesn&#8217;t use zope, just zodb and repoze.catalog. Optionally ZEO of course. And to render the graph graphviz can be used.</td>
 </tr></table>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_requirements">Requirements</h2>
-<div class="sectionbody">
-<div class="paragraph"><p>This package needs ZODB, repoze.catalog and optional ZEO.</p></div>
-<div class="paragraph"><p>As I haven&#8217;t packed this code as an egg yet, you could do the setup by doing the following:</p></div>
-<div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>git clone https<span style="color: #990000">:</span>//github<span style="color: #990000">.</span>com/jhb/graphagus<span style="color: #990000">.</span>git
-cd graphagus
-virtualenv <span style="color: #990000">.</span>
-<span style="color: #990000">.</span>/bin/easy_install ZODB repoze<span style="color: #990000">.</span>catalog ZEO graphviz
-
-<span style="font-style: italic"><span style="color: #9A1900">#and now confirm it working</span></span>
-<span style="color: #990000">.</span>/bin/python <span style="font-weight: bold"><span style="color: #0000FF">test</span></span><span style="color: #990000">.</span>py
-</tt></pre></div></div>
 </div>
 </div>
 <div class="sect1">
@@ -833,8 +813,7 @@ ZEO. For completeness we use a FileStorage here, other backends are possible as 
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#usually you would do a: import graphagus</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000080">import</span></span> core as graphagus
+<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000080">import</span></span> graphagus
 <span style="color: #990000">&gt;&gt;&gt;</span> storage <span style="color: #990000">=</span> graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">FileStorage</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'test.db'</span><span style="color: #990000">)</span>
 <span style="color: #990000">&gt;&gt;&gt;</span> db <span style="color: #990000">=</span> graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">DB</span></span><span style="color: #990000">(</span>storage<span style="color: #990000">)</span>
 <span style="color: #990000">&gt;&gt;&gt;</span> connection <span style="color: #990000">=</span> db<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">open</span></span><span style="color: #990000">()</span>
@@ -1401,7 +1380,7 @@ http://www.gnu.org/software/src-highlite -->
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2014-10-04 13:11:05 CEST
+Last updated 2014-10-04 14:50:03 CEST
 </div>
 </div>
 </body>

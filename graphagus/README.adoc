@@ -3,7 +3,7 @@ graphagus
 :Author:  Joerg Baach
 :Email: joerg@baach.de
 
-TIP: A nicer version of this document is at  https://rawgit.com/jhb/graphagus/master/README.html.
+TIP: A nicer version of this document is at  https://rawgit.com/jhb/graphagus/master/graphagus/README.html.
 
 *graphagus* is a graph database, a very thin layer on top of ZODB. 
 
@@ -13,26 +13,9 @@ edges can have properties. These can be indexed for fast access.
 All in all graphagus seems to be reasonably fast. In my tests (from python) its
 way faster then e.g. neo4j or mysql for my purposes.
 
-NOTE: graphagus doesn't use zope, just zodb, zeo and repoze.catalog. And, optionally graphviz, if you want to render the graph.
+NOTE: graphagus doesn't use zope, just zodb and repoze.catalog. Optionally ZEO of course. And to render the graph graphviz can be used.
 
 
-Requirements
-------------
-
-This package needs ZODB, repoze.catalog and optional ZEO.
-
-As I haven't packed this code as an egg yet, you could do the setup by doing the following:
-[source, bash]
-----
-git clone https://github.com/jhb/graphagus.git
-cd graphagus
-virtualenv .
-./bin/easy_install ZODB repoze.catalog ZEO graphviz
-
-#and now confirm it working
-./bin/python test.py
-
-----
 Quick Overview
 --------------
 
@@ -45,8 +28,7 @@ ZEO. For completeness we use a FileStorage here, other backends are possible as 
 
 [source, python]
 ----
-#usually you would do a: import graphagus
->>> import core as graphagus
+>>> import graphagus
 >>> storage = graphagus.FileStorage('test.db')
 >>> db = graphagus.DB(storage)
 >>> connection = db.open()
