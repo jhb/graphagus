@@ -22,33 +22,14 @@ Quick Overview
 Setup
 ~~~~~
 
-With ZODB one can eihter use a database directly, or use ZEO for Server mode. Both work fine, here we use the direct mode, without
-ZEO. For completeness we use a FileStorage here, other backends are possible as well, e.g. MemoryStorage.
-
+With ZODB one can eihter use a database directly, or use ZEO for Server mode. Both work fine, here we use the direct mode, without ZEO. We use a MemoryStorage as a backend for the examples here (the usual other alternatives are possible as well, e.g. FileStorage):
 
 [source, python]
 ----
 >>> import graphagus
->>> storage = graphagus.FileStorage('test.db')
->>> db = graphagus.DB(storage)
->>> connection = db.open()
->>> root = connection.root()
+>>> g = graphagus.getGraph() 
 
 ----
-
-NOTE: 'graphagus.DB' and 'graphagus.FileStorage' are just imports from ZODB.
-
-Now lets put a GraphDB instance in the root of the database
-
-[source,python]
-----
->>> if not root.has_key('graphdb'):
-...     root['graphdb']=graphagus.GraphDB()
-
->>> g = root['graphdb']
-
-----
-
 
 Creating the graph
 ~~~~~~~~~~~~~~~~~~
@@ -92,7 +73,7 @@ image::graphagus.svg[]
 
 Querying
 ~~~~~~~~
-Ok, so lets query our graph.
+Ok, so lets query our graph. We use some higher level APIs here.
 
 [source,python]
 ----
@@ -363,6 +344,7 @@ Deleting
 
 ----
 
+
 Edges
 -----
 
@@ -529,7 +511,137 @@ StillConnected: ('incoming', {3: 2})
 
 #It seems that did work ok
 
+
 ----
+
+Higher Level API
+----------------
+
+There is a slightly higher level API. We already used that in the introductionary examples.
+
+As a reminder, the graph currently looks like this:
+
+[source, python]
+>>> #g.render('example1')
+
+image::example1.svg[]
+
+anchor:getAllEdges[]
+
+graph.getAllEdges
+~~~~~~~~~~~~~~~~~
+
+[source,python]
+g.getAllEdges(self,nodeids,directions=None,types=None)
+
+Returns connected edges for one or more nodes, optionally filtered by type. The edges are returned as 'Edge' objects.
+
+* _nodeids_ - can be a single or list of  integer, lightNode or Nodes (or mixed)
+* _directions_ - can be either a string starting with "i" or "o", or an iterable with both of them. Defaults to ("incoming","outgoing"). If both (or none) are given, will return a dict-like object that has an "i" and "o" keys as well as attributes
+* _types_ - can be a single or list of edgetypes, given as ints or strings
+
+[source, python]
+----
+
+>>> g.getAllEdges(bob,'incoming')
+[Edge([1, 2, 1, {}, 1])]
+
+#abbriviate
+>>> g.getAllEdges(bob,'i')
+[Edge([1, 2, 1, {}, 1])]
+
+>>> g.getAllEdges(bob,'outgo')
+[Edge([2, 4, 1, {'since': 2011}, 2])]
+
+#directions default to ("incoming","outgoing")
+>>> g.getAllEdges(bob)
+{'i': [Edge([1, 2, 1, {}, 1])], 'o': [Edge([2, 4, 1, {'since': 2011}, 2])]}
+
+#key and attribute
+>>> g.getAllEdges(bob)['i'] == g.getAllEdges(bob).i
+True
+
+#multiple nodes
+>>> g.getAllEdges((bob,charlie),'i')
+[Edge([1, 2, 1, {}, 1]), Edge([2, 4, 1, {'since': 2011}, 2])]
+
+----
+
+Edge
+~~~~
+
+A lightEdge can be wrapped as a full 'Edge' object.
+
+[source,python]
+>>> edge = g.edge(e2)
+
+This object has the following attributes and methods
+
+* _source_: the source node as a 'Node'
+* _target_: the target node as a 'Node'
+* _type_: the type as a 'str'
+* _data_: the data dict of the node
+* _.foo_: the value of _foo_ in the data dict (raises 'AttributeError')
+
+[source,python]
+----
+>>> edge.source
+Node({'lastname': 'The Builder', '_id': 2, 'name': 'bob', 'text': 'this is some wonderful text'})
+
+>>> edge.target
+Node({'_id': 4, 'name': 'charlie'})
+
+>>> edge.type
+'knows'
+
+>>> edge.data
+{'since': 2011}
+
+>>> edge.since
+2011
+
+----
+
+Node
+~~~~
+
+A lightNode can be wrapped as a full 'Node' object
+
+[source,python]
+>>> node = g.node(bob)
+
+This object has the following attributes and methods:
+
+* _allEdges(directions=None,types=None)_: returns Edges as in the corresponding g.getAllEdges(node,...) call. See <<getAllEdges,graph.getAllEdges>>
+* _outgoing_: (types=None) returns a list of outgoing edges, filtered by type
+* _o_: shorthand for _outgoing_
+* _incoming_: (types=None) returns a list of incoming edges, filtered by type
+* _i_: shorthand for _incoming_
+* _.foo_: the value of _foo_ in the data dict (raises 'AttributeError')
+
+[source,python]
+----
+>>> node.allEdges()
+{'i': [Edge([1, 2, 1, {}, 1])], 'o': [Edge([2, 4, 1, {'since': 2011}, 2])]}
+
+>>> node.outgoing(types='knows')
+[Edge([2, 4, 1, {'since': 2011}, 2])]
+
+>>> node.o
+[Edge([2, 4, 1, {'since': 2011}, 2])]
+
+>>> node.incoming(types='unknown')
+[]
+
+>>> node.i
+[Edge([1, 2, 1, {}, 1])]
+
+>>> node.name
+'bob'
+
+----
+
+
 
 To be continued...
 

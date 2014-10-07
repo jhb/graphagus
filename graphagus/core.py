@@ -110,7 +110,7 @@ class Node(dict):
 
 class GraphDB(Persistent):
 
-    def __init__(self,nodeindexes=(),edgeindexes=()):
+    def __init__(self):
         
         self._init()
         
@@ -412,3 +412,15 @@ class GraphDB(Persistent):
         if type(lightNode) == int:
             lightNode = self.lightNode(lightNode)
         return Node(self,lightNode)
+
+def getGraph(filename=None,graphname='graphdb',storage=None):
+    
+    if filename:
+        storage = FileStorage(filename)
+    
+    db = DB(storage)
+    connection = db.open()
+    root = connection.root()
+    if not root.has_key(graphname):
+        root[graphname]=GraphDB()
+    return root[graphname]
