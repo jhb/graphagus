@@ -1,4 +1,4 @@
-import cPickle, p_g, time, sys
+import cPickle, graphagus, time, sys
 import transaction
 from ZODB.FileStorage import FileStorage
 from ZODB.DB import DB
@@ -22,7 +22,7 @@ def doopen():
     root = connection.root()
     if not root.has_key('graphdb'):
         print 'creating'
-        root['graphdb']=p_g.GraphDB()
+        root['graphdb']=graphagus.GraphDB()
     g=root['graphdb']
 
 def doclose():
@@ -34,13 +34,14 @@ def doclose():
 doopen()
 
 if len(sys.argv) < 2:
-    filename = 'friends_10k.pickle'
+    filename = 'friends.pickle'
 else:
     filename = sys.argv[1]
 
 print 'deleting'
-root['graphdb']=p_g.GraphDB()
+root['graphdb']=graphagus.GraphDB()
 g=root['graphdb']
+g.node_catalog['name']=graphagus.CatalogFieldIndex(graphagus.Nodegetter('name'))
 
 print 'reading friends'
 f = open(filename)
@@ -51,12 +52,12 @@ print 'adding nodes'
 nids = {}
 g.debug=0
 
-size = 100000
+size = 10000
 
 for a,targets in friends.iteritems():
     name = 'person%s' % a
     node = g.addNode(name=name)
-    nids[a]=node['id']
+    nids[a]=node['_id']
     if not a % size:
         transaction.commit()
         resetCaches()
@@ -89,7 +90,7 @@ for a,targets in friends.iteritems():
             #doopen()
 
             print 'edge', i
-g.counters['edgeid']=i            
+g._edgeid=graphagus.Length(i)
 transaction.commit()
 del(friends)
 print len(outgoing),len(incoming)
