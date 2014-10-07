@@ -3,7 +3,7 @@ graphagus
 :Author:  Joerg Baach
 :Email: mail@baach.de
 
-TIP: A nicer version of this document is at http://baach.de/graphagus/README.html.
+TIP: A nice version of this document is at http://baach.de/graphagus/README.html.
 
 *graphagus* is a graph database, a very thin layer on top of ZODB. 
 
