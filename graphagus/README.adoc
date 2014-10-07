@@ -15,6 +15,8 @@ way faster then e.g. neo4j or mysql for my purposes.
 
 NOTE: graphagus doesn't use zope, just zodb and repoze.catalog. Optionally ZEO of course. And to render the graph graphviz can be used.
 
+* github: https://github.com/jhb/graphagus
+* pypi: https://pypi.python.org/pypi/graphagus
 
 Quick Overview
 --------------
