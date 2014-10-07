@@ -641,11 +641,13 @@ This object has the following attributes and methods:
 
 ----
 
+Performance comparison
+----------------------
 
+I did some performance meassurements on graphagus. They are done within a comparison of graphagus and neo4j (because that's where the id for this project comes from). 
 
-To be continued...
+https://baach.de/Members/jhb/neo4j-performance-compared-to-graphagus
 
-And for debugging:
 [source,python]
 >>> #import ipdb; ipdb.set_trace()
 
