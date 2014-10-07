@@ -1,4 +1,4 @@
-import p_g, sys, random, time, transaction
+import graphagus, sys, random, time, transaction
 from ZODB import DB
 
 from ZEO import ClientStorage
@@ -12,7 +12,7 @@ if dbtype.startswith('f'):
 else:
     clientid = sys.argv[3]
     addr = ('localhost',1234)
-    #storage = ClientStorage.ClientStorage(addr,cache_size=2048*1024*1024,client='shm/p_gclient' +clientid)
+    #storage = ClientStorage.ClientStorage(addr,cache_size=2048*1024*1024,client='shm/graphagusclient' +clientid)
     storage = ClientStorage.ClientStorage(addr,cache_size=512*1024*1024,client='querykmcache' +clientid)
     #storage = ClientStorage.ClientStorage(addr,cache_size=0)
     #storage = ClientStorage.ClientStorage(addr)

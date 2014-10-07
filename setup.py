@@ -4,12 +4,12 @@ import sys, os
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-version = '0.1'
+version = '0.2'
 
 setup(name='graphagus',
       version=version,
       description="A graph database for property graphs on top of ZODB",
-      long_description="""Please read https://rawgit.com/jhb/graphagus/master/graphagus/README.html""",
+      long_description="""Please read http://baach.de/graphagus/README.html""",
       classifiers=["License :: OSI Approved :: GNU General Public License (GPL)",
           "Programming Language :: Python",
           "Development Status :: 3 - Alpha",

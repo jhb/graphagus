@@ -1,4 +1,4 @@
-import p_g, sys, random, time,transaction
+import graphagus, sys, random, time,transaction
 from ZODB import DB
 
 from ZEO import ClientStorage

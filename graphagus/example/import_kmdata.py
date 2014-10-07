@@ -1,5 +1,5 @@
 import cPickle, time, uuid, sys
-import p_g,transaction
+import graphagus,transaction
 from ZODB.FileStorage import FileStorage
 from ZODB.DB import DB
 
@@ -14,11 +14,11 @@ else:
     filename = sys.argv[1]
 
 print 'deleting'
-root['graphdb']=p_g.GraphDB()
+root['graphdb']=graphagus.GraphDB()
 
 print 'creating db'
 g=root['graphdb']
-g.node_catalog['name']=p_g.CatalogFieldIndex(p_g.get_key('name'))
+g.node_catalog['name']=graphagus.CatalogFieldIndex(graphagus.get_key('name'))
 
 print 'reading'
 f = open(filename)

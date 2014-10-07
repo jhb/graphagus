@@ -3,7 +3,7 @@ graphagus
 :Author:  Joerg Baach
 :Email: mail@baach.de
 
-TIP: A nicer version of this document is at  https://rawgit.com/jhb/graphagus/master/graphagus/README.html.
+TIP: A nicer version of this document is at http://baach.de/graphagus/README.html.
 
 *graphagus* is a graph database, a very thin layer on top of ZODB. 
 
@@ -205,11 +205,11 @@ Setting up indexes is optional, but we use them later on in this tutorial (see <
 
 [source,python]
 ----
->>> g.node_catalog['name']=graphagus.CatalogFieldIndex(graphagus.Nodegetter('name'))
->>> g.node_catalog['text']=graphagus.CatalogTextIndex(graphagus.Nodegetter('text'))
+>>> g.node_catalog['name'] =  graphagus.CatalogFieldIndex(graphagus.Nodegetter('name'))
+>>> g.node_catalog['text'] =  graphagus.CatalogTextIndex(graphagus.Nodegetter('text'))
 
->>> g.edge_catalog['since']=graphagus.CatalogFieldIndex(graphagus.Edgegetter('since'))
->>> g.edge_catalog['text']=graphagus.CatalogTextIndex(graphagus.Edgegetter('text'))
+>>> g.edge_catalog['since'] = graphagus.CatalogFieldIndex(graphagus.Edgegetter('since'))
+>>> g.edge_catalog['text'] =  graphagus.CatalogTextIndex(graphagus.Edgegetter('text'))
 
 >>> g.node_catalog['name']
 <repoze.catalog.indexes.field.CatalogFieldIndex object at ...>
