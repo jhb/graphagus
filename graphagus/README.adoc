@@ -8,8 +8,7 @@ TIP: A nice version of this document is at http://baach.de/graphagus/README.html
 It actually provides what neo4j calls a 'property graph', e.g.  the nodes and 
 edges can have properties. These can be indexed for fast access.
 
-All in all graphagus seems to be reasonably fast. In my tests (from python) its
-way faster then e.g. neo4j or mysql for my purposes.
+All in all graphagus seems to be reasonably fast. In my tests (from python) its faster then e.g. neo4j or mysql for my requirements.
 
 NOTE: graphagus doesn't use zope, just zodb and repoze.catalog. Optionally ZEO of course. And to render the graph graphviz can be used.
 
