@@ -9,120 +9,120 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 304)">
 <title>Graphagus dump</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-304 551,-304 551,4 -4,4"/>
-<!-- 6 -->
-<g id="node1" class="node"><title>6</title>
+<!-- 1 -->
+<g id="node1" class="node"><title>1</title>
 <ellipse fill="none" stroke="black" cx="27" cy="-194" rx="27" ry="18"/>
 <text text-anchor="middle" x="27" y="-190.3" font-family="Times,serif" font-size="14.00">cats</text>
 </g>
-<!-- 7 -->
-<g id="node2" class="node"><title>7</title>
+<!-- 2 -->
+<g id="node2" class="node"><title>2</title>
 <ellipse fill="none" stroke="black" cx="515" cy="-106" rx="32.2457" ry="18"/>
 <text text-anchor="middle" x="515" y="-102.3" font-family="Times,serif" font-size="14.00">nature</text>
 </g>
-<!-- 8 -->
-<g id="node3" class="node"><title>8</title>
+<!-- 3 -->
+<g id="node3" class="node"><title>3</title>
 <ellipse fill="none" stroke="black" cx="99" cy="-194" rx="27" ry="18"/>
 <text text-anchor="middle" x="99" y="-190.3" font-family="Times,serif" font-size="14.00">Ben</text>
 </g>
-<!-- 9 -->
-<g id="node4" class="node"><title>9</title>
+<!-- 4 -->
+<g id="node4" class="node"><title>4</title>
 <ellipse fill="none" stroke="black" cx="178" cy="-282" rx="27" ry="18"/>
 <text text-anchor="middle" x="178" y="-278.3" font-family="Times,serif" font-size="14.00">Sara</text>
 </g>
-<!-- 9&#45;&gt;6 -->
-<g id="edge5" class="edge"><title>9&#45;&gt;6</title>
+<!-- 4&#45;&gt;1 -->
+<g id="edge5" class="edge"><title>4&#45;&gt;1</title>
 <path fill="none" stroke="black" d="M151.719,-277.617C127.399,-273.446 91.1608,-264.495 65,-246 55.4346,-239.237 47.271,-229.321 40.9902,-220.026"/>
 <polygon fill="black" stroke="black" points="43.8596,-218.014 35.561,-211.428 37.9408,-221.752 43.8596,-218.014"/>
 <text text-anchor="middle" x="78" y="-234.3" font-family="Times,serif" font-size="14.00">likes</text>
 </g>
-<!-- 9&#45;&gt;8 -->
-<g id="edge2" class="edge"><title>9&#45;&gt;8</title>
+<!-- 4&#45;&gt;3 -->
+<g id="edge2" class="edge"><title>4&#45;&gt;3</title>
 <path fill="none" stroke="black" d="M151.91,-276.724C134.034,-272.301 111.544,-263.456 100,-246 95.3973,-239.04 94.0472,-230.295 94.1788,-222.022"/>
 <polygon fill="black" stroke="black" points="97.6745,-222.217 95.0048,-211.964 90.698,-221.644 97.6745,-222.217"/>
 <text text-anchor="middle" x="120.5" y="-234.3" font-family="Times,serif" font-size="14.00">follows</text>
 </g>
-<!-- 10 -->
-<g id="node5" class="node"><title>10</title>
+<!-- 5 -->
+<g id="node5" class="node"><title>5</title>
 <ellipse fill="none" stroke="black" cx="223" cy="-106" rx="29.3722" ry="18"/>
 <text text-anchor="middle" x="223" y="-102.3" font-family="Times,serif" font-size="14.00">bikes</text>
 </g>
-<!-- 9&#45;&gt;10 -->
-<g id="edge3" class="edge"><title>9&#45;&gt;10</title>
+<!-- 4&#45;&gt;5 -->
+<g id="edge3" class="edge"><title>4&#45;&gt;5</title>
 <path fill="none" stroke="black" d="M182.397,-263.999C190.247,-233.645 206.728,-169.919 216.099,-133.682"/>
 <polygon fill="black" stroke="black" points="219.536,-134.371 218.652,-123.813 212.759,-132.619 219.536,-134.371"/>
 <text text-anchor="middle" x="218" y="-190.3" font-family="Times,serif" font-size="14.00">likes</text>
 </g>
-<!-- 12 -->
-<g id="node7" class="node"><title>12</title>
+<!-- 7 -->
+<g id="node7" class="node"><title>7</title>
 <ellipse fill="none" stroke="black" cx="211" cy="-18" rx="27" ry="18"/>
 <text text-anchor="middle" x="211" y="-14.3" font-family="Times,serif" font-size="14.00">cars</text>
 </g>
-<!-- 9&#45;&gt;12 -->
-<g id="edge4" class="edge"><title>9&#45;&gt;12</title>
+<!-- 4&#45;&gt;7 -->
+<g id="edge4" class="edge"><title>4&#45;&gt;7</title>
 <path fill="none" stroke="black" d="M176.484,-263.939C173.928,-229.942 170.365,-151.55 185,-88 188.378,-73.3333 194.137,-57.5848 199.377,-44.8417"/>
 <polygon fill="black" stroke="black" points="202.724,-45.9166 203.414,-35.3443 196.281,-43.1786 202.724,-45.9166"/>
 <text text-anchor="middle" x="190" y="-146.3" font-family="Times,serif" font-size="14.00">likes</text>
 </g>
-<!-- 13 -->
-<g id="node8" class="node"><title>13</title>
+<!-- 8 -->
+<g id="node8" class="node"><title>8</title>
 <ellipse fill="none" stroke="black" cx="341" cy="-194" rx="27" ry="18"/>
 <text text-anchor="middle" x="341" y="-190.3" font-family="Times,serif" font-size="14.00">Joe</text>
 </g>
-<!-- 9&#45;&gt;13 -->
-<g id="edge1" class="edge"><title>9&#45;&gt;13</title>
+<!-- 4&#45;&gt;8 -->
+<g id="edge1" class="edge"><title>4&#45;&gt;8</title>
 <path fill="none" stroke="black" d="M197.296,-269.154C214.943,-258.48 241.891,-242.58 266,-230 280.146,-222.619 296.132,-215.055 309.7,-208.857"/>
 <polygon fill="black" stroke="black" points="311.423,-211.918 319.091,-204.607 308.537,-205.541 311.423,-211.918"/>
 <text text-anchor="middle" x="286.5" y="-234.3" font-family="Times,serif" font-size="14.00">follows</text>
 </g>
-<!-- 11 -->
-<g id="node6" class="node"><title>11</title>
+<!-- 6 -->
+<g id="node6" class="node"><title>6</title>
 <ellipse fill="none" stroke="black" cx="347" cy="-106" rx="32.2457" ry="18"/>
 <text text-anchor="middle" x="347" y="-102.3" font-family="Times,serif" font-size="14.00">Maria</text>
 </g>
-<!-- 11&#45;&gt;12 -->
-<g id="edge8" class="edge"><title>11&#45;&gt;12</title>
+<!-- 6&#45;&gt;7 -->
+<g id="edge8" class="edge"><title>6&#45;&gt;7</title>
 <path fill="none" stroke="black" d="M326.345,-91.9385C302.947,-77.1429 264.703,-52.9593 238.723,-36.5307"/>
 <polygon fill="black" stroke="black" points="240.412,-33.4576 230.089,-31.0712 236.671,-39.374 240.412,-33.4576"/>
 <text text-anchor="middle" x="305" y="-58.3" font-family="Times,serif" font-size="14.00">likes</text>
 </g>
-<!-- 11&#45;&gt;13 -->
-<g id="edge6" class="edge"><title>11&#45;&gt;13</title>
+<!-- 6&#45;&gt;8 -->
+<g id="edge6" class="edge"><title>6&#45;&gt;8</title>
 <path fill="none" stroke="black" d="M318.998,-115.182C305.933,-120.56 291.614,-129.059 284,-142 274.882,-157.496 291.354,-170.867 308.898,-180.026"/>
 <polygon fill="black" stroke="black" points="307.51,-183.242 318.039,-184.42 310.543,-176.933 307.51,-183.242"/>
 <text text-anchor="middle" x="304.5" y="-146.3" font-family="Times,serif" font-size="14.00">follows</text>
 </g>
-<!-- 11&#45;&gt;13 -->
-<g id="edge7" class="edge"><title>11&#45;&gt;13</title>
+<!-- 6&#45;&gt;8 -->
+<g id="edge7" class="edge"><title>6&#45;&gt;8</title>
 <path fill="none" stroke="black" d="M345.797,-124.25C344.968,-136.13 343.849,-152.162 342.901,-165.756"/>
 <polygon fill="black" stroke="black" points="339.39,-165.79 342.185,-176.009 346.373,-166.277 339.39,-165.79"/>
 <text text-anchor="middle" x="358.5" y="-146.3" font-family="Times,serif" font-size="14.00">loves</text>
 </g>
-<!-- 13&#45;&gt;7 -->
-<g id="edge13" class="edge"><title>13&#45;&gt;7</title>
+<!-- 8&#45;&gt;2 -->
+<g id="edge13" class="edge"><title>8&#45;&gt;2</title>
 <path fill="none" stroke="black" d="M367.182,-188.74C392.018,-183.911 429.779,-174.481 459,-158 472.143,-150.587 484.755,-139.573 494.672,-129.675"/>
 <polygon fill="black" stroke="black" points="497.266,-132.027 501.693,-122.402 492.23,-127.165 497.266,-132.027"/>
 <text text-anchor="middle" x="493" y="-146.3" font-family="Times,serif" font-size="14.00">likes</text>
 </g>
-<!-- 13&#45;&gt;9 -->
-<g id="edge9" class="edge"><title>13&#45;&gt;9</title>
+<!-- 8&#45;&gt;4 -->
+<g id="edge9" class="edge"><title>8&#45;&gt;4</title>
 <path fill="none" stroke="black" d="M333.832,-211.564C328.126,-222.86 319.092,-237.297 307,-246 279.861,-265.533 242.405,-274.166 214.843,-277.981"/>
 <polygon fill="black" stroke="black" points="214.302,-274.521 204.806,-279.22 215.16,-281.468 214.302,-274.521"/>
 <text text-anchor="middle" x="343.5" y="-234.3" font-family="Times,serif" font-size="14.00">follows</text>
 </g>
-<!-- 13&#45;&gt;10 -->
-<g id="edge12" class="edge"><title>13&#45;&gt;10</title>
+<!-- 8&#45;&gt;5 -->
+<g id="edge12" class="edge"><title>8&#45;&gt;5</title>
 <path fill="none" stroke="black" d="M315.573,-187.86C296.328,-182.904 270.191,-173.77 252,-158 244.2,-151.239 238.031,-141.838 233.424,-132.947"/>
 <polygon fill="black" stroke="black" points="236.469,-131.198 229.035,-123.649 230.139,-134.186 236.469,-131.198"/>
 <text text-anchor="middle" x="265" y="-146.3" font-family="Times,serif" font-size="14.00">likes</text>
 </g>
-<!-- 13&#45;&gt;11 -->
-<g id="edge10" class="edge"><title>13&#45;&gt;11</title>
+<!-- 8&#45;&gt;6 -->
+<g id="edge10" class="edge"><title>8&#45;&gt;6</title>
 <path fill="none" stroke="black" d="M359.131,-180.452C366.097,-174.537 373.268,-166.833 377,-158 381.12,-148.248 377.061,-138.082 370.74,-129.416"/>
 <polygon fill="black" stroke="black" points="373.299,-127.022 364.18,-121.629 367.946,-131.532 373.299,-127.022"/>
 <text text-anchor="middle" x="398.5" y="-146.3" font-family="Times,serif" font-size="14.00">follows</text>
 </g>
-<!-- 13&#45;&gt;11 -->
-<g id="edge11" class="edge"><title>13&#45;&gt;11</title>
+<!-- 8&#45;&gt;6 -->
+<g id="edge11" class="edge"><title>8&#45;&gt;6</title>
 <path fill="none" stroke="black" d="M367.299,-189.444C386.306,-185.348 410.716,-176.599 423,-158 435.485,-139.096 410.491,-125.43 385.891,-117.03"/>
 <polygon fill="black" stroke="black" points="386.794,-113.645 376.204,-113.964 384.682,-120.319 386.794,-113.645"/>
 <text text-anchor="middle" x="440.5" y="-146.3" font-family="Times,serif" font-size="14.00">loves</text>
