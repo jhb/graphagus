@@ -13,6 +13,8 @@ from repoze.catalog import query as rc_query
 from ZODB import DB
 from ZODB.FileStorage import FileStorage
 
+itertype = type(iter([]))
+
 class StillConnected(Exception):
     pass
 
@@ -298,10 +300,9 @@ class GraphDB(Persistent):
     
 ################## Higher Level API, functionality > speed ###################
 
-    def getAllEdges(self,nodeids,directions=None,types=None):
-        
+    def getAllEdges(self,nodeids,directions=None,types=None,returnIds=0):
 
-        if type(nodeids) not in (list,tuple):
+        if type(nodeids) not in (list,tuple,itertype):
             nodeids = [nodeids]
         if directions == None:
             directions = ['i','o']
@@ -343,8 +344,11 @@ class GraphDB(Persistent):
                     continue
                 for n in nodeids:
                     edges = container[edgetype].get(n,{})
-                    for key in edges.keys():
-                        result.append(self.edge(key))
+                    if returnIds:
+                        result.extend(edges.keys())
+                    else:
+                        for key in edges.keys():
+                            result.append(self.edge(key))
             out[direction] = result
         if len(directions) == 1:
             return result
@@ -413,7 +417,7 @@ class GraphDB(Persistent):
             lightNode = self.lightNode(lightNode)
         return Node(self,lightNode)
 
-def getGraph(filename=None,graphname='graphdb',storage=None):
+def getGraph(filename=None,graphname='graphdb',storage=None,graphonly=True):
     
     if filename:
         storage = FileStorage(filename)
@@ -423,4 +427,13 @@ def getGraph(filename=None,graphname='graphdb',storage=None):
     root = connection.root()
     if not root.has_key(graphname):
         root[graphname]=GraphDB()
-    return root[graphname]
+    g = root[graphname]
+    g._v_root = root
+    g._v_connection = connection
+    g._v_db = db
+    g._v_storage = storage
+
+    if graphonly:
+        return g
+    else:
+        return g,storage,db,connection,root
