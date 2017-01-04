@@ -23,7 +23,7 @@ Quick Overview
 Setup
 ~~~~~
 
-With ZODB one can eihter use a database directly, or use ZEO for Server mode. Both work fine, here we use the direct mode, without ZEO. We use a MemoryStorage as a backend for the examples here (the usual other alternatives are possible as well, e.g. FileStorage):
+With ZODB one can either use a database directly, or use ZEO for Server mode. Both work fine, here we use the direct mode, without ZEO. We use a MemoryStorage as a backend for the examples here (the usual other alternatives are possible as well, e.g. FileStorage):
 
 [source, python]
 ----
@@ -653,4 +653,3 @@ https://baach.de/Members/jhb/neo4j-performance-compared-to-graphagus
 
 [source,python]
 >>> #import ipdb; ipdb.set_trace()
-
