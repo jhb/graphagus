@@ -3,6 +3,7 @@
 
 >>> import graphagus
 >>> import traversal
+>>> from pprint import pprint
 >>> from traversal import T
 >>> g = graphagus.getGraph()
 
@@ -30,20 +31,27 @@ image::traversal.svg[]
 ----
 
 >>> t = traversal.getTraverser(g)
+
 >>> t.N()
 [1, 2, 3, 4, 5, 6]
 
 >>> marko['_id']
 1
 
->>> t.N(1).values('name')
+>>> t.N([1]).values('name')
 ['marko']
 
->>> t.N(1)
+>>> t.N([1])
 [1]
 
->>> t.N(1).outE('knows')
+>>> t.N([1]).outE('knows')
 [1, 2]
+
+>>> t.N(1).outE('knows').values('weight')
+[0.5, 1.0]
+
+>>> t.N([1]).outE('knows').paths
+[['N', 1, 1], ['N', 1, 2]]
 
 >>> t.N(1).outE('knows').inN()
 [2, 4]
@@ -53,6 +61,7 @@ image::traversal.svg[]
 
 >>> t.N(1).out('knows').values('name')
 ['vadas', 'josh']
+
 
 >>> t.N(1).out('knows').has(age=lambda x:x>30).values('name')
 ['josh']
@@ -72,9 +81,28 @@ image::traversal.svg[]
 >>> t.N(1).out('created')._in('created').values('name')
 ['marko', 'josh', 'peter']
 
->>> creators = [c for c in t.N(1).out('created')._in('created') if c < 6]
+>>> t.N(1).out('created')._in('created').values('name')
+['marko', 'josh', 'peter']
+
+>>> creators = [c for c in t.N(1).out('created')._in('created') if c[-1]<6]
 >>> T(g,creators).values('name')
 ['marko', 'josh']
+
+>>> paths = t.N(1).outE('knows')._as('k').inN()._as('f').out('created')._as('p')
+>>> paths.pselect('k.weight','f.name','p.name','p._id')
+[[('k.weight', 1.0), ('f.name', 'josh'), ('p._id', 5), ('p.name', 'ripple')],
+ [('k.weight', 1.0), ('f.name', 'josh'), ('p._id', 3), ('p.name', 'lop')]]
+
+//>>> out = t.N(1).out('knows')._in('created')._as('creator').out('created')._as('project').select('project.name','creator.name')
+//>>> pprint(out)
+
+//.select('projects','creators')
+
+//>>> t.N(1).out('created')._as('projects')._in('created').nameddata
+//{'projects': [3]}
+
+
+----
 
 
 

@@ -12,8 +12,14 @@ from repoze.catalog.indexes.path import CatalogPathIndex
 from repoze.catalog import query as rc_query
 from ZODB import DB
 from ZODB.FileStorage import FileStorage
+import types
 
 itertype = type(iter([]))
+def islisttype(obj):
+    return type(obj) in (list, tuple)
+
+def isitertype(obj):
+    return type(obj) in (itertype,types.GeneratorType)
 
 class StillConnected(Exception):
     pass
@@ -172,7 +178,7 @@ class GraphDB(Persistent):
         return ln
     
     def lightNode(self,_id,node=None):
-        "{'id':nodeid, ...other attributes...}"
+        "{'_id':nodeid, ...other attributes...}"
         if node==None:
             node = self.nodes[_id]
         out = dict(node)
@@ -243,7 +249,7 @@ class GraphDB(Persistent):
         if type(node)==int:
             node=self.lightNode(node)
         nodeid = node['_id']
-       
+
         for edgetype in self.outgoing.keys():
             if len(self.outgoing[edgetype].get(nodeid,{}))>0:
                 raise StillConnected('outgoing',self.outgoing[edgetype][nodeid])
@@ -297,28 +303,33 @@ class GraphDB(Persistent):
     def queryEdge(self,**kwargs):
         result = self.edge_catalog.query(self.kwQuery(**kwargs))
         return [self.lightEdge(i) for i in result[1]]
-    
+
+    def prepareTypes(self,types=None):
+        if types is None:
+            return types
+        else:
+            if type(types) not in (list,tuple):
+                types = [types]
+            out = []
+            for t in types:
+                if type(t)==str:
+                    t = self.typeid(t)
+                out.append(t)
+            return out
+
 ################## Higher Level API, functionality > speed ###################
 
     def getAllEdges(self,nodeids,directions=None,types=None,returnIds=0):
 
-        if type(nodeids) not in (list,tuple,itertype):
+        if not islisttype(nodeids):
             nodeids = [nodeids]
         if directions == None:
             directions = ['i','o']
         elif type(directions) not in (list,tuple):
             directions = [directions]
 
-        if types != None:
-            if type(types) not in (list,tuple):
-                types = [types]
-            tmp = []
-            for t in types:
-                if type(t)==str:
-                    t = self.typeid(t)
-                tmp.append(t)
-            types = tmp
-            
+        types = self.prepareTypes(types)
+
         tmp = []
         for n in nodeids:
             if type(n) != int:
