@@ -15,7 +15,7 @@ NOTE: graphagus doesn't use zope, just zodb and repoze.catalog. Optionally ZEO o
 * github: https://github.com/jhb/graphagus
 * pypi: https://pypi.python.org/pypi/graphagus
 
-This text and graphagus are: (c) 2014, Joerg Baach, mail@baach.de, GPL
+This text and graphagus are: (c) 2014, Joerg Baach, mail@baach.de, GPLv3, see LICENSE.txt
 
 Quick Overview
 --------------

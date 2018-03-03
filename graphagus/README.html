@@ -808,7 +808,7 @@ pypi: <a href="https://pypi.python.org/pypi/graphagus">https://pypi.python.org/p
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>This text and graphagus are: (c) 2014, Joerg Baach, <a href="mailto:mail@baach.de">mail@baach.de</a>, GPL</p></div>
+<div class="paragraph"><p>This text and graphagus are: (c) 2014, Joerg Baach, <a href="mailto:mail@baach.de">mail@baach.de</a>, GPLv3, see LICENSE.txt</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -818,49 +818,13 @@ pypi: <a href="https://pypi.python.org/pypi/graphagus">https://pypi.python.org/p
 <h3 id="_setup">Setup</h3>
 <div class="paragraph"><p>With ZODB one can either use a database directly, or use ZEO for Server mode. Both work fine, here we use the direct mode, without ZEO. We use a MemoryStorage as a backend for the examples here (the usual other alternatives are possible as well, e.g. FileStorage):</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000080">import</span></span> graphagus
-<span style="color: #990000">&gt;&gt;&gt;</span> g <span style="color: #990000">=</span> graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getGraph</span></span><span style="color: #990000">()</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 <div class="sect2">
 <h3 id="_creating_the_graph">Creating the graph</h3>
 <div class="paragraph"><p>Ok, now lets populate the database with a first example. It follows <a href="http://docs.neo4j.org/chunked/stable/cypher-cookbook-multirelational-social-network.html">http://docs.neo4j.org/chunked/stable/cypher-cookbook-multirelational-social-network.html</a></p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>
-<span style="color: #990000">&gt;&gt;&gt;</span> cats <span style="color: #990000">=</span>   g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'cats'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> nature <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'nature'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> ben <span style="color: #990000">=</span>    g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'Ben'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> sara <span style="color: #990000">=</span>   g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'Sara'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> bikes <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'bikes'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> maria <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'Maria'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> cars <span style="color: #990000">=</span>   g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'cars'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> joe <span style="color: #990000">=</span>    g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'Joe'</span><span style="color: #990000">)</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> e1 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>sara<span style="color: #990000">,</span>joe<span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e2 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>sara<span style="color: #990000">,</span>ben<span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e3 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>sara<span style="color: #990000">,</span>bikes<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e4 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>sara<span style="color: #990000">,</span>cars<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e5 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>sara<span style="color: #990000">,</span>cats<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e6 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>maria<span style="color: #990000">,</span>joe<span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e7 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>maria<span style="color: #990000">,</span>joe<span style="color: #990000">,</span><span style="color: #FF0000">'loves'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e8 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>maria<span style="color: #990000">,</span>cars<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e9 <span style="color: #990000">=</span>  g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">,</span>sara<span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e10 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">,</span>maria<span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e11 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">,</span>maria<span style="color: #990000">,</span><span style="color: #FF0000">'loves'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e12 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">,</span>bikes<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e13 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">,</span>nature<span style="color: #990000">,</span><span style="color: #FF0000">'likes'</span><span style="color: #990000">)</span>
-
-<span style="font-style: italic"><span style="color: #9A1900"># We can render the graph to an image</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-style: italic"><span style="color: #9A1900">#g.render('graphagus')</span></span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>The rendered graph looks like this:</p></div>
 <div class="imageblock">
 <div class="content">
@@ -872,40 +836,11 @@ http://www.gnu.org/software/src-highlite -->
 <h3 id="_querying">Querying</h3>
 <div class="paragraph"><p>Ok, so lets query our graph. We use some higher level APIs here.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>
-<span style="font-style: italic"><span style="color: #9A1900">#lets 'wrap' joe as a more functional node</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> joe <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">node</span></span><span style="color: #990000">(</span>joe<span style="color: #990000">)</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#Query people that joe follows or loves, and that have the same relationship back to him</span></span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#This means finding edges of certain types going out from joe, and checking if an edge of the same type is going reverse</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> result <span style="color: #990000">=</span> <span style="color: #990000">[</span>e <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> e <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> joe<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">outgoing</span></span><span style="color: #990000">((</span><span style="color: #FF0000">'loves'</span><span style="color: #990000">,</span><span style="color: #FF0000">'follows'</span><span style="color: #990000">))</span> <span style="font-style: italic"><span style="color: #9A1900">#get edges of specified types</span></span>
-<span style="color: #990000">...</span>                   <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getEdges</span></span><span style="color: #990000">(</span>e<span style="color: #990000">.</span>target<span style="color: #990000">,</span>joe<span style="color: #990000">,</span>e<span style="color: #990000">.</span>type<span style="color: #990000">)]</span>  <span style="font-style: italic"><span style="color: #9A1900">#and check if there is a similar backlink</span></span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#Now we can print the result</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #0000FF">for</span></span> edge <span style="font-weight: bold"><span style="color: #0000FF">in</span></span> result<span style="color: #990000">:</span>
-<span style="color: #990000">...</span>    <span style="font-weight: bold"><span style="color: #0000FF">print</span></span> edge<span style="color: #990000">.</span>target<span style="color: #990000">.</span>name<span style="color: #990000">,</span> edge<span style="color: #990000">.</span>type
-Sara follows
-Maria follows
-Maria loves
-
-<span style="color: #990000">&gt;&gt;&gt;</span> joe<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">outgoing</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'loves'</span><span style="color: #990000">)[</span><span style="color: #993399">0</span><span style="color: #990000">].</span>target<span style="color: #990000">==</span>maria
-True
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>And now that we are finished with the example, lets clean out the whole
 database:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">clean</span></span><span style="color: #990000">()</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 </div>
 </div>
@@ -917,86 +852,42 @@ http://www.gnu.org/software/src-highlite -->
 <h3 id="_nodes">Nodes</h3>
 <div class="paragraph"><p>Nodes are entries in an IOBTree, which means that an integer (the node id) is pointing to a dictionary. The dictionary contains the properties of the node. So the most simple entry looks like this:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>g<span style="color: #990000">.</span>nodes<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> <span style="color: #990000">{}</span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>or, with a bit more data like this:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>g<span style="color: #990000">.</span>nodes<span style="color: #990000">[</span><span style="color: #993399">2</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> <span style="color: #990000">{</span><span style="color: #FF0000">'name'</span><span style="color: #990000">:</span><span style="color: #FF0000">'Second Node'</span><span style="color: #990000">}</span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>This is what nodes look like on the lowest level. Usually within graphagus one actually uses <em>lightNodes</em>. This is just a funky name for the node dictionary with the node&#8217;s id added under the <em>_id</em> key:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">lightNode</span></span><span style="color: #990000">(</span><span style="color: #993399">2</span><span style="color: #990000">)</span> <span style="color: #990000">==</span> <span style="color: #990000">{</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span><span style="color: #993399">2</span><span style="color: #990000">,</span><span style="color: #FF0000">'name'</span><span style="color: #990000">:</span><span style="color: #FF0000">'Second Node'</span><span style="color: #990000">}</span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>This makes handling the nodes way easier internally.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_edges">Edges</h3>
 <div class="paragraph"><p>Edges are the more interesting bit. Their basic structure is list with three entries:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>g<span style="color: #990000">.</span>edges<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> <span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">,</span><span style="color: #993399">2</span><span style="color: #990000">,</span><span style="color: #993399">1</span><span style="color: #990000">]</span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>This is an edge connecting source node 1 with target node 2, and the edge is of the edgetype 1. There is an object containing the mapping of <em>type names</em> to edgetypes:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>g<span style="color: #990000">.</span>typeids<span style="color: #990000">.</span>friend <span style="color: #990000">=</span> <span style="color: #993399">1</span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>If you want to store properties on an edge, these props get stored within a  dictionary, which is then placed into another IOBTree</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>g<span style="color: #990000">.</span>edgedata<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> <span style="color: #990000">{</span><span style="color: #FF0000">'duration'</span><span style="color: #990000">:</span><span style="color: #FF0000">'5 years'</span><span style="color: #990000">}</span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>As with the nodes there is a <em>lightEdge</em> structure, which is what you usually get when using the lower level APIs:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">lightEdge</span></span><span style="color: #990000">(</span><span style="color: #993399">1</span><span style="color: #990000">)</span> <span style="color: #990000">==</span> <span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'duration'</span><span style="color: #990000">:</span><span style="color: #FF0000">'5 years'</span><span style="color: #990000">},</span><span style="color: #993399">1</span><span style="color: #990000">]</span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>So, it is the basic edge structure (source,target,type) extended by the properties, and the internal id.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_graph_directories">Graph directories</h3>
 <div class="paragraph"><p>Given the above structure one would have no way to directly find edges from one node to the other. But fear not! There are two <em>directories</em> that help the lookup. They have a very similar structure:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>g<span style="color: #990000">.</span>outgoing<span style="color: #990000">[</span>typeid<span style="color: #990000">][</span>source<span style="color: #990000">]</span> <span style="color: #990000">=</span> <span style="color: #990000">{</span>edgeid<span style="color: #990000">:</span>target<span style="color: #990000">,</span> <span style="color: #990000">...}</span>
-g<span style="color: #990000">.</span>incoming<span style="color: #990000">[</span>typeid<span style="color: #990000">][</span>target<span style="color: #990000">]</span> <span style="color: #990000">=</span> <span style="color: #990000">{</span>edgeid<span style="color: #990000">:</span>source<span style="color: #990000">,</span> <span style="color: #990000">...}</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>With the examples above, we would have generated the following entries:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>g<span style="color: #990000">.</span>outgoing<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">][</span><span style="color: #993399">1</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> <span style="color: #990000">{</span><span style="color: #993399">1</span><span style="color: #990000">:</span><span style="color: #993399">2</span><span style="color: #990000">}</span>
-g<span style="color: #990000">.</span>incoming<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">][</span><span style="color: #993399">2</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> <span style="color: #990000">{</span><span style="color: #993399">1</span><span style="color: #990000">:</span><span style="color: #993399">1</span><span style="color: #990000">}</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>When doing "just" graph traversal, usually those directory entries are all that is needed. E.g. when finding nodes that link to node 2 using typeid 1, one could use:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>nodeids <span style="color: #990000">=</span> g<span style="color: #990000">.</span>incoming<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">][</span><span style="color: #993399">1</span><span style="color: #990000">].</span><span style="font-weight: bold"><span style="color: #000000">values</span></span><span style="color: #990000">()</span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -1034,19 +925,7 @@ edge_catalog
 <div class="paragraph"><p>Within graphagus we have to little helpers, <em>Nodegetter</em> and <em>Edgegetter</em>, which will basically return the value of the specified attribute.</p></div>
 <div class="paragraph"><p>Setting up indexes is optional, but we use them later on in this tutorial (see <a href="#searching">searching</a>, <a href="#finding">finding</a>), so lets set them up right now.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'name'</span><span style="color: #990000">]</span> <span style="color: #990000">=</span>  graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogFieldIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Nodegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'name'</span><span style="color: #990000">))</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'text'</span><span style="color: #990000">]</span> <span style="color: #990000">=</span>  graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogTextIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Nodegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'text'</span><span style="color: #990000">))</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>edge_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'since'</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogFieldIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Edgegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'since'</span><span style="color: #990000">))</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>edge_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'text'</span><span style="color: #990000">]</span> <span style="color: #990000">=</span>  graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">CatalogTextIndex</span></span><span style="color: #990000">(</span>graphagus<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">Edgegetter</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'text'</span><span style="color: #990000">))</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>node_catalog<span style="color: #990000">[</span><span style="color: #FF0000">'name'</span><span style="color: #990000">]</span>
-<span style="color: #990000">&lt;</span>repoze<span style="color: #990000">.</span>catalog<span style="color: #990000">.</span>indexes<span style="color: #990000">.</span>field<span style="color: #990000">.</span>CatalogFieldIndex object at <span style="color: #990000">...&gt;</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -1066,122 +945,34 @@ http://www.gnu.org/software/src-highlite -->
 <h3 id="_creating">Creating</h3>
 <div class="paragraph"><p>Lets create some nodes:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> alice <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'alice'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> bob <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'bob'</span><span style="color: #990000">,</span>lastname<span style="color: #990000">=</span><span style="color: #FF0000">'The Builder'</span><span style="color: #990000">)</span>
-
-<span style="font-style: italic"><span style="color: #9A1900"># lets have a look at alice</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> alice <span style="color: #990000">==</span> <span style="color: #990000">{</span> <span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #FF0000">'name'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'alice'</span><span style="color: #990000">}</span>
-True
-
-<span style="font-style: italic"><span style="color: #9A1900"># and at bob</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> bob <span style="color: #990000">==</span> <span style="color: #990000">{</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #FF0000">'lastname'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'The Builder'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'name'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'bob'</span><span style="color: #990000">}</span>
-True
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p><code>alice</code> and <code>bob</code> are <code>lightnodes</code>. This is a dictionary with the properties
 of the node, plus the additional internal <code>_id</code>. <code>Lightnode</code> is what you
 usually work with. To illustrate:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>nodes<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span>
-<span style="color: #990000">{</span><span style="color: #FF0000">'name'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'alice'</span><span style="color: #990000">}</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> alice <span style="color: #990000">==</span> <span style="color: #990000">{</span> <span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #FF0000">'name'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'alice'</span><span style="color: #990000">}</span>
-True
-
-<span style="color: #990000">&gt;&gt;&gt;</span> alice <span style="color: #990000">!=</span> g<span style="color: #990000">.</span>nodes<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span>
-True
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>There is a little wrapper method <code>lightNode</code>, which will return a <code>lightnode</code> object,
 that is a dict with the <code>_id</code> set, and either fetch a node from the db, or just
 copy values over:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># it will either fetch a copy of the node...</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> alice2 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">lightNode</span></span><span style="color: #990000">(</span><span style="color: #993399">1</span><span style="color: #990000">)</span>
-
-<span style="font-style: italic"><span style="color: #9A1900"># they have the same value</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> alice <span style="color: #990000">==</span> alice2
-True
-
-<span style="font-style: italic"><span style="color: #9A1900"># but are not the same object</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">id</span></span><span style="color: #990000">(</span>alice<span style="color: #990000">)</span> <span style="color: #990000">==</span> <span style="font-weight: bold"><span style="color: #000000">id</span></span><span style="color: #990000">(</span>alice2<span style="color: #990000">)</span>
-False
-
-<span style="font-style: italic"><span style="color: #9A1900"># ..., or, with a dict as a second parameter, only the _id will be set</span></span>
-<span style="font-style: italic"><span style="color: #9A1900"># in the copy of the dict</span></span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> d <span style="color: #990000">=</span> <span style="color: #990000">{}</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> dictid <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">id</span></span><span style="color: #990000">({})</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> out <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">lightNode</span></span><span style="color: #990000">(</span><span style="color: #993399">333</span><span style="color: #990000">,</span>d<span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> out
-<span style="color: #990000">{</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span> <span style="color: #993399">333</span><span style="color: #990000">}</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">id</span></span><span style="color: #990000">(</span>out<span style="color: #990000">)</span> <span style="color: #990000">!=</span> dictid
-True
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 <div class="sect2">
 <h3 id="_updating">Updating</h3>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> bob<span style="color: #990000">[</span><span style="color: #FF0000">'text'</span><span style="color: #990000">]</span> <span style="color: #990000">=</span> <span style="color: #FF0000">'this is some wonderful text'</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">updateNode</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">)</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#thats all. Lets confirm</span></span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> bob2 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">lightNode</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">])</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> bob2 <span style="color: #990000">==</span> bob
-True
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p><a id="searching"></a></p></div>
 </div>
 <div class="sect2">
 <h3 id="_searching">Searching</h3>
 <div class="paragraph"><p>How do you get nodes from the database?</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># using fulltext</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> nodes <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">queryNode</span></span><span style="color: #990000">(</span>text<span style="color: #990000">=</span><span style="color: #FF0000">'wonder*'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> nodes<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> bob
-True
-
-<span style="font-style: italic"><span style="color: #9A1900"># or the other index that we configured</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> nodes <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">queryNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'alice'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> nodes<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> alice
-True
-
-<span style="font-style: italic"><span style="color: #9A1900"># No index, no search</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> nodes <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">queryNode</span></span><span style="color: #990000">(</span>lastname<span style="color: #990000">=</span><span style="color: #FF0000">'The Builder'</span><span style="color: #990000">)</span>
-<span style="font-weight: bold"><span style="color: #000000">Traceback</span></span> <span style="color: #990000">(</span>most recent call last<span style="color: #990000">):</span>
-    <span style="color: #990000">...</span>
-KeyError<span style="color: #990000">:</span> <span style="color: #FF0000">'lastname'</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 <div class="sect2">
 <h3 id="_deleting">Deleting</h3>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> charlie <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'charlie'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delNode</span></span><span style="color: #990000">(</span>charlie<span style="color: #990000">)</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 </div>
 </div>
@@ -1193,166 +984,34 @@ http://www.gnu.org/software/src-highlite -->
 <h3 id="_creating_2">Creating</h3>
 <div class="paragraph"><p>Let&#8217;s create a simple edge</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> e1 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>alice<span style="color: #990000">,</span>bob<span style="color: #990000">,</span><span style="color: #FF0000">'knows'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e1
-<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{},</span> <span style="color: #993399">1</span><span style="color: #990000">]</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>Lets add charlie again, and a link with extra data</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> charlie <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'charlie'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e2 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">,</span>charlie<span style="color: #990000">,</span><span style="color: #FF0000">'knows'</span><span style="color: #990000">,</span>since<span style="color: #990000">=</span><span style="color: #993399">2012</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e2
-<span style="color: #990000">[</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2012</span><span style="color: #990000">},</span> <span style="color: #993399">2</span><span style="color: #990000">]</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>The returned data is the in the form of [source,target,type,attributes,edgeid]. It is a <code>lightEdge</code>.</p></div>
 <div class="paragraph"><p>There is a helper method to quickly get the type name of an edge</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getType</span></span><span style="color: #990000">(</span>e2<span style="color: #990000">)</span>
-<span style="font-style: italic"><span style="color: #9A1900">'knows'</span></span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p><a id="finding"></a></p></div>
 </div>
 <div class="sect2">
 <h3 id="_finding">Finding</h3>
 <div class="paragraph"><p>Lets find some edges.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>
-<span style="font-style: italic"><span style="color: #9A1900">#if we know the edge id, its quite easy</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> tmp <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">lightEdge</span></span><span style="color: #990000">(</span><span style="color: #993399">2</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> tmp <span style="color: #990000">==</span> e2
-True
-
-<span style="font-style: italic"><span style="color: #9A1900">#alternatively we can use the catalog</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> res <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">queryEdge</span></span><span style="color: #990000">(</span>since<span style="color: #990000">=</span><span style="color: #993399">2012</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-weight: bold"><span style="color: #000000">len</span></span><span style="color: #990000">(</span>res<span style="color: #990000">)</span>
-<span style="color: #993399">1</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> res<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> e2
-True
-
-<span style="font-style: italic"><span style="color: #9A1900"># the most basic api for getting edges</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> tid <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">typeid</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'knows'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span>outgoing<span style="color: #990000">[</span>tid<span style="color: #990000">][</span>alice<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">]]</span>
-
-<span style="font-style: italic"><span style="color: #9A1900"># the data is a dict of the form {edgeid:nodeid}</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r
-<span style="color: #990000">{</span><span style="color: #993399">1</span><span style="color: #990000">:</span> <span style="color: #993399">2</span><span style="color: #990000">}</span>
-
-<span style="font-style: italic"><span style="color: #9A1900"># edge e1 has id 1 ...</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e1<span style="color: #990000">[</span><span style="color: #993399">4</span><span style="color: #990000">]</span>
-<span style="color: #993399">1</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#starts at node 1 (alice)</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e1<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span>
-<span style="color: #993399">1</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> alice<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">]</span>
-<span style="color: #993399">1</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#...going to node 2 (bob)</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e1<span style="color: #990000">[</span><span style="color: #993399">1</span><span style="color: #990000">]</span>
-<span style="color: #993399">2</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> bob<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">]</span>
-<span style="color: #993399">2</span>
-
-<span style="font-style: italic"><span style="color: #9A1900"># it works the other way around as well</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span>incoming<span style="color: #990000">[</span>tid<span style="color: #990000">][</span>bob<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">]]</span>
-<span style="color: #990000">{</span><span style="color: #993399">1</span><span style="color: #990000">:</span> <span style="color: #993399">1</span><span style="color: #990000">}</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>There is a more comfortable api, which is less direct (hence slower), but probably much more usable.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># a bit higher level up is the following</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>alice<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">],</span><span style="color: #FF0000">'o'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> e1
-True
-
-<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">[</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">],</span><span style="color: #FF0000">'i'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> e1
-True
-
-<span style="font-style: italic"><span style="color: #9A1900">#or, a bit simpler</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">,</span><span style="color: #FF0000">'i'</span><span style="color: #990000">)</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> e1
-True
-
-<span style="font-style: italic"><span style="color: #9A1900">#or get all edges</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">)</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#incoming</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">.</span>i<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]==</span>e1
-True
-
-<span style="font-style: italic"><span style="color: #9A1900">#outgoing</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> r<span style="color: #990000">.</span>o<span style="color: #990000">[</span><span style="color: #993399">0</span><span style="color: #990000">]==</span>e2
-True
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 <div class="sect2">
 <h3 id="_updating_2">Updating</h3>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> e2<span style="color: #990000">[</span><span style="color: #993399">3</span><span style="color: #990000">][</span><span style="color: #FF0000">'since'</span><span style="color: #990000">]=</span><span style="color: #993399">2011</span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e2
-<span style="color: #990000">[</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2011</span><span style="color: #990000">},</span> <span style="color: #993399">2</span><span style="color: #990000">]</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 <div class="sect2">
 <h3 id="_deleting_2">Deleting</h3>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>
-<span style="font-style: italic"><span style="color: #9A1900">#lets create another extra node</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> eve <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addNode</span></span><span style="color: #990000">(</span>name<span style="color: #990000">=</span><span style="color: #FF0000">'eve'</span><span style="color: #990000">)</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#and connect to it</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> e3 <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">addEdge</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">,</span>eve<span style="color: #990000">,</span><span style="color: #FF0000">'knows'</span><span style="color: #990000">)</span>
-
-
-<span style="font-style: italic"><span style="color: #9A1900"># first off, you can't delete a connected node</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delNode</span></span><span style="color: #990000">(</span>eve<span style="color: #990000">)</span>
-<span style="font-weight: bold"><span style="color: #000000">Traceback</span></span> <span style="color: #990000">(</span>most recent call last<span style="color: #990000">):</span>
-    <span style="color: #990000">...</span>
-StillConnected<span style="color: #990000">:</span> <span style="color: #990000">(</span><span style="color: #FF0000">'incoming'</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #993399">3</span><span style="color: #990000">:</span> <span style="color: #993399">2</span><span style="color: #990000">})</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#so, lets delete the edge</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delEdge</span></span><span style="color: #990000">(</span>e3<span style="color: #990000">)</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#are there still incoming edges on eve?</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>eve<span style="color: #990000">,</span><span style="color: #FF0000">'i'</span><span style="color: #990000">)</span>
-<span style="color: #990000">[]</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#So, lets remove Eve</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">delNode</span></span><span style="color: #990000">(</span>eve<span style="color: #990000">)</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#It seems that did work ok</span></span>
-
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 </div>
 </div>
@@ -1362,11 +1021,7 @@ StillConnected<span style="color: #990000">:</span> <span style="color: #990000"
 <div class="paragraph"><p>There is a slightly higher level API. We already used that in the introductionary examples.</p></div>
 <div class="paragraph"><p>As a reminder, the graph currently looks like this:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-style: italic"><span style="color: #9A1900">#g.render('example1')</span></span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="imageblock">
 <div class="content">
 <img src="example1.svg" alt="example1.svg" />
@@ -1376,11 +1031,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="sect2">
 <h3 id="_graph_getalledges">graph.getAllEdges</h3>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>self<span style="color: #990000">,</span>nodeids<span style="color: #990000">,</span>directions<span style="color: #990000">=</span>None<span style="color: #990000">,</span>types<span style="color: #990000">=</span>None<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>Returns connected edges for one or more nodes, optionally filtered by type. The edges are returned as <em>Edge</em> objects.</p></div>
 <div class="ulist"><ul>
 <li>
@@ -1400,43 +1051,13 @@ http://www.gnu.org/software/src-highlite -->
 </li>
 </ul></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">,</span><span style="color: #FF0000">'incoming'</span><span style="color: #990000">)</span>
-<span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{},</span> <span style="color: #993399">1</span><span style="color: #990000">])]</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#abbriviate</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">,</span><span style="color: #FF0000">'i'</span><span style="color: #990000">)</span>
-<span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{},</span> <span style="color: #993399">1</span><span style="color: #990000">])]</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">,</span><span style="color: #FF0000">'outgo'</span><span style="color: #990000">)</span>
-<span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2011</span><span style="color: #990000">},</span> <span style="color: #993399">2</span><span style="color: #990000">])]</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#directions default to ("incoming","outgoing")</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">)</span>
-<span style="color: #990000">{</span><span style="color: #FF0000">'i'</span><span style="color: #990000">:</span> <span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{},</span> <span style="color: #993399">1</span><span style="color: #990000">])],</span> <span style="color: #FF0000">'o'</span><span style="color: #990000">:</span> <span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2011</span><span style="color: #990000">},</span> <span style="color: #993399">2</span><span style="color: #990000">])]}</span>
-
-<span style="font-style: italic"><span style="color: #9A1900">#key and attribute</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">)[</span><span style="color: #FF0000">'i'</span><span style="color: #990000">]</span> <span style="color: #990000">==</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">).</span>i
-True
-
-<span style="font-style: italic"><span style="color: #9A1900">#multiple nodes</span></span>
-<span style="color: #990000">&gt;&gt;&gt;</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">getAllEdges</span></span><span style="color: #990000">((</span>bob<span style="color: #990000">,</span>charlie<span style="color: #990000">),</span><span style="color: #FF0000">'i'</span><span style="color: #990000">)</span>
-<span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{},</span> <span style="color: #993399">1</span><span style="color: #990000">]),</span> <span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2011</span><span style="color: #990000">},</span> <span style="color: #993399">2</span><span style="color: #990000">])]</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 <div class="sect2">
 <h3 id="_edge">Edge</h3>
 <div class="paragraph"><p>A lightEdge can be wrapped as a full <em>Edge</em> object.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> edge <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">edge</span></span><span style="color: #990000">(</span>e2<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>This object has the following attributes and methods</p></div>
 <div class="ulist"><ul>
 <li>
@@ -1466,35 +1087,13 @@ http://www.gnu.org/software/src-highlite -->
 </li>
 </ul></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> edge<span style="color: #990000">.</span>source
-<span style="font-weight: bold"><span style="color: #000000">Node</span></span><span style="color: #990000">({</span><span style="color: #FF0000">'lastname'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'The Builder'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #FF0000">'name'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'bob'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'text'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'this is some wonderful text'</span><span style="color: #990000">})</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> edge<span style="color: #990000">.</span>target
-<span style="font-weight: bold"><span style="color: #000000">Node</span></span><span style="color: #990000">({</span><span style="color: #FF0000">'_id'</span><span style="color: #990000">:</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #FF0000">'name'</span><span style="color: #990000">:</span> <span style="color: #FF0000">'charlie'</span><span style="color: #990000">})</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> edge<span style="color: #990000">.</span>type
-<span style="font-style: italic"><span style="color: #9A1900">'knows'</span></span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> edge<span style="color: #990000">.</span>data
-<span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2011</span><span style="color: #990000">}</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> edge<span style="color: #990000">.</span>since
-<span style="color: #993399">2011</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 <div class="sect2">
 <h3 id="_node">Node</h3>
 <div class="paragraph"><p>A lightNode can be wrapped as a full <em>Node</em> object</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> node <span style="color: #990000">=</span> g<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">node</span></span><span style="color: #990000">(</span>bob<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="content"></div></div>
 <div class="paragraph"><p>This object has the following attributes and methods:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -1529,28 +1128,7 @@ http://www.gnu.org/software/src-highlite -->
 </li>
 </ul></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> node<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">allEdges</span></span><span style="color: #990000">()</span>
-<span style="color: #990000">{</span><span style="color: #FF0000">'i'</span><span style="color: #990000">:</span> <span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{},</span> <span style="color: #993399">1</span><span style="color: #990000">])],</span> <span style="color: #FF0000">'o'</span><span style="color: #990000">:</span> <span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2011</span><span style="color: #990000">},</span> <span style="color: #993399">2</span><span style="color: #990000">])]}</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> node<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">outgoing</span></span><span style="color: #990000">(</span>types<span style="color: #990000">=</span><span style="color: #FF0000">'knows'</span><span style="color: #990000">)</span>
-<span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2011</span><span style="color: #990000">},</span> <span style="color: #993399">2</span><span style="color: #990000">])]</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> node<span style="color: #990000">.</span>o
-<span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">4</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{</span><span style="color: #FF0000">'since'</span><span style="color: #990000">:</span> <span style="color: #993399">2011</span><span style="color: #990000">},</span> <span style="color: #993399">2</span><span style="color: #990000">])]</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> node<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">incoming</span></span><span style="color: #990000">(</span>types<span style="color: #990000">=</span><span style="color: #FF0000">'unknown'</span><span style="color: #990000">)</span>
-<span style="color: #990000">[]</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> node<span style="color: #990000">.</span>i
-<span style="color: #990000">[</span><span style="font-weight: bold"><span style="color: #000000">Edge</span></span><span style="color: #990000">([</span><span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #993399">2</span><span style="color: #990000">,</span> <span style="color: #993399">1</span><span style="color: #990000">,</span> <span style="color: #990000">{},</span> <span style="color: #993399">1</span><span style="color: #990000">])]</span>
-
-<span style="color: #990000">&gt;&gt;&gt;</span> node<span style="color: #990000">.</span>name
-<span style="font-style: italic"><span style="color: #9A1900">'bob'</span></span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 </div>
 </div>
@@ -1560,18 +1138,15 @@ http://www.gnu.org/software/src-highlite -->
 <div class="paragraph"><p>I did some performance measurements on graphagus. They are done within a comparison of graphagus and neo4j (because that&#8217;s where the id for this project comes from).</p></div>
 <div class="paragraph"><p><a href="https://baach.de/Members/jhb/neo4j-performance-compared-to-graphagus">https://baach.de/Members/jhb/neo4j-performance-compared-to-graphagus</a></p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="color: #990000">&gt;&gt;&gt;</span> <span style="font-style: italic"><span style="color: #9A1900">#import ipdb; ipdb.set_trace()</span></span></tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 </div>
 </div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-01-04 15:38:05 CET
+Last updated
+ 2018-03-03 16:04:37 CET
 </div>
 </div>
 </body>
